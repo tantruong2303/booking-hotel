@@ -19,11 +19,11 @@ public class Validator {
             request.setAttribute(field + "Error", label + " is required");
             return null;
         }
-        if (value.length() > max) {
+        if (value.trim().length() > max) {
             request.setAttribute(field + "Error", label + " is less than " + max + " character(s)");
             return null;
         }
-        if (value.length() < min) {
+        if (value.trim().length() < min) {
             request.setAttribute(field + "Error", label + " is greater than " + min + " character(s)");
             return null;
         }
