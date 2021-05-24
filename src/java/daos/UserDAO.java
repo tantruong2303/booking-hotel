@@ -18,7 +18,7 @@ public class UserDAO {
     public User getOneUserByUsername(String username){
         try {
             Connection connection = Connector.getConnection();
-            String sql = "SELECT * FROM tbl_user WHERE username=?";
+            String sql = "SELECT * FROM tbl_User WHERE username=?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, username);
             ResultSet result = pstmt.executeQuery();
