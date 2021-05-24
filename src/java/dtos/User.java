@@ -10,13 +10,26 @@ package dtos;
  * @author Lenovo
  */
 public class User {
-    String userId;
-    String username;
-    String password;
-    String fullName;
-    String email;
-    String phone;
-    int role;
+    private String userId;
+    private String username;
+    private String password;
+    private String fullName;
+    private String email;
+    private String phone;
+    private int role;
+
+    public User(String userId, String username, String password, String fullName, String email, String phone, int role) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+    }
+
+    public User() {
+    }
 
     public String getUserId() {
         return userId;

@@ -35,4 +35,24 @@ public class Helper {
         }
         return false;
     }
+     
+    public String encrypt(String value, int key) {
+        String result = "";
+        for (int i = 0; i < value.length(); i++) {
+            char c = (char) (((int) value.charAt(i) + key) % 256);
+            result += c;
+        }
+
+        return result;
+    }
+    
+    public String decrypt(String value, int key){
+        String result = "";
+        for (int i = 0; i < value.length(); i++) {
+            char c = (char) (((int) value.charAt(i) - key) % 256);
+            result += c;
+        }
+
+        return result;
+    }
 }
