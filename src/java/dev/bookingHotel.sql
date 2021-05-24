@@ -12,19 +12,7 @@ CREATE TABLE tbl_User (
 );
 
 INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('binhtan', '123456789Aa', 'TRUONG BINH TAN', 'binhtan@gmail.com', '0987654321', 0);
+VALUES ('user', '123456789Aa', 'USER', 'user@gmail.com', '0987654321', 0);
 
 INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('binhtan1', '123456789Aa', 'TRUONG BINH TAN', 'binhtan@gmail.com', '0987654321', 1);
-
-INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('chihai', '123456789Aa', 'CAO CHI HAI', 'chihai@gmail.com', '0987654321', 0);
-
-INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('chihai1', '123456789Aa', 'CAO CHI HAI', 'chihai@gmail.com', '0987654321', 1);
-
-INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('vinhnhan', '123456789Aa', 'PHAM VINH NHAN', 'chihai@gmail.com', '0987654321', 0);
-
-INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('vinhnhan1', '123456789Aa', 'PHAM VINH NHAN', 'chihai@gmail.com', '0987654321', 1);
+VALUES ('partner', '123456789Aa', 'PARTNER', 'partner@gmail.com', '0987654321', 1);
