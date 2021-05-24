@@ -21,16 +21,15 @@ public class Auth {
 
         try {
             Connection connection = Connector.getConnection();
-            String sql = "INSERT INTO tbl_user (userId, username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO tbl_user (username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?)";
             
             PreparedStatement state = connection.prepareStatement(sql);
-            state.setString(1, user.getUserId());
-            state.setString(2, user.getUsername());
-            state.setString(3, user.getPassword());
-            state.setString(4, user.getFullName());
-            state.setString(5, user.getEmail());
-            state.setString(6, user.getPhone());
-            state.setInt(7, user.getRole());
+            state.setString(1, user.getUsername());
+            state.setString(2, user.getPassword());
+            state.setString(3, user.getFullName());
+            state.setString(4, user.getEmail());
+            state.setString(5, user.getPhone());
+            state.setInt(6, user.getRole());
             
             state.executeUpdate();
             state.close();
