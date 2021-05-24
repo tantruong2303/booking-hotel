@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author Lenovo
  */
 public class User {
-    private String userId;
+    private int userId;
     private String username;
     private String password;
     private String fullName;
@@ -20,7 +20,7 @@ public class User {
     private String phone;
     private int role;
 
-    public User(String userId, String username, String password, String fullName, String email, String phone, int role) {
+    public User(int userId, String username, String password, String fullName, String email, String phone, int role) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -33,7 +33,7 @@ public class User {
     
     
     public User(String username, String password, String fullName, String email, String phone, int role) {
-        this.userId = UUID.randomUUID().toString().substring(0, 7);;
+        this.userId = 0;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -45,11 +45,11 @@ public class User {
     public User() {
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

@@ -24,7 +24,7 @@ public class UserDAO {
             ResultSet result = pstmt.executeQuery();
             
             if(result.next()){
-                String userIdSql = result.getString("userId");
+                int userIdSql = result.getInt("userId");
                 String usernameSql = result.getString("username");
                 String passwordSql = result.getString("password");
                 String fullNameSql = result.getString("fullName");
