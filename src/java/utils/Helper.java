@@ -20,7 +20,7 @@ public class Helper {
             String page) {
 
         HttpSession session = request.getSession(false);
-        String username = (String) session.getAttribute("fullName");
+        String username = (String) session.getAttribute("username");
         Integer roleR = (Integer) session.getAttribute("role");
         RequestDispatcher rd = request.getRequestDispatcher(page);
         try {
@@ -46,7 +46,7 @@ public class Helper {
         return result;
     }
     
-    public static String decrypt(String value, int key){
+    private static String decrypt(String value, int key){
         String result = "";
         for (int i = 0; i < value.length(); i++) {
             char c = (char) (((int) value.charAt(i) - key) % 256);
@@ -54,5 +54,11 @@ public class Helper {
         }
 
         return result;
+    }
+    
+    public static boolean comparePassword(String inputPassword, String databasePassword, int key){
+        inputPassword = decrypt(inputPassword, key);
+        if(inputPassword.equals(databasePassword)) return true;
+        return false;
     }
 }

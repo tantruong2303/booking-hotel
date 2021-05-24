@@ -21,7 +21,7 @@ public class Auth {
 
         try {
             Connection connection = Connector.getConnection();
-            String sql = "INSERT INTO tbl_user (username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?)";
+            String sql = "INSERT INTO tbl_User (username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?)";
             
             PreparedStatement state = connection.prepareStatement(sql);
             state.setString(1, user.getUsername());

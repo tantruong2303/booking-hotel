@@ -12,7 +12,7 @@
     </head>
     <body>
         <%
-            String usernameError = (String)request.getAttribute("userNameError");
+            String usernameError = (String)request.getAttribute("usernameError");
             String passwordError = (String)request.getAttribute("passwordError");
             String fullNameError = (String)request.getAttribute("fullNameError");
             String emailError = (String)request.getAttribute("emailError");
