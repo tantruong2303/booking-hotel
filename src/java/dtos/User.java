@@ -5,6 +5,8 @@
  */
 package dtos;
 
+import java.util.UUID;
+
 /**
  *
  * @author Lenovo
@@ -20,6 +22,18 @@ public class User {
 
     public User(String userId, String username, String password, String fullName, String email, String phone, int role) {
         this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+    }
+
+    
+    
+    public User(String username, String password, String fullName, String email, String phone, int role) {
+        this.userId = UUID.randomUUID().toString().substring(0, 7);;
         this.username = username;
         this.password = password;
         this.fullName = fullName;

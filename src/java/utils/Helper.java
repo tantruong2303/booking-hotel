@@ -36,7 +36,7 @@ public class Helper {
         return false;
     }
      
-    public String encrypt(String value, int key) {
+    public static String encrypt(String value, int key) {
         String result = "";
         for (int i = 0; i < value.length(); i++) {
             char c = (char) (((int) value.charAt(i) + key) % 256);
@@ -46,7 +46,7 @@ public class Helper {
         return result;
     }
     
-    public String decrypt(String value, int key){
+    public static String decrypt(String value, int key){
         String result = "";
         for (int i = 0; i < value.length(); i++) {
             char c = (char) (((int) value.charAt(i) - key) % 256);
