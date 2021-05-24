@@ -13,13 +13,13 @@ import java.sql.DriverManager;
  * @author Lenovo
  */
 public class Connector {
-        public static Connection getConnection() {
+    public static Connection getConnection() {
         try {
 
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost:1433;database=BookingHotel";
-            String username = "";
-            String password = "";
+            String username = "myuser";
+            String password = "123";
             Connection connection = DriverManager.getConnection(url, username, password);
             return connection;
         } catch (Exception e) {

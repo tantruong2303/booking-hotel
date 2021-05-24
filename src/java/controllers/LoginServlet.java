@@ -7,100 +7,93 @@ package controllers;
 
 import daos.Auth;
 import daos.UserDAO;
+import dtos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import utils.Validator;
-import dtos.User;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import utils.Helper;
+import utils.Validator;
 
 /**
  *
  * @author HaiCao
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = { "/RegisterServlet" })
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
+public class LoginServlet extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-	 * methods.
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
 		Auth auth = new Auth();
-		String registerPage = "register.jsp";
 		String loginPage = "login.jsp";
+		String mainPage = "main.jsp";
 
 		String username = Validator.getStringParam(request, "username", "Username", 1, 50);
 		String password = Validator.getStringParam(request, "password", "Password", 1, 50);
-		String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-		String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
-		String email = Validator.getStringParam(request, "email", "Email", 1, 50);
-		String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
-		Integer role = Validator.getIntParams(request, "role", "Role", 0, 1, 0);
 
-		if (username != null && password != null && confirmPassword != null && fullName != null && email != null
-				&& phone != null && role != null) {
+		if (username != null && password != null) {
 			User existedUser = userDAO.getOneUserByUsername(username);
-			if (existedUser != null) {
-				request.setAttribute("userNameError", "is taken");
-			} else if (!password.equals(confirmPassword)) {
-				request.setAttribute("confirmPassword", "is not matches password");
+			if (existedUser == null) {
+				request.setAttribute("usernameError", "is not correct");
+			} else if (!Helper.comparePassword(password, existedUser.getPassword(), 28)) {
+				request.setAttribute("passwordError", "is not correct");
 			} else {
-				password = Helper.encrypt(password, 28);
-				User newUser = new User(username, password, fullName, email, phone, role);
-				auth.addUser(newUser);
-				RequestDispatcher rd = request.getRequestDispatcher(loginPage);
+				HttpSession session = request.getSession();
+				session.setAttribute("username", existedUser.getUsername());
+				session.setAttribute("role", existedUser.getRole());
+
+				RequestDispatcher rd = request.getRequestDispatcher(mainPage);
 				rd.forward(request, response);
 				return;
 			}
 		}
 
-		RequestDispatcher rd = request.getRequestDispatcher(registerPage);
+		RequestDispatcher rd = request.getRequestDispatcher(loginPage);
 		rd.forward(request, response);
 		return;
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
-	// + sign on the left to edit the code.">
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
