@@ -33,7 +33,7 @@
         %>
 
         <h1>Login From</h1>
-        <form action="servletController?action=login" method = "POST">
+        <form action="ChangePassword" method = "POST">
             <table>
                 <tr>
                     <td>  </td>
@@ -65,7 +65,7 @@
                 </tr>
 
                 <tr>
-                    <td><button type="submit">Login</button></td>
+                    <td><button type="submit">Update</button></td>
                 </tr>
             </table>
         </form>

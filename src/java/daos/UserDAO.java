@@ -60,4 +60,23 @@ public class UserDAO {
             return false;
         }
     }
+    
+        public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone) {
+        try {
+            Connection connection = Connector.getConnection();
+            String sql = "UPDATE tbl_User SET fullName = ?, email = ?, phone = ? WHERE username = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, fullName);
+            pstmt.setString(2, email);
+            pstmt.setString(3, phone);
+            pstmt.setString(4, username);
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            connection.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 }
