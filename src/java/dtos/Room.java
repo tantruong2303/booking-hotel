@@ -52,6 +52,11 @@ public class Room {
     public void setNumOfPeople(int numOfPeople) {
         this.numOfPeople = numOfPeople;
     }
+
+    @Override
+    public String toString() {
+        return "Room{" + "roomId=" + roomId + ", price=" + price + ", numOfPeople=" + numOfPeople + '}';
+    }
     
     
 }

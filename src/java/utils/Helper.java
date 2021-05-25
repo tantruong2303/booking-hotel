@@ -57,8 +57,8 @@ public class Helper {
     }
     
     public static boolean comparePassword(String inputPassword, String databasePassword, int key){
-        inputPassword = decrypt(inputPassword, key);
-        if(inputPassword.equals(databasePassword)) return true;
+        String decryptPassword = decrypt(databasePassword, key);
+        if(inputPassword.equals(decryptPassword)) return true;
         return false;
     }
 }

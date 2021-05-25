@@ -5,8 +5,11 @@
  */
 package controllers;
 
+import daos.RoomDAO;
+import dtos.Room;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,18 +35,21 @@ public class RoomListController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RoomListController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RoomListController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        RoomDAO roomDAO = new RoomDAO();
+        ArrayList<Room> list = new ArrayList<>();
+        
+        try {
+            String numOfPeopleParam = request.getParameter("numOfPeople");
+            String minParam = request.getParameter("min");
+            String maxParam = request.getParameter("max");
+            String priceOrderParam = request.getParameter("priceOrder");
+
+            if(minParam != null && maxParam != null && priceOrderParam != null && numOfPeopleParam != null){
+                list = roomDAO.getRoomByNumOfPeopleAndPrice(Integer.parseInt(numOfPeopleParam), Float.parseFloat(minParam), Float.parseFloat(maxParam), priceOrderParam);
+            }
+        } catch (Exception e) {
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
