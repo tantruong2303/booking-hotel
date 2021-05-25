@@ -6,7 +6,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link href="./asset/styles.css" rel="stylesheet" />
-		<title>GoninSC | Register</title>
+		<title>SanninSC | Register</title>
 	</head>
 
 	<body class="flex flex-col min-h-screen">
