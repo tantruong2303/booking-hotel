@@ -11,13 +11,6 @@ CREATE TABLE tbl_User (
 	role int
 );
 
-INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('user', '123456789Aa', 'USER', 'user@gmail.com', '0987654321', 0);
-
-INSERT INTO tbl_User (username, password, fullName, email, phone, role) 
-VALUES ('partner', '123456789Aa', 'PARTNER', 'partner@gmail.com', '0987654321', 1);
-
-
 CREATE TABLE tbl_Room (
 	roomId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	price float,

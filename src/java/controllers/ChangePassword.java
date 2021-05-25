@@ -54,7 +54,7 @@ public class ChangePassword extends HttpServlet {
         String username = (String) session.getAttribute("username");
         if (newPassword != null && confirmPassword != null && oldPassword != null && username != null) {
             User existedUser = userDAO.getOneUserByUsername(username);
-            if (!Helper.encrypt(oldPassword, 28).equals(existedUser.getPassword())) {
+            if (!Helper.comparePassword(oldPassword, existedUser.getPassword(), 28)) {
                 request.setAttribute("oldPasswordError", "is not correct");
             } else if (!newPassword.equals(confirmPassword)) {
                 request.setAttribute("confirmPassword", "is not matches new password");
