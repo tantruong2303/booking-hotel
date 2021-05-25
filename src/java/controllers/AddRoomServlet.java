@@ -1,12 +1,14 @@
+package controllers;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
-
 import daos.Auth;
+import daos.RoomDAO;
 import daos.UserDAO;
+import dtos.Room;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import utils.Helper;
 import utils.Validator;
 
@@ -24,8 +25,8 @@ import utils.Validator;
  *
  * @author Lenovo
  */
-@WebServlet(name = "viewUserInfo", urlPatterns = {"/viewUserInfo"})
-public class viewUserInfo extends HttpServlet {
+@WebServlet(urlPatterns = {"/AddRoomServlet"})
+public class AddRoomServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,24 +40,28 @@ public class viewUserInfo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        UserDAO userDAO = new UserDAO();
-        Auth auth = new Auth();
-        String mainPage = "main.jsp";
-        String loginPage = "login.jsp";
-        String viewUserInfo = "viewUserInfo.jsp";
+        RoomDAO roomDAO = new RoomDAO();
+        String addRoomPage = "addRoom.jsp";
+        String listRoomPage = "listRoom.jsp";
 
-        Helper.protectedRouter(request, response, 0, loginPage);
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
+        Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
+        Integer numOfPeople = Validator.getIntParams(request, "numOfPeople", "Number Of People", 1, 8);
 
-        User existedUser = userDAO.getOneUserByUsername(username);
-        existedUser.setPassword("");
-        existedUser.setUserId(0);
-        request.setAttribute("userInfo", existedUser);
-        RequestDispatcher rd = request.getRequestDispatcher(viewUserInfo);
+        if (price != null && numOfPeople != null) {
+
+            Room newRoom = new Room(price, numOfPeople);
+            boolean result = roomDAO.addRoom(newRoom);
+            if (!result) {
+                request.setAttribute("addRoomError", "Internal error!");
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+                rd.forward(request, response);
+            }
+            return;
+        }
+        RequestDispatcher rd = request.getRequestDispatcher(addRoomPage);
         rd.forward(request, response);
 
-        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
