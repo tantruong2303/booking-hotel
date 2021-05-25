@@ -49,7 +49,7 @@ public class AddRoomServlet extends HttpServlet {
 
         if (price != null && numOfPeople != null) {
 
-            Room newRoom = new Room(price, numOfPeople);
+            Room newRoom = new Room(price, numOfPeople, 0);
             boolean result = roomDAO.addRoom(newRoom);
             if (!result) {
                 request.setAttribute("addRoomError", "Internal error!");

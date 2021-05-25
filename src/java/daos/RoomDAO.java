@@ -21,11 +21,32 @@ public class RoomDAO {
     public boolean addRoom(Room room) {
         try {
             Connection connection = Connector.getConnection();
-            String sql = "INSERT INTO tbl_Room (price, numOfPeople) VALUES (?,?)";
+            String sql = "INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (?,?,?)";
 
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setFloat(1, room.getPrice());
             pstmt.setInt(2, room.getNumOfPeople());
+            pstmt.setInt(3, room.getIsDisable());
+            
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateRoom(Room room) {
+        try {
+            Connection connection = Connector.getConnection();
+            String sql = "UPDATE tbl_Room SET price = ?, numOfPeople = ?, isDisable = ? WHERE roomId = ?";
+
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setFloat(1, room.getPrice());
+            pstmt.setInt(2, room.getNumOfPeople());
+            pstmt.setInt(3, room.getIsDisable());
+            pstmt.setInt(4, room.getRoomId());
 
             pstmt.executeUpdate();
             pstmt.close();
@@ -41,7 +62,7 @@ public class RoomDAO {
         try {
             Connection connection = Connector.getConnection();
             String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
-            String sql = "SELECT * FROM tbl_Room WHERE price >= ? AND price <= ? ORDER BY price " + order ;
+            String sql = "SELECT * FROM tbl_Room WHERE price >= ? AND price <= ? ORDER BY price " + order;
 
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setFloat(1, min);

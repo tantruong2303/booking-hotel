@@ -5,15 +5,16 @@ package dtos;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author HaiCao
  */
 public class Room {
+
     private int roomId;
     private float price;
     private int numOfPeople;
+    private int isDisable;
 
     public Room() {
     }
@@ -27,6 +28,19 @@ public class Room {
         this.roomId = roomId;
         this.price = price;
         this.numOfPeople = numOfPeople;
+    }
+
+    public Room(int roomId, float price, int numOfPeople, int isDisable) {
+        this.roomId = roomId;
+        this.price = price;
+        this.numOfPeople = numOfPeople;
+        this.isDisable = isDisable;
+    }
+
+    public Room(float price, int numOfPeople, int isDisable) {
+        this.price = price;
+        this.numOfPeople = numOfPeople;
+        this.isDisable = isDisable;
     }
 
     public int getRoomId() {
@@ -53,10 +67,17 @@ public class Room {
         this.numOfPeople = numOfPeople;
     }
 
+    public int getIsDisable() {
+        return isDisable;
+    }
+
+    public void setIsDisable(int isDisable) {
+        this.isDisable = isDisable;
+    }
+
     @Override
     public String toString() {
         return "Room{" + "roomId=" + roomId + ", price=" + price + ", numOfPeople=" + numOfPeople + '}';
     }
-    
-    
+
 }

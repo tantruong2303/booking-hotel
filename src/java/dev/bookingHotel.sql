@@ -14,7 +14,8 @@ CREATE TABLE tbl_User (
 CREATE TABLE tbl_Room (
 	roomId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	price float,
-	numOfPeople int
+	numOfPeople int,
+        isDisable bit
 );
 
 INSERT INTO tbl_Room (price, numOfPeople) VALUES (100, 2);
