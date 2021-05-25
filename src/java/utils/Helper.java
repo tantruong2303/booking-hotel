@@ -1,5 +1,7 @@
 package utils;
 
+import daos.UserDAO;
+import dtos.User;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,15 +12,15 @@ import javax.servlet.http.HttpSession;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Lenovo
  */
 public class Helper {
-     public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int role,
-            String page) {
 
+    public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int role,
+            String page) {
+        UserDAO userDAO = new UserDAO();
         HttpSession session = request.getSession(false);
         String username = (String) session.getAttribute("username");
         Integer roleR = (Integer) session.getAttribute("role");
@@ -28,6 +30,13 @@ public class Helper {
                 request.setAttribute("errorMessage", "action is not allow, please login first");
                 rd.forward(request, response);
                 return false;
+            } else {
+                User existedUser = userDAO.getOneUserByUsername(username);
+                if (existedUser == null) {
+                    request.setAttribute("errorMessage", "Invalid token!");
+                    rd.forward(request, response);
+                    return false;
+                }
             }
 
         } catch (Exception e) {
@@ -35,7 +44,7 @@ public class Helper {
         }
         return false;
     }
-     
+
     public static String encrypt(String value, int key) {
         String result = "";
         for (int i = 0; i < value.length(); i++) {
@@ -45,8 +54,8 @@ public class Helper {
 
         return result;
     }
-    
-    private static String decrypt(String value, int key){
+
+    private static String decrypt(String value, int key) {
         String result = "";
         for (int i = 0; i < value.length(); i++) {
             char c = (char) (((int) value.charAt(i) - key) % 256);
@@ -55,10 +64,12 @@ public class Helper {
 
         return result;
     }
-    
-    public static boolean comparePassword(String inputPassword, String databasePassword, int key){
+
+    public static boolean comparePassword(String inputPassword, String databasePassword, int key) {
         inputPassword = decrypt(inputPassword, key);
-        if(inputPassword.equals(databasePassword)) return true;
+        if (inputPassword.equals(databasePassword)) {
+            return true;
+        }
         return false;
     }
 }
