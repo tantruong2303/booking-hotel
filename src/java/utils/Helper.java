@@ -64,12 +64,10 @@ public class Helper {
 
         return result;
     }
-
-    public static boolean comparePassword(String inputPassword, String databasePassword, int key) {
-        inputPassword = decrypt(inputPassword, key);
-        if (inputPassword.equals(databasePassword)) {
-            return true;
-        }
+    
+    public static boolean comparePassword(String inputPassword, String databasePassword, int key){
+        String decryptPassword = decrypt(databasePassword, key);
+        if(inputPassword.equals(decryptPassword)) return true;
         return false;
     }
 }
