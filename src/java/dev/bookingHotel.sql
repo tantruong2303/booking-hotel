@@ -18,18 +18,17 @@ CREATE TABLE tbl_Room (
         isDisable bit
 );
 
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (100, 2);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (110, 2);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (105, 2);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (130, 2);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (200, 4);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (220, 4);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (210, 4);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (230, 4);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (420, 8);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (410, 8);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (450, 8);
-INSERT INTO tbl_Room (price, numOfPeople) VALUES (430, 8);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (100, 2, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (200, 2, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (300, 4, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (300, 4, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (400, 4, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (800, 8, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (140, 2, 1);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (160, 2, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (280, 4, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (300, 4, 1);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (410, 4, 0);
 
 CREATE TABLE tbl_BookingInfo (
 	bookingInfoId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
