@@ -17,35 +17,34 @@ import utils.Connector;
  */
 public class ReviewDAO {
 
-    public boolean addReview(Review review) throws SQLException {
-        Connection connection = null;
-        PreparedStatement pstmt = null;
+	public boolean addReview(Review review) throws SQLException {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 
-        try {
-            connection = Connector.getConnection();
-            String sql = "INSERT INTO tbl_Review (message, rate, createDate, userId, roomId) VALUES (?,?,?,?,?)";
+		try {
+			connection = Connector.getConnection();
+			String sql = "INSERT INTO tbl_Review (message, rate, createDate, userId, roomId) VALUES (?,?,?,?,?)";
 
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, review.getMessage());
-            pstmt.setInt(2, review.getRate());
-            pstmt.setDate(3, review.getCreateDate());
-            pstmt.setInt(4, review.getUser().getUserId());
-            pstmt.setInt(5, review.getRoom().getRoomId());
-            
-            pstmt.executeUpdate();
-            connection.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, review.getMessage());
+			pstmt.setInt(2, review.getRate());
+			pstmt.setDate(3, review.getCreateDate());
+			pstmt.setInt(4, review.getUserId());
+			pstmt.setInt(5, review.getRoomId());
 
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
+			pstmt.executeUpdate();
+			connection.close();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		} finally {
+
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
 }

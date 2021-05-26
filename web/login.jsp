@@ -19,9 +19,6 @@
 			String passwordError=(String) Validator.getClientParams(request,"passwordError", "" ); 
 		%>
 
-		<p> <%=usernameError%> </p>
-		<p> <%=passwordError%> </p>
-
 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
