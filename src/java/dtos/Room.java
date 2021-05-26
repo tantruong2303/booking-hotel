@@ -15,32 +15,33 @@ public class Room {
     private float price;
     private int numOfPeople;
     private int isDisable;
+    private String imageUrl;
 
     public Room() {
     }
 
-    public Room(float price, int numOfPeople) {
-        this.price = price;
-        this.numOfPeople = numOfPeople;
-    }
-
-    public Room(int roomId, float price, int numOfPeople) {
-        this.roomId = roomId;
-        this.price = price;
-        this.numOfPeople = numOfPeople;
-    }
-
-    public Room(int roomId, float price, int numOfPeople, int isDisable) {
+    public Room(int roomId, float price, int numOfPeople, int isDisable, String imageUrl) {
         this.roomId = roomId;
         this.price = price;
         this.numOfPeople = numOfPeople;
         this.isDisable = isDisable;
+        this.imageUrl = imageUrl;
     }
 
-    public Room(float price, int numOfPeople, int isDisable) {
+    public Room(float price, int numOfPeople, int isDisable, String imageUrl) {
         this.price = price;
         this.numOfPeople = numOfPeople;
         this.isDisable = isDisable;
+        this.imageUrl = imageUrl;
+    }
+    
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public int getRoomId() {

@@ -15,20 +15,21 @@ CREATE TABLE tbl_Room (
 	roomId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	price float,
 	numOfPeople int,
-        isDisable bit
+        isDisable bit,
+        imageUrl varchar(250)
 );
 
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (100, 2, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (200, 2, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (300, 4, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (300, 4, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (400, 4, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (800, 8, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (140, 2, 1);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (160, 2, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (280, 4, 0);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (300, 4, 1);
-INSERT INTO tbl_Room (price, numOfPeople, isDisable) VALUES (410, 4, 0);
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (100, 2, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (200, 2, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (300, 4, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (300, 4, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (400, 4, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (800, 8, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (140, 2, 1, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (160, 2, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (280, 4, 0, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (300, 4, 1, '');
+INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (410, 4, 0, '');
 
 CREATE TABLE tbl_BookingInfo (
 	bookingInfoId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,

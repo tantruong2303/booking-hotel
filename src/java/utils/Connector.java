@@ -18,9 +18,10 @@ public class Connector {
 
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost:1433;database=BookingHotel";
-            String username = "sa";
-            String password = "123";
+            String username = "admin";
+            String password = "admin";
             Connection connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Connect success!");
             return connection;
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,6 +10,7 @@ import daos.UserDAO;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,18 +46,23 @@ public class ViewUserInfo extends HttpServlet {
         String loginPage = "login.jsp";
         String viewUserInfo = "viewUserInfo.jsp";
 
-        Helper.protectedRouter(request, response, 0, loginPage);
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
+        try {
+            Helper.protectedRouter(request, response, 0, loginPage);
 
-        User existedUser = userDAO.getOneUserByUsername(username);
-        existedUser.setPassword("");
-        existedUser.setUserId(0);
-        request.setAttribute("userInfo", existedUser);
-        RequestDispatcher rd = request.getRequestDispatcher(viewUserInfo);
-        rd.forward(request, response);
+            HttpSession session = request.getSession();
+            String username = (String) session.getAttribute("username");
 
-        return;
+            User existedUser = userDAO.getOneUserByUsername(username);
+            existedUser.setPassword("");
+            existedUser.setUserId(0);
+            request.setAttribute("userInfo", existedUser);
+            RequestDispatcher rd = request.getRequestDispatcher(viewUserInfo);
+            rd.forward(request, response);
+
+            return;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -9,6 +9,7 @@ import dtos.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 import utils.Connector;
 
@@ -17,12 +18,15 @@ import utils.Connector;
  * @author Lenovo
  */
 public class Auth {
-     public boolean addUser(User user) {
+
+    public boolean addUser(User user) throws SQLException {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
 
         try {
-            Connection connection = Connector.getConnection();
+            connection = Connector.getConnection();
             String sql = "INSERT INTO tbl_User (username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?)";
-            
+
             PreparedStatement state = connection.prepareStatement(sql);
             state.setString(1, user.getUsername());
             state.setString(2, user.getPassword());
@@ -30,7 +34,7 @@ public class Auth {
             state.setString(4, user.getEmail());
             state.setString(5, user.getPhone());
             state.setInt(6, user.getRole());
-            
+
             state.executeUpdate();
             state.close();
 
@@ -38,7 +42,14 @@ public class Auth {
 
         } catch (Exception e) {
             return false;
+        } finally {
+
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
-
 }

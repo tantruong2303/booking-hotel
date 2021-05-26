@@ -9,6 +9,7 @@ import daos.RoomDAO;
 import dtos.Room;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,29 +39,36 @@ public class RoomListController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Helper.protectedRouter(request, response, 0, "login.jsp");
-        
+
         String listRoomPage = "listRoom.jsp";
         RoomDAO roomDAO = new RoomDAO();
         ArrayList<Room> list = new ArrayList<>();
-        
-        int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, -1);
-        float min = Validator.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, -1);
-        float max = Validator.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, -1);
-        String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 
-        if(numOfPeople > -1 && min > -1 && max > -1)
-            list = roomDAO.getRoomByNumOfPeopleAndPrice(numOfPeople, min, max, priceOrder);
-        else if(numOfPeople == -1 && min > -1 && max > -1)
-            list = roomDAO.getRoomByPrice(min, max, priceOrder);
-        else if(numOfPeople > -1 && min == -1 && max == -1)
-            list = roomDAO.getRoomByNumOfPeople(numOfPeople);
-        else list = roomDAO.getAllRoom();
+        try {
+            Helper.protectedRouter(request, response, 0, "login.jsp");
             
-        request.setAttribute("listRoom", list);
-        RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
-        rd.forward(request, response);
-        
+            int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, -1);
+            float min = Validator.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, -1);
+            float max = Validator.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, -1);
+            String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
+
+            if (numOfPeople > -1 && min > -1 && max > -1) {
+                list = roomDAO.getRoomByNumOfPeopleAndPrice(numOfPeople, min, max, priceOrder);
+            } else if (numOfPeople == -1 && min > -1 && max > -1) {
+                list = roomDAO.getRoomByPrice(min, max, priceOrder);
+            } else if (numOfPeople > -1 && min == -1 && max == -1) {
+                list = roomDAO.getRoomByNumOfPeople(numOfPeople);
+            } else {
+                list = roomDAO.getAllRoom();
+            }
+
+            request.setAttribute("listRoom", list);
+            RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+            rd.forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
