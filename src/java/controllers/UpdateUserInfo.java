@@ -10,6 +10,7 @@ import daos.UserDAO;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,28 +46,33 @@ public class UpdateUserInfo extends HttpServlet {
         String loginPage = "login.jsp";
         String updateUserInfoPage = "updateUserInfo.jsp";
 
-        Helper.protectedRouter(request, response, 0, loginPage);
-        String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
-        String email = Validator.getStringParam(request, "email", "Email", 1, 50);
-        String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
+        try {
+            Helper.protectedRouter(request, response, 0, loginPage);
 
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-        if (fullName != null && email != null && phone != null && username != null) {
-            User existedUser = userDAO.getOneUserByUsername(username);
+            String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
+            String email = Validator.getStringParam(request, "email", "Email", 1, 50);
+            String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
 
-            boolean result = userDAO.updateUserInfoByUsername(existedUser.getUsername(), fullName, email, phone);
-            if (!result) {
-                request.setAttribute("updateUserInfoError", "Internal error!");
-            } else {
-                RequestDispatcher rd = request.getRequestDispatcher(mainPage);
-                rd.forward(request, response);
+            HttpSession session = request.getSession();
+            String username = (String) session.getAttribute("username");
+            if (fullName != null && email != null && phone != null && username != null) {
+                User existedUser = userDAO.getOneUserByUsername(username);
+
+                boolean result = userDAO.updateUserInfoByUsername(existedUser.getUsername(), fullName, email, phone);
+                if (!result) {
+                    request.setAttribute("updateUserInfoError", "Internal error!");
+                } else {
+                    RequestDispatcher rd = request.getRequestDispatcher(mainPage);
+                    rd.forward(request, response);
+                }
+                return;
             }
-            return;
-        }
 
-        RequestDispatcher rd = request.getRequestDispatcher(updateUserInfoPage);
-        rd.forward(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher(updateUserInfoPage);
+            rd.forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -10,6 +10,7 @@ import daos.UserDAO;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,36 +46,41 @@ public class ChangePassword extends HttpServlet {
         String loginPage = "login.jsp";
         String changePasswordPage = "changePassword.jsp";
 
-        Helper.protectedRouter(request, response, 0, loginPage);
-        String newPassword = Validator.getStringParam(request, "newPassword", "New Password", 1, 50);
-        String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-        String oldPassword = Validator.getStringParam(request, "oldPassword", "Old Password", 1, 50);
+        try {
 
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-        if (newPassword != null && confirmPassword != null && oldPassword != null && username != null) {
-            User existedUser = userDAO.getOneUserByUsername(username);
-            if (!Helper.comparePassword(oldPassword, existedUser.getPassword(), 28)) {
-                request.setAttribute("oldPasswordError", "is not correct");
-            } else if (!newPassword.equals(confirmPassword)) {
-                request.setAttribute("confirmPassword", "is not matches new password");
-            } else {
-                newPassword = Helper.encrypt(newPassword, 28);
-                boolean result = userDAO.updateUserPasswordByUsername(existedUser.getUsername(), newPassword);
-                if (!result) {
-                    request.setAttribute("changePassowrd", "Internal error!");
+            Helper.protectedRouter(request, response, 0, loginPage);
+
+            String newPassword = Validator.getStringParam(request, "newPassword", "New Password", 1, 50);
+            String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
+            String oldPassword = Validator.getStringParam(request, "oldPassword", "Old Password", 1, 50);
+
+            HttpSession session = request.getSession();
+            String username = (String) session.getAttribute("username");
+            if (newPassword != null && confirmPassword != null && oldPassword != null && username != null) {
+                User existedUser = userDAO.getOneUserByUsername(username);
+                if (!Helper.comparePassword(oldPassword, existedUser.getPassword(), 28)) {
+                    request.setAttribute("oldPasswordError", "is not correct");
+                } else if (!newPassword.equals(confirmPassword)) {
+                    request.setAttribute("confirmPassword", "is not matches new password");
+                } else {
+                    newPassword = Helper.encrypt(newPassword, 28);
+                    boolean result = userDAO.updateUserPasswordByUsername(existedUser.getUsername(), newPassword);
+                    if (!result) {
+                        request.setAttribute("changePassowrd", "Internal error!");
+                    } else {
+                        RequestDispatcher rd = request.getRequestDispatcher(mainPage);
+                        rd.forward(request, response);
+                    }
+                    return;
                 }
-                else {
-                    RequestDispatcher rd = request.getRequestDispatcher(mainPage);
-                    rd.forward(request, response);
-                }
-                return;
             }
-        }
 
-        RequestDispatcher rd = request.getRequestDispatcher(changePasswordPage);
-        rd.forward(request, response);
-        return;
+            RequestDispatcher rd = request.getRequestDispatcher(changePasswordPage);
+            rd.forward(request, response);
+            return;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

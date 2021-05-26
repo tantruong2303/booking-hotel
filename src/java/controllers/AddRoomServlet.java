@@ -12,6 +12,7 @@ import dtos.Room;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,27 +41,35 @@ public class AddRoomServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        Helper.protectedRouter(request, response, 1, "login.jsp");
+
         RoomDAO roomDAO = new RoomDAO();
         String addRoomPage = "addRoom.jsp";
         String listRoomPage = "listRoom.jsp";
 
-        Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
-        Integer numOfPeople = Validator.getIntParams(request, "numOfPeople", "Number Of People", 1, 8);
+        try {
+            Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
+            Integer numOfPeople = Validator.getIntParams(request, "numOfPeople", "Number Of People", 1, 8);
+            String imageUrl = Validator.getStringParam(request, "imageUrl", "Image URL", 1, 250);
 
-        if (price != null && numOfPeople != null) {
+            if (price != null && numOfPeople != null && imageUrl != null) {
 
-            Room newRoom = new Room(price, numOfPeople, 0);
-            boolean result = roomDAO.addRoom(newRoom);
-            if (!result) {
-                request.setAttribute("addRoomError", "Internal error!");
-            } else {
-                RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
-                rd.forward(request, response);
+                Room newRoom = new Room(price, numOfPeople, 0, imageUrl);
+                boolean result = roomDAO.addRoom(newRoom);
+                if (!result) {
+                    request.setAttribute("addRoomError", "Internal error!");
+                } else {
+                    RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+                    rd.forward(request, response);
+                }
+                return;
             }
-            return;
+            RequestDispatcher rd = request.getRequestDispatcher(addRoomPage);
+            rd.forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        RequestDispatcher rd = request.getRequestDispatcher(addRoomPage);
-        rd.forward(request, response);
 
     }
 
