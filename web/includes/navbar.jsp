@@ -10,7 +10,7 @@
                         <a href="../register.jsp" class="duration-200 hover:text-cerise-red">Register</a>
                 </li>
                 <li>
-                        <a href="#" class="duration-200 hover:text-cerise-red">List</a>
+                        <a href="/RoomListController" class="duration-200 hover:text-cerise-red">List</a>
                 </li>
                 <li>
                         <a href="#" class="duration-200 hover:text-cerise-red">Logout</a>
