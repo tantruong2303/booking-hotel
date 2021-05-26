@@ -11,73 +11,73 @@ package dtos;
  */
 public class Room {
 
-    private int roomId;
-    private float price;
-    private int numOfPeople;
-    private int isDisable;
+	private int roomId;
+	private float price;
+	private int numOfPeople;
+	private boolean isDisable;
+	private String imageUrl;
 
-    public Room() {
-    }
+	public Room() {
+	}
 
-    public Room(float price, int numOfPeople) {
-        this.price = price;
-        this.numOfPeople = numOfPeople;
-    }
+	public Room(int roomId, float price, int numOfPeople, boolean isDisable, String imageUrl) {
+		this.roomId = roomId;
+		this.price = price;
+		this.numOfPeople = numOfPeople;
+		this.isDisable = isDisable;
+		this.imageUrl = imageUrl;
+	}
 
-    public Room(int roomId, float price, int numOfPeople) {
-        this.roomId = roomId;
-        this.price = price;
-        this.numOfPeople = numOfPeople;
-    }
+	public Room(float price, int numOfPeople, boolean isDisable, String imageUrl) {
+		this.price = price;
+		this.numOfPeople = numOfPeople;
+		this.isDisable = isDisable;
+		this.imageUrl = imageUrl;
+	}
 
-    public Room(int roomId, float price, int numOfPeople, int isDisable) {
-        this.roomId = roomId;
-        this.price = price;
-        this.numOfPeople = numOfPeople;
-        this.isDisable = isDisable;
-    }
+	public String getImageUrl() {
+		return imageUrl;
+	}
 
-    public Room(float price, int numOfPeople, int isDisable) {
-        this.price = price;
-        this.numOfPeople = numOfPeople;
-        this.isDisable = isDisable;
-    }
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 
-    public int getRoomId() {
-        return roomId;
-    }
+	public int getRoomId() {
+		return roomId;
+	}
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
 
-    public float getPrice() {
-        return price;
-    }
+	public float getPrice() {
+		return price;
+	}
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
+	public void setPrice(float price) {
+		this.price = price;
+	}
 
-    public int getNumOfPeople() {
-        return numOfPeople;
-    }
+	public int getNumOfPeople() {
+		return numOfPeople;
+	}
 
-    public void setNumOfPeople(int numOfPeople) {
-        this.numOfPeople = numOfPeople;
-    }
+	public void setNumOfPeople(int numOfPeople) {
+		this.numOfPeople = numOfPeople;
+	}
 
-    public int getIsDisable() {
-        return isDisable;
-    }
+	public boolean isIsDisable() {
+		return isDisable;
+	}
 
-    public void setIsDisable(int isDisable) {
-        this.isDisable = isDisable;
-    }
+	public void setIsDisable(boolean isDisable) {
+		this.isDisable = isDisable;
+	}
 
-    @Override
-    public String toString() {
-        return "Room{" + "roomId=" + roomId + ", price=" + price + ", numOfPeople=" + numOfPeople + '}';
-    }
+	@Override
+	public String toString() {
+		return "Room{" + "roomId=" + roomId + ", price=" + price + ", numOfPeople=" + numOfPeople + '}';
+	}
 
 }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import utils.Validator;
 import dtos.User;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import utils.Helper;
@@ -45,36 +46,40 @@ public class RegisterServlet extends HttpServlet {
 		String registerPage = "register.jsp";
 		String loginPage = "login.jsp";
 
-		String username = Validator.getStringParam(request, "username", "Username", 1, 50);
-		String password = Validator.getStringParam(request, "password", "Password", 1, 50);
-		String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-		String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
-		String email = Validator.getStringParam(request, "email", "Email", 1, 50);
-		String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
-		Integer role = Validator.getIntParams(request, "role", "Role", 0, 1, 0);
+		try {
+			String username = Validator.getStringParam(request, "username", "Username", 1, 50);
+			String password = Validator.getStringParam(request, "password", "Password", 1, 50);
+			String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
+			String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
+			String email = Validator.getStringParam(request, "email", "Email", 1, 50);
+			String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
+			Integer role = Validator.getIntParams(request, "role", "Role", 0, 1, 0);
 
-		if (username != null && password != null && confirmPassword != null && fullName != null && email != null
-			&& phone != null && role != null) {
+			if (username != null && password != null && confirmPassword != null && fullName != null && email != null
+				&& phone != null && role != null) {
 
-			User existedUser = userDAO.getOneUserByUsername(username);
-			if (existedUser != null) {
+				User existedUser = userDAO.getOneUserByUsername(username);
+				if (existedUser != null) {
 
-				request.setAttribute("usernameError", "Username is taken");
-			} else if (!password.equals(confirmPassword)) {
-				request.setAttribute("confirmPassword", "Confirm Password is not matches password");
-			} else {
+					request.setAttribute("usernameError", "Username is taken");
+				} else if (!password.equals(confirmPassword)) {
+					request.setAttribute("confirmPassword", "Confirm Password is not matches password");
+				} else {
 
-				password = Helper.encrypt(password, 28);
-				User newUser = new User(username, password, fullName, email, phone, role);
-				auth.addUser(newUser);
-				RequestDispatcher rd = request.getRequestDispatcher(loginPage);
-				rd.forward(request, response);
-				return;
+					password = Helper.encrypt(password, 28);
+					User newUser = new User(username, password, fullName, email, phone, role);
+					auth.addUser(newUser);
+					RequestDispatcher rd = request.getRequestDispatcher(loginPage);
+					rd.forward(request, response);
+					return;
+				}
 			}
-		}
 
-		RequestDispatcher rd = request.getRequestDispatcher(registerPage);
-		rd.forward(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher(registerPage);
+			rd.forward(request, response);
+		} catch (IOException | SQLException | ServletException e) {
+
+		}
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the

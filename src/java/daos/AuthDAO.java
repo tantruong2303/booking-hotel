@@ -8,8 +8,7 @@ package daos;
 import dtos.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.UUID;
+import java.sql.SQLException;
 import utils.Connector;
 
 /**
@@ -17,28 +16,29 @@ import utils.Connector;
  * @author Lenovo
  */
 public class AuthDAO {
-     public boolean addUser(User user) {
 
-        try {
-            Connection connection = Connector.getConnection();
-            String sql = "INSERT INTO tbl_User (username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?)";
-            
-            PreparedStatement state = connection.prepareStatement(sql);
-            state.setString(1, user.getUsername());
-            state.setString(2, user.getPassword());
-            state.setString(3, user.getFullName());
-            state.setString(4, user.getEmail());
-            state.setString(5, user.getPhone());
-            state.setInt(6, user.getRole());
-            
-            state.executeUpdate();
-            state.close();
+	public boolean addUser(User user) throws SQLException {
+		Connection connection = Connector.getConnection();
+		String sql = "INSERT INTO tbl_User (username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?)";
+		PreparedStatement state = connection.prepareStatement(sql);
+		try {
+			state.setString(1, user.getUsername());
+			state.setString(2, user.getPassword());
+			state.setString(3, user.getFullName());
+			state.setString(4, user.getEmail());
+			state.setString(5, user.getPhone());
+			state.setInt(6, user.getRole());
+			state.executeUpdate();
+			state.close();
 
-            return false;
-
-        } catch (Exception e) {
-            return false;
-        }
-    }
+			return false;
+		} catch (SQLException e) {
+			return false;
+		} finally {
+			if (state != null) {
+				state.close();
+			}
+		}
+	}
 
 }

@@ -9,6 +9,7 @@ import daos.RoomDAO;
 import dtos.Room;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -45,7 +46,6 @@ public class RoomListController extends HttpServlet {
 
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
-				System.out.println("hello");
 				return;
 			}
 			int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);

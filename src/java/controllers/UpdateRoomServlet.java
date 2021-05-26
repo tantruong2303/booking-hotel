@@ -9,12 +9,14 @@ import daos.RoomDAO;
 import dtos.Room;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import utils.Helper;
 import utils.Validator;
 
 /**
@@ -40,28 +42,33 @@ public class UpdateRoomServlet extends HttpServlet {
 		String updateRoomPage = "updateRoom.jsp";
 		String listRoomPage = "listRoom.jsp";
 
-		Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
-		Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
-		Integer numOfPeople = Validator.getIntParams(request, "numOfPeople", "Number Of People", 1, 8);
-		Integer isDisable = Validator.getIntParams(request, "isDisable", "Is Disable", 0, 1);
+		try {
+			Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
+			Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
+			Integer numOfPeople = Validator.getIntParams(request, "numOfPeople", "Number Of People", 1, 8);
+			Integer isDisablePrams = Validator.getIntParams(request, "isDisable", "Is Disable", 0, 1);
 
-		if (price != null && numOfPeople != null && roomId != null && isDisable != null) {
-
-			Room newRoom = new Room(roomId, price, numOfPeople, isDisable);
-			boolean result = roomDAO.updateRoom(newRoom);
-			if (!result) {
-				request.setAttribute("updateRoomError", "Internal error!");
-			} else {
-				RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
-				rd.forward(request, response);
+			if (price != null && numOfPeople != null && roomId != null && isDisablePrams != null) {
+				Boolean isDisable = isDisablePrams == 1;
+				Room newRoom = new Room(roomId, price, numOfPeople, isDisable, "");
+				boolean result = roomDAO.updateRoom(newRoom);
+				if (!result) {
+					request.setAttribute("updateRoomError", "Internal error!");
+				} else {
+					RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+					rd.forward(request, response);
+				}
+				return;
 			}
-			return;
+			RequestDispatcher rd = request.getRequestDispatcher(updateRoomPage);
+			rd.forward(request, response);
+		} catch (Exception e) {
 		}
-		RequestDispatcher rd = request.getRequestDispatcher(updateRoomPage);
-		rd.forward(request, response);
+
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
