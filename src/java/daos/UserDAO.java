@@ -12,20 +12,23 @@ import utils.Connector;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author HaiCao
  */
 public class UserDAO {
 
-    public User getOneUserByUsername(String username) {
+    public User getOneUserByUsername(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet result = null;
+
         try {
-            Connection connection = Connector.getConnection();
+            connection = Connector.getConnection();
             String sql = "SELECT * FROM tbl_User WHERE username=?";
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, username);
-            ResultSet result = pstmt.executeQuery();
+            result = pstmt.executeQuery();
 
             if (result.next()) {
                 int userIdSql = result.getInt("userId");
@@ -37,18 +40,30 @@ public class UserDAO {
                 int roleSql = result.getInt("role");
                 return new User(userIdSql, usernameSql, passwordSql, fullNameSql, emailSql, phoneSql, roleSql);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
             return null;
+        } finally {
+            if (result != null) {
+                result.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
         return null;
     }
 
-    public boolean updateUserPasswordByUsername(String username, String password) {
+    public boolean updateUserPasswordByUsername(String username, String password) throws SQLException {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+
         try {
-            Connection connection = Connector.getConnection();
+            connection = Connector.getConnection();
             String sql = "UPDATE tbl_User SET password = ? WHERE username = ?";
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, password);
             pstmt.setString(2, username);
             pstmt.executeUpdate();
@@ -58,14 +73,25 @@ public class UserDAO {
             return true;
         } catch (SQLException e) {
             return false;
+        } finally {
+
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
-    
-        public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone) {
+
+    public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone) throws SQLException {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+
         try {
-            Connection connection = Connector.getConnection();
+            connection = Connector.getConnection();
             String sql = "UPDATE tbl_User SET fullName = ?, email = ?, phone = ? WHERE username = ?";
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, fullName);
             pstmt.setString(2, email);
             pstmt.setString(3, phone);
@@ -77,6 +103,14 @@ public class UserDAO {
             return true;
         } catch (SQLException e) {
             return false;
+        } finally {
+
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
 }
