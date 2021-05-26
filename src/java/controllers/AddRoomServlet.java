@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,11 @@ import utils.Validator;
  * @author Lenovo
  */
 @WebServlet(urlPatterns = {"/AddRoomServlet"})
+@MultipartConfig(
+	fileSizeThreshold = 1024 * 1024 * 10,
+	maxFileSize = 1024 * 1024 * 50,
+	maxRequestSize = 1024 * 1024 * 100
+)
 public class AddRoomServlet extends HttpServlet {
 
 	/**
@@ -44,7 +50,8 @@ public class AddRoomServlet extends HttpServlet {
 		try {
 			Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
 			Integer numOfPeople = Validator.getIntParams(request, "numOfPeople", "Number Of People", 1, 8);
-			String imageUrl = Validator.getStringParam(request, "imageUrl", "Image URL", 1, 250);
+			String[] extensions = {"png", "jpg", "svg", "jpeg", "bmp"};
+			String imageUrl = Validator.getFileParam(request, "photo", "Image", 2000000, extensions);
 
 			if (price != null && numOfPeople != null && imageUrl != null) {
 
