@@ -26,80 +26,86 @@ import utils.Validator;
 @WebServlet(name = "RoomListController", urlPatterns = {"/RoomListController"})
 public class RoomListController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        Helper.protectedRouter(request, response, 0, "login.jsp");
-        
-        String listRoomPage = "listRoom.jsp";
-        RoomDAO roomDAO = new RoomDAO();
-        ArrayList<Room> list = new ArrayList<>();
-        
-        int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, -1);
-        float min = Validator.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, -1);
-        float max = Validator.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, -1);
-        String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
+	/**
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		String errorPage = "error.jsp";
+		String loginPage = "login.jsp";
+		String listRoomPage = "listRoom.jsp";
+		RoomDAO roomDAO = new RoomDAO();
 
-        if(numOfPeople > -1 && min > -1 && max > -1)
-            list = roomDAO.getRoomByNumOfPeopleAndPrice(numOfPeople, min, max, priceOrder);
-        else if(numOfPeople == -1 && min > -1 && max > -1)
-            list = roomDAO.getRoomByPrice(min, max, priceOrder);
-        else if(numOfPeople > -1 && min == -1 && max == -1)
-            list = roomDAO.getRoomByNumOfPeople(numOfPeople);
-        else list = roomDAO.getAllRoom();
-            
-        request.setAttribute("listRoom", list);
-        RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
-        rd.forward(request, response);
-        
-    }
+		try {
+			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
+				System.out.println("hello");
+				return;
+			}
+			int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
+			float min = Validator.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, 0);
+			float max = Validator.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
+			String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+			ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+			request.setAttribute("listRoom", list);
+			RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+			rd.forward(request, response);
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+		} catch (Exception e) {
+
+			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+			rd.forward(request, response);
+
+		}
+
+	}
+
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+	// + sign on the left to edit the code.">
+	/**
+	 * Handles the HTTP <code>GET</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		processRequest(request, response);
+	}
+
+	/**
+	 * Handles the HTTP <code>POST</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		processRequest(request, response);
+	}
+
+	/**
+	 * Returns a short description of the servlet.
+	 *
+	 * @return a String containing servlet description
+	 */
+	@Override
+	public String getServletInfo() {
+		return "Short description";
+	}// </editor-fold>
 
 }

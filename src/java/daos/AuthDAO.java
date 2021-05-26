@@ -16,7 +16,7 @@ import utils.Connector;
  *
  * @author Lenovo
  */
-public class Auth {
+public class AuthDAO {
      public boolean addUser(User user) {
 
         try {

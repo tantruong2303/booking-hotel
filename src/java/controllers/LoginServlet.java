@@ -5,7 +5,6 @@
  */
 package controllers;
 
-import daos.Auth;
 import daos.UserDAO;
 import dtos.User;
 import java.io.IOException;
@@ -39,9 +38,9 @@ public class LoginServlet extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
-		Auth auth = new Auth();
+
 		String loginPage = "login.jsp";
-		String mainPage = "main.jsp";
+		String mainPage = "index.jsp";
 
 		String username = Validator.getStringParam(request, "username", "Username", 1, 50);
 		String password = Validator.getStringParam(request, "password", "Password", 1, 50);

@@ -5,7 +5,7 @@ package controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import daos.Auth;
+import daos.AuthDAO;
 import daos.RoomDAO;
 import daos.UserDAO;
 import dtos.Room;
