@@ -37,6 +37,34 @@ public class RoomDAO {
         }
     }
 
+    public Room getRoomById(int roomId){
+        try {
+            Connection connection = Connector.getConnection();
+            String sql = "SELECT * FROM tbl_Room WHERE roomId = ?";
+
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setFloat(1, roomId);
+            
+            
+            ResultSet result = pstmt.executeQuery();
+            if(result.next()){
+                int roomIdSql = result.getInt("roomId");
+                float priceSql = result.getFloat("price");
+                int numOfPeople = result.getInt("numOfPeople");
+                boolean isDisable = result.getBoolean("isDisable");
+                
+                return new Room(roomId, priceSql, numOfPeople, roomIdSql);
+            }
+            
+            pstmt.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
     public boolean updateRoom(Room room) {
         try {
             Connection connection = Connector.getConnection();

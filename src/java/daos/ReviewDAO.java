@@ -24,8 +24,8 @@ public class ReviewDAO {
             pstmt.setString(1, review.getMessage());
             pstmt.setInt(2, review.getRate());
             pstmt.setDate(3, review.getCreateDate());
-            pstmt.setInt(4, review.getUserId());
-            pstmt.setInt(5, review.getRoomId());
+            pstmt.setInt(4, review.getUser().getUserId());
+            pstmt.setInt(5, review.getRoom().getRoomId());
             
             pstmt.executeUpdate();
             connection.close();

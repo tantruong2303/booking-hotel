@@ -5,6 +5,10 @@
  */
 package controllers;
 
+import daos.RoomDAO;
+import daos.UserDAO;
+import dtos.Room;
+import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import utils.Helper;
+import utils.Validator;
 
 /**
  *
@@ -35,7 +40,17 @@ public class AddReviewServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         Helper.protectedRouter(request, response, 0, "login.jsp");
         
+        String addRoomPage = "addRoom.jsp";
+        String listRoomPage = "listRoom.jsp";
+        UserDAO userDAO = new UserDAO();
+        RoomDAO roomDAO = new RoomDAO();
         
+        User user = userDAO.getOneUserByUsername((String)request.getAttribute("username"));
+        
+        String message = Validator.getStringParam(request, "message", "message", 1, 1000);
+        int rate = Validator.getIntParams(request, "rate", "rate", 1, 5);
+        int roomId = Validator.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+        Room room = roomDAO.getRoomById(roomId);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

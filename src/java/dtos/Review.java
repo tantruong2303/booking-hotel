@@ -16,25 +16,25 @@ public class Review {
     private String message;
     private int rate;
     private Date createDate;
-    private int userId;
-    private int roomId;
+    private User user;
+    private Room room;
 
-    public Review(int reviewId, String message, int rate, int userId, int roomId) {
+    public Review(String message, int rate, User user, Room room) {
+        this.reviewId = 0;
+        this.createDate = new Date(System.currentTimeMillis());
+        this.message = message;
+        this.rate = rate;
+        this.user = user;
+        this.room = room;
+    }
+
+    public Review(int reviewId, String message, int rate, Date createDate, User user, Room room) {
         this.reviewId = reviewId;
         this.message = message;
         this.rate = rate;
-        this.createDate = new Date(System.currentTimeMillis());
-        this.userId = userId;
-        this.roomId = roomId;
-    }
-
-    public Review(String message, int rate, int userId, int roomId) {
-        this.reviewId = 0;
-        this.message = message;
-        this.rate = rate;
-        this.createDate = new Date(System.currentTimeMillis());
-        this.userId = userId;
-        this.roomId = roomId;
+        this.createDate = createDate;
+        this.user = user;
+        this.room = room;
     }
 
     public int getReviewId() {
@@ -69,21 +69,21 @@ public class Review {
         this.createDate = createDate;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setRoom(Room room) {
+        this.room = room;
     }
-    
+
     
 }
