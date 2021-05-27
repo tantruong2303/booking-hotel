@@ -32,10 +32,10 @@
 				<div class="space-y-2">
 					<h1 class="text-4xl font-semibold">New Room Form</h1>
 					<div class="flex">
-						<div class="flex-1">
-							<img class="border rounded-sm border-cerise-red-500" src="/asset/image/default-image.png" alt="photo" id="pre-photo"/>
+						<div class="flex-1 ">
+							<img class="border rounded-sm border-cerise-red-500  max-h-96" src="/asset/image/default-image.png" alt="photo" id="pre-photo"/>
 						</div>
-						<form method="POST" action="/AddRoomServlet" enctype="multipart/form-data" class="flex-1 px-2">
+						<form method="POST" action="/AddRoomServlet" enctype="application/x-www-form-urlencoded" class="flex-1 px-2">
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">Room Type</label>
 
