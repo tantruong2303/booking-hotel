@@ -1,7 +1,11 @@
 CREATE DATABASE BookingHotel;
-USE BookingHotel;
+go
 
-CREATE TABLE tbl_User (
+USE BookingHotel;
+go
+
+CREATE TABLE tbl_User
+(
 	userId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	username varchar(50) NOT NULL,
 	password varchar(50) NOT NULL,
@@ -10,28 +14,31 @@ CREATE TABLE tbl_User (
 	phone varchar(20),
 	role int
 );
+go
 
-CREATE TABLE tbl_Room (
+CREATE TABLE tbl_RoomType
+(
+	roomTypeId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+	name varchar(50),
+	numOfPeople int,
+)
+go
+
+CREATE TABLE tbl_Room
+(
 	roomId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	price float,
-	numOfPeople int,
-        isDisable bit,
-        imageUrl varchar(250)
+	description varchar(250),
+	isDisable bit,
+	imageUrl varchar(250),
+	roomTypeId int FOREIGN KEY REFERENCES tbl_RoomType(roomTypeId)
 );
+go
 
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (100, 2, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (200, 2, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (300, 4, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (300, 4, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (400, 4, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (800, 8, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (140, 2, 1, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (160, 2, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (280, 4, 0, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (300, 4, 1, '');
-INSERT INTO tbl_Room (price, numOfPeople, isDisable, imageUrl) VALUES (410, 4, 0, '');
 
-CREATE TABLE tbl_BookingInfo (
+
+CREATE TABLE tbl_BookingInfo
+(
 	bookingInfoId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	userId int FOREIGN KEY REFERENCES tbl_User(userId),
 	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId),
@@ -40,8 +47,10 @@ CREATE TABLE tbl_BookingInfo (
 	numberOfDay int,
 	total float
 );
+go
 
-CREATE TABLE tbl_Review (
+CREATE TABLE tbl_Review
+(
 	reviewId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	userId int FOREIGN KEY REFERENCES tbl_User(userId),
 	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId),
@@ -49,5 +58,15 @@ CREATE TABLE tbl_Review (
         rate int,
 	message varchar(500)
 )
+go
+
+INSERT INTO tbl_RoomType
+	(name, numOfPeople)
+VALUES('Tom B. Erichsen', 2);
+INSERT INTO tbl_RoomType
+	(name, numOfPeople)
+VALUES('luxuryroom', 2);
+GO
 
 
+INSERT INTO tbl_Room (description,imageUrl,isDisable,price,roomTypeId)VALUES('Hello', '/url', 0, 123, 1);

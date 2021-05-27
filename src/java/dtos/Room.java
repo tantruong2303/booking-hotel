@@ -13,34 +13,30 @@ public class Room {
 
 	private int roomId;
 	private float price;
-	private int numOfPeople;
 	private boolean isDisable;
 	private String imageUrl;
+	private String description;
+	private RoomType roomType;
 
 	public Room() {
 	}
 
-	public Room(int roomId, float price, int numOfPeople, boolean isDisable, String imageUrl) {
+	public Room(int roomId, float price, boolean isDisable, String imageUrl, String description, RoomType roomType) {
 		this.roomId = roomId;
 		this.price = price;
-		this.numOfPeople = numOfPeople;
 		this.isDisable = isDisable;
 		this.imageUrl = imageUrl;
+		this.description = description;
+		this.roomType = roomType;
 	}
 
-	public Room(float price, int numOfPeople, boolean isDisable, String imageUrl) {
+	public Room(float price, boolean isDisable, String imageUrl, String description, RoomType roomType) {
+
 		this.price = price;
-		this.numOfPeople = numOfPeople;
 		this.isDisable = isDisable;
 		this.imageUrl = imageUrl;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+		this.description = description;
+		this.roomType = roomType;
 	}
 
 	public int getRoomId() {
@@ -59,14 +55,6 @@ public class Room {
 		this.price = price;
 	}
 
-	public int getNumOfPeople() {
-		return numOfPeople;
-	}
-
-	public void setNumOfPeople(int numOfPeople) {
-		this.numOfPeople = numOfPeople;
-	}
-
 	public boolean isIsDisable() {
 		return isDisable;
 	}
@@ -81,5 +69,28 @@ public class Room {
     }
 
 	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public RoomType getRoomType() {
+		return roomType;
+	}
+
+	public void setRoomType(RoomType roomType) {
+		this.roomType = roomType;
+	}
 
 }

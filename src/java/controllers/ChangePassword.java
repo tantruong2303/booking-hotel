@@ -23,20 +23,20 @@ import utils.Validator;
  *
  * @author Lenovo
  */
-@WebServlet(name = "ChangePassword", urlPatterns = { "/ChangePassword" })
+@WebServlet(name = "ChangePassword", urlPatterns = {"/ChangePassword"})
 public class ChangePassword extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-	 * methods.
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		UserDAO userDAO = new UserDAO();
@@ -47,8 +47,9 @@ public class ChangePassword extends HttpServlet {
 		String changePasswordPage = "changePassword.jsp";
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, loginPage))
+			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
 				return;
+			}
 
 			String newPassword = Validator.getStringParam(request, "newPassword", "New Password", 1, 50);
 			String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
@@ -92,28 +93,28 @@ public class ChangePassword extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
