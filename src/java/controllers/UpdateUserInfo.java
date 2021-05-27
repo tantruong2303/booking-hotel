@@ -52,7 +52,7 @@ public class UpdateUserInfo extends HttpServlet {
 			}
 			String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
 			String email = Validator.getStringParam(request, "email", "Email", 1, 50);
-			String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
+			String phone = Validator.getPhoneNumber(request, "phone");
 
 			HttpSession session = request.getSession();
 			String username = (String) session.getAttribute("username");

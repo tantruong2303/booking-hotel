@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -220,4 +222,37 @@ public class Validator {
 
 		return value;
 	}
+        
+        public static String getPhoneNumber(HttpServletRequest request, String label){
+            String phone = (String) request.getParameter("phone");
+            String pattern = "^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\\b";
+            boolean isMatched = Pattern.matches(pattern, phone);
+            if(isMatched)
+                return phone;
+            else {
+                request.setAttribute("phoneError", label + " is not correct format");
+                return null;
+            }
+        }
+        
+        public static Integer getRoomId(HttpServletRequest request, String label){
+            String value = (String) request.getParameter("roomId");
+		Integer realValue;
+		if (value == null) {
+			request.setAttribute("roomIdError", label + " is required");
+			return null;
+		}
+                try {
+                    realValue = Integer.parseInt(value);
+                } catch (Exception e) {
+                    request.setAttribute("roomIdError", label + " must be a number");
+                    return null;
+                }
+                
+                if(realValue < 100 || realValue > 999){
+                    request.setAttribute("roomIdError", label + " must be between 100 and 999");
+                    return null;
+                }
+                return realValue;
+        }
 }
