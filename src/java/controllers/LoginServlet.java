@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 		UserDAO userDAO = new UserDAO();
 
 		String loginPage = "login.jsp";
-		String mainPage = "index.jsp";
+		String mainPage = "/IndexServlet";
 
 		try {
 

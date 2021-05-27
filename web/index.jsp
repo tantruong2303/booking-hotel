@@ -4,6 +4,7 @@
     Author     : heaty566
 --%>
 
+<%@page import="dtos.RoomType"%>
 <%@page import="utils.Validator"%>
 <%@page import="dtos.Room"%>
 <%@page import="java.util.ArrayList"%>
@@ -19,14 +20,54 @@
 		<%
 		  
 			  ArrayList<Room> list = (ArrayList<Room>) Validator.getClientParams( request,"rooms", new ArrayList<Room>());
-		   
+			  ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) Validator.getClientParams(request,"roomTypes", new ArrayList<>() ); 
 		%>
 
 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
+				
+				<form action="/IndexServlet" method = "POST" class="space-y-2 w-full">
+					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
+					<div class="flex space-x-2">
+						<div class="grid grid-form justify-items-stretch  ">
+							<label for="minPrice" class="block font-medium">Min price</label>
+							<input type="number" value="0" name="minPrice" id="minPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+						</div>
+						<div class="grid grid-form justify-items-stretch  ">
+							<label for="maxPrice" class="block font-medium">Max price</label>
+							<input type="number" value="9999999" name="maxPrice" id="maxPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+						</div>
+					</div>
 
+					<div class="flex space-x-2">
+						<div class="grid grid-form justify-items-stretch  ">
+							<label for="maxPrice" class="block font-medium">Room Type</label>
+							<select name="roomTypeId" id="roomTypeId" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none">
+								<% for (RoomType roomType : roomTypes) { %>
+								<option value="<%=  roomType.getRoomTypeId() %>"  label="<%=roomType.getName()%> - <%= roomType.getNumOfPeople()%> people(s)">
+									<%=roomType.getName() %>
+								</option>
+								<% } %>
+
+							</select>
+						</div>
+
+						<div class="grid grid-form justify-items-stretch  ">
+							<label for="priceOrder" class="block font-medium">Price Order</label>
+							<select name="priceOrder" id="priceOrder" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none">
+								<option value="ASC" selected="selected" label="low -> high">
+								</option>
+								<option value="DESC"  label="high -> low">
+								</option>
+							</select>
+						</div>
+
+					</div>
+
+					<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300">Search</button>
+				</form>
 				<div class="grid grid-cols-2  gap-2">
 					<% for (int i = 0; i < list.size(); i++) { %>
 					<div class="bg-white shadow-lg rounded-md  overflow-hidden  h-40 grid-cols-8 grid-rows-1 grid border border-cerise-red-100 transform  duration-300 hover:bg-cerise-red-50 cursor-pointer ">

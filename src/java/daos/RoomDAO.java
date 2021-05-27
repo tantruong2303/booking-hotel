@@ -129,7 +129,7 @@ public class RoomDAO {
 		try {
 			Connection connection = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
-			String sql = "SELECT roomId, price, description, isDisable, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY price "
+			String sql = "SELECT roomId, price, description, isDisable, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY isDisable ,price "
 					+ order;
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);

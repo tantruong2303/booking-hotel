@@ -7,6 +7,7 @@ package controllers;
 
 import daos.RoomDAO;
 import dtos.Room;
+import dtos.RoomType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,13 +44,16 @@ public class IndexServlet extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 
 		try {
+	
 			int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
-			float min = Validator.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, 0);
-			float max = Validator.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
+			float min = Validator.getFloatParams(request, "minPrice", "price", 1, Float.MAX_VALUE, 0);
+			float max = Validator.getFloatParams(request, "maxPrice", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
 			String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
-
+			ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
+			
+			request.setAttribute("roomTypes", roomTypes);
 			ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
-		
+
 			request.setAttribute("rooms", list);
 			RequestDispatcher rd = request.getRequestDispatcher(IndexPage);
 			rd.forward(request, response);
