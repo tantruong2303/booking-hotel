@@ -8,6 +8,7 @@ package daos;
 import dtos.Room;
 import dtos.RoomType;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,6 +41,34 @@ public class RoomDAO {
 		}
 	}
 
+        public Room getRoomById(int roomId){
+            try {
+			Connection connection = Connector.getConnection();
+			String sql = "SELECT * FROM tbl_Room WHERE roomId=?";
+
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, roomId);
+			
+                        ResultSet result = pstmt.executeQuery();
+                        
+                        
+                        if(result.next()){
+                            int roomIdSql = result.getInt("roomId");
+                            float priceSql = result.getFloat("price");
+                            int numOfPeopleSql = result.getInt("numOfPeople");
+                            String imageUrl = result.getString("imageUrl");
+                            boolean isDisable = result.getBoolean("isDisable");
+                            Room room = new Room(roomIdSql, priceSql, numOfPeopleSql, isDisable, imageUrl);
+                            return room;
+                        }
+			
+			pstmt.close();
+		} catch (SQLException e) {
+			return null;
+		}
+            return null;
+        }
+        
 	public boolean updateRoom(Room room) {
 		Connection connection = Connector.getConnection();
 		String sql = "UPDATE tbl_Room SET price = ?, description = ?, isDisable = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";

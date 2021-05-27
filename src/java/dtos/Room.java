@@ -63,6 +63,12 @@ public class Room {
 		this.isDisable = isDisable;
 	}
 
+    @Override
+    public String toString() {
+        return "Room{" + "roomId=" + roomId + ", price=" + price + ", numOfPeople=" + numOfPeople + ", isDisable=" + isDisable + ", imageUrl=" + imageUrl + '}';
+    }
+
+	
 	public String getImageUrl() {
 		return imageUrl;
 	}
