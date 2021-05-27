@@ -45,7 +45,7 @@ public class RoomListController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
 				return;
 			}
 			int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
@@ -54,8 +54,8 @@ public class RoomListController extends HttpServlet {
 			String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 
 			ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
-
-			request.setAttribute("listRoom", list);
+		
+			request.setAttribute("rooms", list);
 			RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
 			rd.forward(request, response);
 

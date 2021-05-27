@@ -5,26 +5,26 @@
  */
 package controllers;
 
-import daos.AuthDAO;
-import daos.UserDAO;
-import dtos.User;
+import daos.RoomDAO;
+import dtos.Room;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import utils.Helper;
 import utils.Validator;
 
 /**
  *
- * @author Lenovo
+ * @author heaty566
  */
-@WebServlet(name = "ChangePassword", urlPatterns = {"/ChangePassword"})
-public class ChangePassword extends HttpServlet {
+@WebServlet(name = "IndexServlet", urlPatterns = {"/IndexServlet"})
+public class IndexServlet extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -38,58 +38,31 @@ public class ChangePassword extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-
-		UserDAO userDAO = new UserDAO();
-		AuthDAO auth = new AuthDAO();
 		String errorPage = "error.jsp";
-		String mainPage = "main.jsp";
-		String loginPage = "login.jsp";
-		String changePasswordPage = "changePassword.jsp";
+		String IndexPage = "index.jsp";
+		RoomDAO roomDAO = new RoomDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
-				return;
-			}
+			int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
+			float min = Validator.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, 0);
+			float max = Validator.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
+			String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 
-			String newPassword = Validator.getStringParam(request, "newPassword", "New Password", 1, 50);
-			String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-			String oldPassword = Validator.getStringParam(request, "oldPassword", "Old Password", 1, 50);
-
-			HttpSession session = request.getSession();
-			String username = (String) session.getAttribute("username");
-			if (newPassword != null && confirmPassword != null && oldPassword != null && username != null) {
-				User existedUser = userDAO.getOneUserByUsername(username);
-
-				if (!Helper.comparePassword(oldPassword, existedUser.getPassword(), 28)) {
-					request.setAttribute("oldPasswordError", "is not correct");
-				} else if (!newPassword.equals(confirmPassword)) {
-					request.setAttribute("confirmPassword", "is not matches new password");
-				} else {
-					newPassword = Helper.encrypt(newPassword, 28);
-					boolean result = userDAO.updateUserPasswordByUsername(existedUser.getUsername(), newPassword);
-					if (!result) {
-						request.setAttribute("changePassowrd", "Internal error!");
-					} else {
-						RequestDispatcher rd = request.getRequestDispatcher(mainPage);
-						rd.forward(request, response);
-					}
-					return;
-				}
-			}
-
-			RequestDispatcher rd = request.getRequestDispatcher(changePasswordPage);
+			ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
+		
+			request.setAttribute("rooms", list);
+			RequestDispatcher rd = request.getRequestDispatcher(IndexPage);
 			rd.forward(request, response);
-			return;
+
 		} catch (Exception e) {
+
 			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
 			rd.forward(request, response);
-			return;
-		}
 
+		}
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
-	// + sign on the left to edit the code.">
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
