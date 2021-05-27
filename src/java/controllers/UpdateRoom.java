@@ -9,8 +9,6 @@ import daos.RoomDAO;
 import dtos.Room;
 import dtos.RoomType;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,50 +16,48 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
-import utils.Validator;
 
 /**
  *
  * @author Lenovo
  */
-@WebServlet(name = "UpdateRoomServlet", urlPatterns = {"/UpdateRoomServlet"})
-public class UpdateRoomServlet extends HttpServlet {
+@WebServlet(name = "UpdateRoomServlet", urlPatterns = { "/UpdateRoom" })
+public class UpdateRoom extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
     // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         RoomDAO roomDAO = new RoomDAO();
-        String updateRoomPage = "updateRoom.jsp";
 
-        String errorPage = "error.jsp";
-        String loginPage = "login.jsp";
         try {
-            if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
+            if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
                 return;
             }
-            Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
-            System.out.println(roomId);
+            Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
             if (roomId != null) {
 
                 Room room = roomDAO.getRoomById(roomId);
@@ -72,16 +68,16 @@ public class UpdateRoomServlet extends HttpServlet {
                     request.setAttribute("room", room);
                     ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
                     request.setAttribute("roomTypes", roomTypes);
-                    RequestDispatcher rd = request.getRequestDispatcher(updateRoomPage);
+                    RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM_PAGE);
                     rd.forward(request, response);
                     return;
                 }
 
             }
-            RequestDispatcher rd = request.getRequestDispatcher(updateRoomPage);
+            RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM);
             rd.forward(request, response);
         } catch (Exception e) {
-            RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+            RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
             rd.forward(request, response);
         }
     }
@@ -89,34 +85,31 @@ public class UpdateRoomServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         RoomDAO roomDAO = new RoomDAO();
-        String listRoomPage = "/RoomListController";
-        String errorPage = "error.jsp";
-        String loginPage = "login.jsp";
-        String updateRoomPage = "/UpdateRoomServlet";
-        String[] extensions = {"png", "jpg", "svg", "jpeg", "bmp"};
+
+        String[] extensions = { "png", "jpg", "svg", "jpeg", "bmp" };
 
         try {
 
-            if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
+            if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
                 return;
             }
 
-            Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
-            Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
-            Integer statePrams = Validator.getIntParams(request, "state", "Is Disable", 0, 1);
-            String description = Validator.getStringParam(request, "description", "Description", 1, 500);
-            Integer roomTypeId = Validator.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
-            String imageUrl = Validator.getFileParam(request, "photo", "Image", 2000000, extensions);
+            Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
+            Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
+            Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
+            String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
+            Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
+            String imageUrl = GetParam.getFileParam(request, "photo", "Image", 2000000, extensions);
 
             if (price != null && roomId != null && statePrams != null && roomTypeId != null) {
 
@@ -133,7 +126,7 @@ public class UpdateRoomServlet extends HttpServlet {
                     if (!result) {
                         request.setAttribute("errorMessage", "some thing went wrong");
                     } else {
-                        response.sendRedirect(listRoomPage);
+                        response.sendRedirect(Routers.LIST_ROOM);
                         return;
 
                     }
@@ -144,8 +137,8 @@ public class UpdateRoomServlet extends HttpServlet {
             this.doGet(request, response);
             return;
         } catch (Exception e) {
-            e.printStackTrace();
-            RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+
+            RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
             rd.forward(request, response);
         }
     }

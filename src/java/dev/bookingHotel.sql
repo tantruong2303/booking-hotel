@@ -26,7 +26,7 @@ go
 
 CREATE TABLE tbl_Room
 (
-	roomId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+	roomId INT  NOT NULL PRIMARY KEY CLUSTERED,
 	price float,
 	description varchar(250),
 	state int,
@@ -63,11 +63,16 @@ go
 
 INSERT INTO tbl_RoomType
 	(name, numOfPeople)
-VALUES('Tom B. Erichsen', 2);
+VALUES('queen room', 2);
+
 INSERT INTO tbl_RoomType
 	(name, numOfPeople)
-VALUES('luxuryroom', 2);
+VALUES('king room', 3);
 GO
 
 
-INSERT INTO tbl_Room (description,imageUrl,state,price,roomTypeId)VALUES('Hello', '/url', 0, 123, 1);
+INSERT INTO tbl_RoomType
+	(name, numOfPeople)
+VALUES('luxury room', 2);
+GO
+

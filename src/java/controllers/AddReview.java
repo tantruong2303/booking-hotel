@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
 import utils.Validator;
 
@@ -28,17 +31,17 @@ import utils.Validator;
  *
  * @author HaiCao
  */
-@WebServlet(name = "AddReviewServlet", urlPatterns = {"/AddReviewServlet"})
-public class AddReviewServlet extends HttpServlet {
+@WebServlet(name = "AddReviewServlet", urlPatterns = { "/AddReview" })
+public class AddReview extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,48 +49,48 @@ public class AddReviewServlet extends HttpServlet {
         ReviewDAO reviewDAO = new ReviewDAO();
         RoomDAO roomDAO = new RoomDAO();
         UserDAO userDAO = new UserDAO();
-        String errorPage = "error.jsp";
-        String loginPage = "login.jsp";
-        String listReviewPage = "listReview.jsp";
 
         try {
-            if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
+            if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
                 return;
             }
 
-            String message = Validator.getStringParam(request, "message", "message", 0, 1000, "");
-            int rate = Validator.getIntParams(request, "rate", "rate", 1, 5);
+            String message = GetParam.getStringParam(request, "message", "message", 0, 1000, "");
+            int rate = GetParam.getIntParams(request, "rate", "rate", 1, 5);
             Date createDate = new Date(System.currentTimeMillis());
 
             HttpSession session = request.getSession();
             User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 
-            int roomId = Validator.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+            int roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
             Room room = roomDAO.getRoomById(roomId);
 
             Review review = new Review(message, rate, user, room);
             boolean result = reviewDAO.addReview(review);
 
             if (!result) {
-                RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+                RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
                 rd.forward(request, response);
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher(listReviewPage);
+                RequestDispatcher rd = request.getRequestDispatcher("/");
                 rd.forward(request, response);
             }
         } catch (Exception e) {
+            RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+            rd.forward(request, response);
         }
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -98,10 +101,10 @@ public class AddReviewServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

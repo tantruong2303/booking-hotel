@@ -5,7 +5,6 @@
  */
 package controllers;
 
-import daos.AuthDAO;
 import daos.UserDAO;
 import dtos.User;
 import java.io.IOException;
@@ -16,44 +15,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
-import utils.Validator;
 
 /**
  *
  * @author Lenovo
  */
-@WebServlet(name = "ChangePassword", urlPatterns = {"/ChangePassword"})
+@WebServlet(name = "ChangePassword", urlPatterns = { "/ChangePassword" })
 public class ChangePassword extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and
-	 * <code>POST</code> methods.
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-
 		UserDAO userDAO = new UserDAO();
-		AuthDAO auth = new AuthDAO();
-		String errorPage = "error.jsp";
-		String mainPage = "main.jsp";
-		String loginPage = "login.jsp";
-		String changePasswordPage = "changePassword.jsp";
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
 
-			String newPassword = Validator.getStringParam(request, "newPassword", "New Password", 1, 50);
-			String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-			String oldPassword = Validator.getStringParam(request, "oldPassword", "Old Password", 1, 50);
+			String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 1, 50);
+			String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
+			String oldPassword = GetParam.getStringParam(request, "oldPassword", "Old Password", 1, 50);
 
 			HttpSession session = request.getSession();
 			String username = (String) session.getAttribute("username");
@@ -70,18 +65,18 @@ public class ChangePassword extends HttpServlet {
 					if (!result) {
 						request.setAttribute("changePassowrd", "Internal error!");
 					} else {
-						RequestDispatcher rd = request.getRequestDispatcher(mainPage);
+						RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX);
 						rd.forward(request, response);
 					}
 					return;
 				}
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(changePasswordPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD);
 			rd.forward(request, response);
 			return;
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 			return;
 		}
@@ -93,28 +88,28 @@ public class ChangePassword extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
