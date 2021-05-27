@@ -39,9 +39,9 @@
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">Room Type</label>
 
-								<select name="roomTypeId" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none">
+								<select name="numOfPeople" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none">
 									<% for (RoomType roomType : roomTypes) { %>
-									<option value="<%=  roomType.getRoomTypeId() %>"  label="<%=roomType.getName() %>">
+									<option value="<%= roomType.getNumOfPeople() %>"  label="<%=roomType.getName()%> - <%= roomType.getNumOfPeople()%> people(s)">
 										<%=roomType.getName() %>
 									</option>
 									<% } %>
