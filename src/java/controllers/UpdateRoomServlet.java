@@ -61,7 +61,7 @@ public class UpdateRoomServlet extends HttpServlet {
 				return;
 			}
 			Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
-
+			System.out.println(roomId);
 			if (roomId != null) {
 
 				Room room = roomDAO.getRoomById(roomId);
@@ -73,7 +73,6 @@ public class UpdateRoomServlet extends HttpServlet {
 					ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
 					request.setAttribute("roomTypes", roomTypes);
 					RequestDispatcher rd = request.getRequestDispatcher(updateRoomPage);
-
 					rd.forward(request, response);
 					return;
 				}
@@ -103,8 +102,8 @@ public class UpdateRoomServlet extends HttpServlet {
 		String listRoomPage = "/RoomListController";
 		String errorPage = "error.jsp";
 		String loginPage = "login.jsp";
+		String updateRoomPage = "/UpdateRoomServlet";
 
-		String[] extensions = {"png", "jpg", "svg", "jpeg", "bmp"};
 		try {
 
 			if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
@@ -121,8 +120,12 @@ public class UpdateRoomServlet extends HttpServlet {
 			if (price != null && roomId != null && statePrams != null && roomTypeId != null) {
 
 				RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
+				Room room = roomDAO.getRoomById(roomId);
 				if (roomType == null) {
-					request.setAttribute("updateRoomError", "Internal error!");
+					request.setAttribute("roomTypeId", "Room Type with the given Id was not found");
+				}
+				if (room == null) {
+					request.setAttribute("errorMessage", "Room with the given Id was not found");
 				} else {
 					Room newRoom = new Room(roomId, price, statePrams, imageUrl, description, roomType);
 					boolean result = roomDAO.updateRoom(newRoom);
@@ -131,10 +134,14 @@ public class UpdateRoomServlet extends HttpServlet {
 					} else {
 						response.sendRedirect(listRoomPage);
 						return;
+
+					} else {
+						request.setAttribute("errorMessage", "some thing went wrong");
 					}
 				}
 
 			}
+
 			this.doGet(request, response);
 			return;
 		} catch (Exception e) {
