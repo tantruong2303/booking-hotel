@@ -5,7 +5,12 @@
  */
 package dtos;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 /**
  *
@@ -15,26 +20,30 @@ public class Review {
     private int reviewId;
     private String message;
     private int rate;
-    private Date createDate;
-    private int userId;
-    private int roomId;
+    private String createDate;
+    private User user;
+    private Room room;
 
-    public Review(int reviewId, String message, int rate, int userId, int roomId) {
+    public Review(String message, int rate, User user, Room room) {
+        this.reviewId = 0;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        
+        this.createDate = formatter.format(calendar.getTime());
+        this.message = message;
+        this.rate = rate;
+        this.user = user;
+        this.room = room;
+    }
+
+    public Review(int reviewId, String message, int rate, String createDate, User user, Room room) {
         this.reviewId = reviewId;
         this.message = message;
         this.rate = rate;
-        this.createDate = new Date(System.currentTimeMillis());
-        this.userId = userId;
-        this.roomId = roomId;
-    }
-
-    public Review(String message, int rate, int userId, int roomId) {
-        this.reviewId = 0;
-        this.message = message;
-        this.rate = rate;
-        this.createDate = new Date(System.currentTimeMillis());
-        this.userId = userId;
-        this.roomId = roomId;
+        this.createDate = createDate;
+        this.user = user;
+        this.room = room;
     }
 
     public int getReviewId() {
@@ -61,29 +70,34 @@ public class Review {
         this.rate = rate;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setRoom(Room room) {
+        this.room = room;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Review{" + "reviewId=" + reviewId + ", message=" + message + ", rate=" + rate + ", createDate=" + createDate + ", user=" + user + ", room=" + room + '}';
+    }
+
     
 }

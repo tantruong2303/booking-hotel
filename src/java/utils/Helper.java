@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
  * @author Lenovo
  */
 public class Helper {
-	
 
 	public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole,
 		int maxRole, String page) throws Exception {
@@ -32,17 +31,24 @@ public class Helper {
 		return true;
 	}
 
+	public static String truncateContent(String str, int maxLength) {
+		if (str.length() > maxLength){
+			return str.substring(0, maxLength) + "...";
+		}
+		return str;
+	}
+
 	public static boolean isLogin(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		String username = (String) session.getAttribute("username");
-	
+
 		return username != null;
 	}
 
 	public static boolean correctRole(HttpServletRequest request, int minRole, int maxRole) {
 		HttpSession session = request.getSession(false);
 		Integer roleR = (Integer) session.getAttribute("role");
-	
+
 		return roleR != null && roleR >= minRole && roleR <= maxRole;
 	}
 

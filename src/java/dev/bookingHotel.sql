@@ -29,7 +29,7 @@ CREATE TABLE tbl_Room
 	roomId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	price float,
 	description varchar(250),
-	isDisable bit,
+	state int,
 	imageUrl varchar(250),
 	roomTypeId int FOREIGN KEY REFERENCES tbl_RoomType(roomTypeId)
 );
@@ -42,8 +42,8 @@ CREATE TABLE tbl_BookingInfo
 	bookingInfoId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	userId int FOREIGN KEY REFERENCES tbl_User(userId),
 	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId),
-	startDate date,
-	endDate date,
+	startDate varchar(20),
+	endDate varchar(20),
 	numberOfDay int,
 	total float
 );
@@ -54,7 +54,8 @@ CREATE TABLE tbl_Review
 	reviewId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	userId int FOREIGN KEY REFERENCES tbl_User(userId),
 	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId),
-	createDate date,
+	createDate varchar(20),
+        rate int,
 	message varchar(500)
 )
 go

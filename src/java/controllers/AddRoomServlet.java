@@ -99,19 +99,18 @@ public class AddRoomServlet extends HttpServlet {
 			}
 
 			Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
-			Integer isDisablePrams = Validator.getIntParams(request, "isDisable", "Is Disable", 0, 1);
+			Integer statePrams = Validator.getIntParams(request, "state", "Is Disable", 0, 1);
 			String description = Validator.getStringParam(request, "description", "Description", 1, 500);
 			Integer roomTypeId = Validator.getIntParams(request, "roomTypeId", "Room type", 0, Integer.MAX_VALUE);
 			String imageUrl = Validator.getFileParam(request, "photo", "Image", 2000000, extensions);
 
-			if (price != null && isDisablePrams != null && imageUrl != null && description != null
+			if (price != null && statePrams != null && imageUrl != null && description != null
 				&& roomTypeId != null) {
 				RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
 				if (roomType == null) {
 					request.setAttribute("updateRoomError", "Internal error!");
 				} else {
-					Boolean isDisable = isDisablePrams == 1;
-					Room newRoom = new Room(price, isDisable, imageUrl, description, roomType);
+					Room newRoom = new Room(price, statePrams, imageUrl, description, roomType);
 					boolean result = roomDAO.addRoom(newRoom);
 					if (!result) {
 						request.setAttribute("addRoomError", "Internal error!");

@@ -61,7 +61,7 @@ public class UpdateRoomServlet extends HttpServlet {
 				return;
 			}
 			Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
-
+			System.out.println(roomId);
 			if (roomId != null) {
 
 				Room room = roomDAO.getRoomById(roomId);
@@ -73,7 +73,6 @@ public class UpdateRoomServlet extends HttpServlet {
 					ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
 					request.setAttribute("roomTypes", roomTypes);
 					RequestDispatcher rd = request.getRequestDispatcher(updateRoomPage);
-
 					rd.forward(request, response);
 					return;
 				}
@@ -103,8 +102,8 @@ public class UpdateRoomServlet extends HttpServlet {
 		String listRoomPage = "/RoomListController";
 		String errorPage = "error.jsp";
 		String loginPage = "login.jsp";
+		String updateRoomPage = "/UpdateRoomServlet";
 
-		String[] extensions = {"png", "jpg", "svg", "jpeg", "bmp"};
 		try {
 
 			if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
@@ -113,31 +112,36 @@ public class UpdateRoomServlet extends HttpServlet {
 
 			Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
 			Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
-			Integer isDisablePrams = Validator.getIntParams(request, "isDisable", "Is Disable", 0, 1);
+			Integer statePrams = Validator.getIntParams(request, "state", "Is Disable", 0, 1);
 			String description = Validator.getStringParam(request, "description", "Description", 1, 500);
 			Integer roomTypeId = Validator.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
 			String imageUrl = Validator.getFileParam(request, "photo", "Image", 2000000, extensions);
 		
-System.out.println(price);
-			if (price != null && roomId != null && isDisablePrams != null && roomTypeId != null) {
+			if (price != null && roomId != null && statePrams != null && roomTypeId != null) {
 
 				RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
+				Room room = roomDAO.getRoomById(roomId);
 				if (roomType == null) {
-					request.setAttribute("updateRoomError", "Internal error!");
+					request.setAttribute("roomTypeId", "Room Type with the given Id was not found");
+				}
+				if (room == null) {
+					request.setAttribute("errorMessage", "Room with the given Id was not found");
 				} else {
-
-					Boolean isDisable = isDisablePrams == 1;
-					Room newRoom = new Room(roomId, price, isDisable, imageUrl, description, roomType);
+					Room newRoom = new Room(roomId, price, statePrams, imageUrl, description, roomType);
 					boolean result = roomDAO.updateRoom(newRoom);
 					if (!result) {
 						request.setAttribute("updateRoomError", "Internal error!");
 					} else {
 						response.sendRedirect(listRoomPage);
 						return;
+
+					} else {
+						request.setAttribute("errorMessage", "some thing went wrong");
 					}
 				}
 
 			}
+
 			this.doGet(request, response);
 			return;
 		} catch (Exception e) {
