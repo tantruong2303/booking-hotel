@@ -15,12 +15,10 @@
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<%
-			String usernameError=(String) Validator.getClientParams(request,"usernameError", "" ); 
-			String passwordError=(String) Validator.getClientParams(request,"passwordError", "" ); 
+			String usernameError =(String) Validator.getClientParams(request,"usernameError", "" ); 
+			String passwordError =(String) Validator.getClientParams(request,"passwordError", "" ); 
+			String errorMessage =(String) Validator.getClientParams(request,"errorMessage", "" );	
 		%>
-
-		<p> <%=usernameError%> </p>
-		<p> <%=passwordError%> </p>
 
 
 		<%@include file="./includes/navbar.jsp" %>
@@ -32,6 +30,11 @@
 					</div>
 
 					<div class="space-y-2">
+						<div class="grid grid-form justify-items-stretch ">
+							<p class="col-start-2 text-red-500 ">
+								<%=errorMessage%>
+							</p>
+						</div>
 						<div class="grid grid-form justify-items-stretch ">
 							<label for="username" class="block font-medium">Username</label>
 							<input type="text"    class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"   id="username"  name="username" />
