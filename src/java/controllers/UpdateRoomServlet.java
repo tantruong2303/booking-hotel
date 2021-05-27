@@ -112,11 +112,12 @@ public class UpdateRoomServlet extends HttpServlet {
 
 			Integer roomId = Validator.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
 			Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
-			Integer isDisablePrams = Validator.getIntParams(request, "isDisable", "Is Disable", 0, 1);
+			Integer statePrams = Validator.getIntParams(request, "state", "Is Disable", 0, 1);
 			String description = Validator.getStringParam(request, "description", "Description", 1, 500);
 			Integer roomTypeId = Validator.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
-
-			if (roomId != null && price != null && isDisablePrams != null && roomTypeId != null && description != null) {
+			String imageUrl = Validator.getFileParam(request, "photo", "Image", 2000000, extensions);
+		
+			if (price != null && roomId != null && statePrams != null && roomTypeId != null) {
 
 				RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
 				Room room = roomDAO.getRoomById(roomId);
@@ -126,13 +127,11 @@ public class UpdateRoomServlet extends HttpServlet {
 				if (room == null) {
 					request.setAttribute("errorMessage", "Room with the given Id was not found");
 				} else {
-					Boolean isDisable = isDisablePrams == 1;
-					room.setDescription(description);
-					room.setRoomType(roomType);
-					room.setPrice(price);
-					room.setIsDisable(isDisable);
-					boolean isUpdate = roomDAO.updateRoom(room);
-					if (isUpdate) {
+					Room newRoom = new Room(roomId, price, statePrams, imageUrl, description, roomType);
+					boolean result = roomDAO.updateRoom(newRoom);
+					if (!result) {
+						request.setAttribute("updateRoomError", "Internal error!");
+					} else {
 						response.sendRedirect(listRoomPage);
 						return;
 

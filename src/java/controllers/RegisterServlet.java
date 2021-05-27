@@ -52,7 +52,7 @@ public class RegisterServlet extends HttpServlet {
 			String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
 			String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
 			String email = Validator.getStringParam(request, "email", "Email", 1, 50);
-			String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
+			String phone = Validator.getPhoneNumber(request, "phone");
 			Integer role = Validator.getIntParams(request, "role", "Role", 0, 1, 0);
 
 			if (username != null && password != null && confirmPassword != null && fullName != null && email != null
