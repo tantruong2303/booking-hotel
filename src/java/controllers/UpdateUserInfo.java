@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
 import utils.Validator;
 
@@ -41,18 +44,13 @@ public class UpdateUserInfo extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
 
-		String mainPage = "main.jsp";
-		String loginPage = "login.jsp";
-		String errorPage = "error.jsp";
-		String updateUserInfoPage = "updateUserInfo.jsp";
-
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
-			String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
-			String email = Validator.getStringParam(request, "email", "Email", 1, 50);
-			String phone = Validator.getPhoneNumber(request, "phone");
+			String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
+			String email = GetParam.getStringParam(request, "email", "Email", 1, 50);
+			String phone = GetParam.getPhoneParams(request, "phone", "Phone");
 
 			HttpSession session = request.getSession();
 			String username = (String) session.getAttribute("username");
@@ -63,16 +61,16 @@ public class UpdateUserInfo extends HttpServlet {
 				if (!result) {
 					request.setAttribute("updateUserInfoError", "Internal error!");
 				} else {
-					RequestDispatcher rd = request.getRequestDispatcher(mainPage);
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX);
 					rd.forward(request, response);
 				}
 				return;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(updateUserInfoPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_INFO);
 			rd.forward(request, response);
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		}
 	}

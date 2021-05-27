@@ -4,6 +4,7 @@
     Author     : Lenovo
 --%>
 
+<%@page import="utils.GetParam"%>
 <%@page import="dtos.RoomType"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="utils.Validator"%>
@@ -17,12 +18,19 @@
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<%
-		String photoError =(String) Validator.getClientParams(request,"photoError", "" ); 
-		String priceError =(String) Validator.getClientParams(request,"priceError", "" ); 
-		String isDisableError =(String) Validator.getClientParams(request,"isDisableError", "" ); 
-		String descriptionError =(String) Validator.getClientParams(request,"descriptionError", "" ); 
-		String roomTypeIdError =(String) Validator.getClientParams(request,"roomTypeIdError", "" ); 
-		ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) Validator.getClientParams(request,"roomTypes", new ArrayList<>() ); 
+		Float price =(Float) GetParam.getClientParams(request,"priceError", 0f); 
+		String description=(String) GetParam.getClientParams(request,"description", ""); 
+		String roomId=(String) GetParam.getClientParams(request,"roomId", ""); 
+		
+		String photoError =(String) GetParam.getClientAttribute(request,"photoError", ""); 
+		String priceError =(String) GetParam.getClientAttribute(request,"priceError", ""); 
+		String roomIdError =(String) GetParam.getClientAttribute(request,"roomIdError", ""); 
+		String isDisableError =(String) GetParam.getClientAttribute(request,"stateError", ""); 
+		String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", ""); 
+		String descriptionError =(String) GetParam.getClientAttribute(request,"descriptionError", ""); 
+		String roomTypeIdError =(String) GetParam.getClientAttribute(request,"roomTypeIdError", ""); 
+		ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute(request,"roomTypes", new ArrayList<>()); 
+			
 		%>
 
 
@@ -35,30 +43,34 @@
 						<div class="flex-1 ">
 							<img class="border rounded-sm border-cerise-red-500  max-h-96" src="/asset/image/default-image.png" alt="photo" id="pre-photo"/>
 						</div>
-						<form method="POST" action="/AddRoomServlet" enctype="application/x-www-form-urlencoded" class="flex-1 px-2">
+						<form method="POST" action="/AddRoom" enctype="multipart/form-data" class="flex-1 px-2">
+							<p  class="capitalize text-red-500"><%=errorMessage %></p>
+
+							<div class="space-y-2">
+								<label class="font-medium" for="roomId">Room ID</label>
+								<input value="<%=roomId%>" type="text" name="roomId" id="roomId" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+								<p class="capitalize text-red-500"><%=roomIdError %></p>
+							</div>
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">Room Type</label>
+								<select name="roomTypeId" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none" >
+									<% for(RoomType roomType: roomTypes)  {%>
+									<option   value="<%=roomType.getRoomTypeId()%>"  label="<%=roomType.getName() %> - <%=roomType.getNumOfPeople()%>  people(s)">
 
-								<select name="numOfPeople" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none">
-									<% for (RoomType roomType : roomTypes) { %>
-									<option value="<%= roomType.getNumOfPeople() %>"  label="<%=roomType.getName()%> - <%= roomType.getNumOfPeople()%> people(s)">
-										<%=roomType.getName() %>
 									</option>
-									<% } %>
+									<% }%>
 
 								</select>
-
-
 								<p class="capitalize text-red-500"><%=roomTypeIdError %></p>
 							</div>
 							<div class="space-y-2">
 								<label class="font-medium" for="price">Price ($)</label>
-								<input value="0" type="number" name="price" id="price" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+								<input value="<%=price%>" type="number" name="price" id="price" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
 								<p class="capitalize text-red-500"><%=priceError %></p>
 							</div>
 							<div class="space-y-2">
 								<label class="font-medium" for="description">Description</label>
-								<textarea name="description" id="description" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none"></textarea>
+								<textarea name="description" id="description" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none"><%=description%></textarea>
 								<p class="capitalize text-red-500"><%=descriptionError %></p>
 							</div>
 							<div class="space-y-2">
@@ -68,15 +80,19 @@
 							</div>
 
 							<div class="space-y-2">
-								<label class="font-medium" for="photo">Is Available</label>
+								<label class="font-medium" for="photo">State</label>
 								<div class="">
 									<span>
-										<label for="isDisable1" >Yes</label>
-										<input type="radio" name="isDisable" id="isDisable1" value="0" checked="checked"/>
+										<label for="state1" >Disable</label>
+										<input type="radio" name="state" id="state1" value="0" checked="checked"/>
 									</span>
 									<span>
-										<label for="isDisable2" >No</label>
-										<input type="radio" name="isDisable" id="isDisable2" value="1"/>
+										<label for="state2" >Avaible</label>
+										<input type="radio" name="state" id="state2" value="1" />
+									</span>
+									<span>
+										<label for="state3" >Rent</label>
+										<input type="radio" name="state" id="state3" value="2" />
 									</span>
 								</div>
 

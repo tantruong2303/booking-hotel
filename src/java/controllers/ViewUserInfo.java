@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import constant.Routers;
 import utils.Helper;
 import utils.Validator;
 
@@ -41,14 +43,9 @@ public class ViewUserInfo extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
-		AuthDAO auth = new AuthDAO();
-
-		String loginPage = "login.jsp";
-		String errorPage = "error.jsp";
-		String viewUserInfo = "viewUserInfo.jsp";
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
 			HttpSession session = request.getSession();
@@ -58,13 +55,13 @@ public class ViewUserInfo extends HttpServlet {
 			existedUser.setPassword("");
 			existedUser.setUserId(0);
 			request.setAttribute("userInfo", existedUser);
-			RequestDispatcher rd = request.getRequestDispatcher(viewUserInfo);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO);
 			rd.forward(request, response);
 
 			return;
 
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		}
 	}

@@ -8,7 +8,6 @@ package daos;
 import dtos.Room;
 import dtos.RoomType;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +39,7 @@ public class RoomDAO {
 			return false;
 		}
 	}
-        
+
 	public boolean updateRoom(Room room) {
 		Connection connection = Connector.getConnection();
 		String sql = "UPDATE tbl_Room SET price = ?, description = ?, state = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";
@@ -67,10 +66,8 @@ public class RoomDAO {
 			Connection connection = Connector.getConnection();
 
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId "
-                                + "FROM tbl_Room "
-                                + "LEFT JOIN tbl_RoomType "
-                                + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
-                                + "WHERE roomId = ? ";
+					+ "FROM tbl_Room " + "LEFT JOIN tbl_RoomType " + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
+					+ "WHERE roomId = ? ";
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, roomId);
