@@ -45,7 +45,8 @@ CREATE TABLE tbl_Review (
 	reviewId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	userId int FOREIGN KEY REFERENCES tbl_User(userId),
 	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId),
-	createDate date,
+	createDate varchar(20),
+        rate int,
 	message varchar(500)
 )
 

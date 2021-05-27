@@ -5,7 +5,12 @@
  */
 package dtos;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 /**
  *
@@ -15,20 +20,24 @@ public class Review {
     private int reviewId;
     private String message;
     private int rate;
-    private Date createDate;
+    private String createDate;
     private User user;
     private Room room;
 
     public Review(String message, int rate, User user, Room room) {
         this.reviewId = 0;
-        this.createDate = new Date(System.currentTimeMillis());
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        
+        this.createDate = formatter.format(calendar.getTime());
         this.message = message;
         this.rate = rate;
         this.user = user;
         this.room = room;
     }
 
-    public Review(int reviewId, String message, int rate, Date createDate, User user, Room room) {
+    public Review(int reviewId, String message, int rate, String createDate, User user, Room room) {
         this.reviewId = reviewId;
         this.message = message;
         this.rate = rate;
@@ -61,11 +70,11 @@ public class Review {
         this.rate = rate;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
@@ -83,6 +92,11 @@ public class Review {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" + "reviewId=" + reviewId + ", message=" + message + ", rate=" + rate + ", createDate=" + createDate + ", user=" + user + ", room=" + room + '}';
     }
 
     

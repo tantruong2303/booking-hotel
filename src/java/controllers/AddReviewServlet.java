@@ -5,17 +5,22 @@
  */
 package controllers;
 
+import daos.ReviewDAO;
 import daos.RoomDAO;
 import daos.UserDAO;
+import dtos.Review;
 import dtos.Room;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import utils.Helper;
 import utils.Validator;
 
@@ -38,6 +43,41 @@ public class AddReviewServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+                ReviewDAO reviewDAO = new ReviewDAO();
+                RoomDAO roomDAO = new RoomDAO();
+                UserDAO userDAO = new UserDAO();
+                String errorPage = "error.jsp";
+		String loginPage = "login.jsp";
+                String listReviewPage = "listReview.jsp";
+                
+                try {
+                    if(!Helper.protectedRouter(request, response, 0, 1, loginPage))
+                        return;
+                    
+                    String message = Validator.getStringParam(request, "message", "message", 0, 1000, "");
+                    int rate = Validator.getIntParams(request, "rate", "rate", 1, 5);
+                    Date createDate = new Date(System.currentTimeMillis());
+                    
+                    HttpSession session = request.getSession();
+                    User user = userDAO.getOneUserByUsername((String)session.getAttribute("username"));
+                    
+                    int roomId = Validator.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+                    Room room = roomDAO.getRoomById(roomId);
+                    
+                    Review review = new Review(message, rate, user, room);
+                    boolean result = reviewDAO.addReview(review);
+                    
+                    if(!result){
+                        request.setAttribute("addReviewError", "Internal error!");
+                    }
+                    else{
+                        RequestDispatcher rd = request.getRequestDispatcher(listReviewPage);
+			rd.forward(request, response);
+                    }
+                    
+                } catch (Exception e) {
+                }
+                
 
 	}
 
