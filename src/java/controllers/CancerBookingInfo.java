@@ -6,25 +6,14 @@
 package controllers;
 
 import daos.BookingInfoDAO;
-import daos.ReviewDAO;
-import daos.RoomDAO;
-import daos.UserDAO;
-import dtos.BookingInfo;
-import dtos.Review;
-import dtos.Room;
-import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import utils.Helper;
 import utils.Validator;
 
@@ -32,8 +21,8 @@ import utils.Validator;
  *
  * @author Lenovo
  */
-@WebServlet(name = "AddBookingInfo", urlPatterns = {"/AddBookingInfo"})
-public class AddBookingInfo extends HttpServlet {
+@WebServlet(name = "CancerBookingInfo", urlPatterns = {"/CancerBookingInfo"})
+public class CancerBookingInfo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,37 +36,23 @@ public class AddBookingInfo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        RoomDAO roomDAO = new RoomDAO();
-        UserDAO userDAO = new UserDAO();
+
         BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
         String errorPage = "error.jsp";
         String loginPage = "login.jsp";
         String listRoomPage = "listRoom.jsp";
-        String addBookingInfoPage = "addBookingInfo.jsp";
+        String cancerBookingInfoPage = "cancerBookingInfo.jsp";
 
         try {
             if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
                 return;
             }
 
-            Integer roomId = Validator.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
-            String startDate = Validator.getStringParam(request, "startDate", "Start Date", 1, 50);
-            String endDate = Validator.getStringParam(request, "endDate", "End Date", 1, 50);
+            Integer bookingInfoId = Validator.getIntParams(request, "bookingInfoId", "Booking Info ID", 1, Integer.MAX_VALUE);
 
-            Integer numberOfDay = bookingInfoDAO.computeNumberOfDay(request, startDate, endDate);
+            if (bookingInfoId != null) {
 
-            HttpSession session = request.getSession();
-            User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
-
-            Room room = roomDAO.getRoomById(roomId);
-            if (room == null) {
-                request.setAttribute("roomIdError", "Invalid Room ID!");
-            }
-
-            if (startDate != null && endDate != null && numberOfDay != null && room != null && roomId != null) {
-                Float total = numberOfDay * room.getPrice();
-                BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay, -1, total);
-                boolean result = bookingInfoDAO.addBookingInfo(bookingInfo);
+                boolean result = bookingInfoDAO.cancerBookingInfo(bookingInfoId);
 
                 if (!result) {
                     RequestDispatcher rd = request.getRequestDispatcher(errorPage);
@@ -87,8 +62,7 @@ public class AddBookingInfo extends HttpServlet {
                     rd.forward(request, response);
                 }
             }
-
-            RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+            RequestDispatcher rd = request.getRequestDispatcher(cancerBookingInfoPage);
             rd.forward(request, response);
 
         } catch (Exception e) {
