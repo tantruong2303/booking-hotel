@@ -45,6 +45,7 @@ CREATE TABLE tbl_BookingInfo
 	startDate varchar(20),
 	endDate varchar(20),
 	numberOfDay int,
+	status int,
 	total float
 );
 go
@@ -69,4 +70,4 @@ VALUES('luxuryroom', 2);
 GO
 
 
-INSERT INTO tbl_Room (description,imageUrl,isDisable,price,roomTypeId)VALUES('Hello', '/url', 0, 123, 1);
+INSERT INTO tbl_Room (description,imageUrl,state,price,roomTypeId)VALUES('Hello', '/url', 0, 123, 1);

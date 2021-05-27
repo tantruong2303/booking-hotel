@@ -5,15 +5,19 @@
  */
 package controllers;
 
+import daos.BookingInfoDAO;
 import daos.ReviewDAO;
 import daos.RoomDAO;
 import daos.UserDAO;
+import dtos.BookingInfo;
 import dtos.Review;
 import dtos.Room;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,10 +30,10 @@ import utils.Validator;
 
 /**
  *
- * @author HaiCao
+ * @author Lenovo
  */
-@WebServlet(name = "AddReviewServlet", urlPatterns = {"/AddReviewServlet"})
-public class AddReviewServlet extends HttpServlet {
+@WebServlet(name = "AddBookingInfo", urlPatterns = {"/AddBookingInfo"})
+public class AddBookingInfo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,38 +50,48 @@ public class AddReviewServlet extends HttpServlet {
         ReviewDAO reviewDAO = new ReviewDAO();
         RoomDAO roomDAO = new RoomDAO();
         UserDAO userDAO = new UserDAO();
+        BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
         String errorPage = "error.jsp";
         String loginPage = "login.jsp";
-        String listReviewPage = "listReview.jsp";
+        String listRoomPage = "listRoom.jsp";
 
         try {
             if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
                 return;
             }
 
-            String message = Validator.getStringParam(request, "message", "message", 0, 1000, "");
-            int rate = Validator.getIntParams(request, "rate", "rate", 1, 5);
-            Date createDate = new Date(System.currentTimeMillis());
+            Integer roomId = Validator.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+            String startDate = Validator.getStringParam(request, "startDate", "Start Date", 1, 50);
+            String endDate = Validator.getStringParam(request, "endDate", "End Date", 1, 50);
+
+            Integer numberOfDay = bookingInfoDAO.computeNumberOfDay(request, startDate, endDate);
 
             HttpSession session = request.getSession();
             User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 
-            int roomId = Validator.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
             Room room = roomDAO.getRoomById(roomId);
-
-            Review review = new Review(message, rate, user, room);
-            boolean result = reviewDAO.addReview(review);
-
-            if (!result) {
-                RequestDispatcher rd = request.getRequestDispatcher(errorPage);
-                rd.forward(request, response);
-            } else {
-                RequestDispatcher rd = request.getRequestDispatcher(listReviewPage);
-                rd.forward(request, response);
+            if (room == null) {
+                request.setAttribute("roomIdError", "Invalid Room ID!");
             }
-        } catch (Exception e) {
-        }
 
+            if (startDate != null && endDate != null && numberOfDay != null && room != null && roomId != null) {
+                Float total = numberOfDay * room.getPrice();
+                BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay, -1, total);
+                boolean result = bookingInfoDAO.addBookingInfo(bookingInfo);
+
+                if (!result) {
+                    RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+                    rd.forward(request, response);
+                } else {
+                    RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+                    rd.forward(request, response);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // no nhay error a
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

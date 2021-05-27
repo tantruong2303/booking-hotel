@@ -88,7 +88,7 @@ public class RoomDAO {
 				int roomTypeIdSql = result.getInt("roomTypeId");
 				int numOfPeopleSql = result.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				Room room = new Room(roomIdSql, priceSql, isDisable, imageUrl, descriptionSql, roomType);
+				Room room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
 				pstmt.close();
 				return room;
 			}
@@ -126,7 +126,7 @@ public class RoomDAO {
 				int roomTypeIdSql = result.getInt("roomTypeId");
 				int numOfPeopleSql = result.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				Room room = new Room(roomIdSql, priceSql, isDisable, imageUrl, descriptionSql, roomType);
+				Room room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
 			pstmt.close();
