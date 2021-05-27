@@ -44,7 +44,7 @@
 
 					<tbody>
 						<% for (int i = 0; i < list.size(); i++) { %>
-						<tr class="<%= list.get(i).isIsDisable() ? "bg-red-200" :" bg-white" %>"> 
+						<tr class="<%= list.get(i).getState() == 0 ? "bg-red-200" :" bg-white" %>"> 
 							<td class="p-1 border border-black text-center"><%= i+1 %></td>
 							<td class="p-1 border border-black text-center"><%= list.get(i).getRoomId()%></td>
 							<td class="p-1 border border-black capitalize"><%= list.get(i).getRoomType().getName()%></td>

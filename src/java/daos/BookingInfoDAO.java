@@ -81,4 +81,32 @@ public class BookingInfoDAO {
             }
         }
     }
+
+    public boolean cancerBookingInfo(Integer bookingInfoId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            connection = Connector.getConnection();
+            String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE bookingInfoId = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, 0);
+            pstmt.setInt(2, bookingInfoId);
+
+            pstmt.executeUpdate();
+            connection.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        } finally {
+
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
 }

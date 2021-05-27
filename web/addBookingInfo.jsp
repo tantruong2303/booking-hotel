@@ -33,7 +33,7 @@
 
         %>
 
-        <h1>Login From</h1>
+        <h1>Booking From</h1>
         <form action="AddBookingInfo" method = "POST">
             <table>
                 <tr>
