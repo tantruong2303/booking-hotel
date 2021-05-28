@@ -66,8 +66,8 @@ public class RoomDAO {
 			Connection connection = Connector.getConnection();
 
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId "
-					+ "FROM tbl_Room " + "LEFT JOIN tbl_RoomType " + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
-					+ "WHERE roomId = ? ";
+				+ "FROM tbl_Room " + "LEFT JOIN tbl_RoomType " + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
+				+ "WHERE roomId = ? ";
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, roomId);
@@ -103,7 +103,7 @@ public class RoomDAO {
 			Connection connection = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY price "
-					+ order;
+				+ order;
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setFloat(1, numOfPeople);
@@ -124,6 +124,44 @@ public class RoomDAO {
 				int numOfPeopleSql = result.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 				Room room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
+				list.add(room);
+			}
+			pstmt.close();
+			return list;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer state) {
+		ArrayList<Room> list = new ArrayList<>();
+		try {
+			Connection connection = Connector.getConnection();
+			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
+			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND state = ? ORDER BY price "
+				+ order;
+
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setFloat(1, numOfPeople);
+			pstmt.setFloat(2, min);
+			pstmt.setFloat(3, max);
+			pstmt.setInt(4, state);
+			ResultSet result = pstmt.executeQuery();
+
+			while (result.next()) {
+				int roomIdSql = result.getInt("roomId");
+				float priceSql = result.getFloat("price");
+				String imageUrl = result.getString("imageUrl");
+				int stateSQL = result.getInt("state");
+				String descriptionSql = result.getString("description");
+				String nameSql = result.getString("name");
+				int roomTypeIdSql = result.getInt("roomTypeId");
+				int numOfPeopleSql = result.getInt("numOfPeople");
+				
+				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
+				Room room = new Room(roomIdSql, priceSql, stateSQL, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
 			pstmt.close();
