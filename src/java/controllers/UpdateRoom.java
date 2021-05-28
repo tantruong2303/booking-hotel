@@ -121,7 +121,7 @@ public class UpdateRoom extends HttpServlet {
 					Room newRoom = new Room(roomId, price, statePrams, room.getImageUrl(), description, roomType);
 					boolean result = roomDAO.updateRoom(newRoom);
 					if (!result) {
-						request.setAttribute("errorMessage", "some thing went wrong");
+						request.setAttribute("errorMessage", "Some thing went wrong");
 					} else {
 						response.sendRedirect(Routers.LIST_ROOM);
 						return;

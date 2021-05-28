@@ -56,9 +56,9 @@
 						<div class="grid grid-form justify-items-stretch  ">
 							<label for="priceOrder" class="block font-medium">Price Order</label>
 							<select name="priceOrder" id="priceOrder" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none">
-								<option value="ASC" selected="selected" label="low -> high">
+								<option value="ASC" selected="selected" label="Low -> High">
 								</option>
-								<option value="DESC"  label="high -> low">
+								<option value="DESC"  label="High -> Low">
 								</option>
 							</select>
 						</div>
