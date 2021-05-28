@@ -13,6 +13,7 @@ public class Room {
 
 	private int roomId;
 	private float price;
+        //0 disable 1 available 2 rent
 	private int state;
 	private String imageUrl;
 	private String description;

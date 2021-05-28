@@ -8,6 +8,7 @@ package daos;
 import dtos.BookingInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,7 +67,7 @@ public class BookingInfoDAO {
             pstmt.setFloat(7, bookingInfo.getTotal());
 
             pstmt.executeUpdate();
-            connection.close();
+          
             return true;
         } catch (SQLException e) {
             System.out.println(e);
@@ -82,7 +83,7 @@ public class BookingInfoDAO {
         }
     }
 
-    public boolean cancerBookingInfo(Integer bookingInfoId) throws SQLException {
+    public boolean cancelBookingInfo(Integer bookingInfoId) throws SQLException {
         Connection connection = null;
         PreparedStatement pstmt = null;
 
@@ -94,13 +95,56 @@ public class BookingInfoDAO {
             pstmt.setInt(2, bookingInfoId);
 
             pstmt.executeUpdate();
-            connection.close();
+
             return true;
         } catch (SQLException e) {
             System.out.println(e);
             return false;
         } finally {
 
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+    }
+
+    public BookingInfo getBookingInfoById(Integer bookingInfoId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet result = null;
+
+        try {
+            connection = Connector.getConnection();
+            String sql = "SELECT * tbl_BookingInfo WHERE bookingInfoId = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, 0);
+            pstmt.setInt(2, bookingInfoId);
+
+            result = pstmt.executeQuery();
+
+            if (result.next()) {
+                Integer bookingInfoIdSql = result.getInt("bookingInfoId");
+                Integer userIdSql = result.getInt("userId");
+                Integer roomIdSql = result.getInt("roomId");
+                String startDateSql = result.getString("startDate");
+                String endDateSql = result.getString("startDate");
+                Integer numberOfDaySql = result.getInt("numberOfDay");
+                Integer statusSql = result.getInt("status");
+                Float totalSql = result.getFloat("total");
+                return new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql, numberOfDaySql, statusSql, totalSql);
+            }
+
+            return null;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            if (result != null) {
+                result.close();
+            }
             if (pstmt != null) {
                 pstmt.close();
             }
