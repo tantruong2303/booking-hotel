@@ -66,17 +66,26 @@ public class AddBookingInfo extends HttpServlet {
 				if (room == null) {
 					request.setAttribute("roomIdError", "Room with the given Id was not found");
 				} else {
-					Float total = numberOfDay * room.getPrice();
-					BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay,
-							-1, total);
-					boolean result = bookingInfoDAO.addBookingInfo(bookingInfo);
-					if (!result) {
-						RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-						rd.forward(request, response);
-					} else {
-						RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
-						rd.forward(request, response);
-					}
+                                        if (room.getState() != 1) {
+                                                request.setAttribute("roomIdError", "Room is not available");
+                                        } else {
+                                                Float total = numberOfDay * room.getPrice();
+                                                BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay,
+                                                                -1, total);
+                                                boolean isAddBookingInfo = bookingInfoDAO.addBookingInfo(bookingInfo);
+                                                if (!isAddBookingInfo) {
+                                                        request.setAttribute("errorMessage", "Some thing went wrong");
+                                                } else {
+                                                        boolean isChangeState = roomDAO.changeState(room.getRoomId(), 2);
+                                                        if (!isChangeState) {
+                                                                request.setAttribute("errorMessage", "Some thing went wrong");
+                                                        }
+                                                        else {
+                                                                RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
+                                                                rd.forward(request, response);
+                                                        }
+                                                }
+                                        }	
 				}
 
 			}
