@@ -19,15 +19,13 @@
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<%
-		  
 			  ArrayList<Room> list = (ArrayList<Room>) GetParam.getClientAttribute( request,"rooms", new ArrayList<Room>());
-			
 		%>
 
 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
-			<div   class="flex flex-col items-center justify-between w-full p-4 mx-auto space-y-10 bg-white">
+			<div   class="flex flex-col items-center justify-start w-full p-4 mx-auto space-y-4 bg-white">
 				<form action="/RoomList" method = "POST" class="space-y-2 w-full">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
 					<div class="flex space-x-2">
@@ -74,9 +72,11 @@
 								</option>
 							</select>
 						</div>
+
 					</div>
 
-					<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300">Search</button>
+					<button  class=" px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300">Search</button>
+					<a href="/AddRoom" class=" px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300 inline-block">Add New Room</a>
 				</form>
 				<table  class="border  border-black w-full">
 					<thead>
@@ -88,7 +88,6 @@
 							<th class="w-40">Number Of People</th>
 							<th>Description</th>
 							<th>Photo</th>
-							<th></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -107,9 +106,6 @@
 							</td>
 							<td  class="p-1 border border-black text-center">
 								<a href="/UpdateRoom?roomId=<%= list.get(i).getRoomId()%>" class="bg-blue-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-blue-600">Update</a>
-							</td>
-							<td  class="p-1 border border-black text-center">
-								<a href="#" class="bg-red-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-red-600">Delete</a>
 							</td>
 						</tr>
 						<% }%>

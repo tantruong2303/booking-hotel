@@ -21,8 +21,6 @@
 			String passwordError =(String) GetParam.getClientAttribute(request,"passwordError", "" ); 
 			String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
 		%>
-
-
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">

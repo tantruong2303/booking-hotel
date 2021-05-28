@@ -113,8 +113,10 @@ public class UpdateRoom extends HttpServlet {
 			String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, extensions);
 			if (price != null && roomId != null && statePrams != null && roomTypeId != null) {
 
+
 				RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
 				Room room = roomDAO.getRoomById(roomId);
+				if (imageUrl == null) imageUrl = room.getImageUrl();
 				if (roomType == null) {
 					request.setAttribute("roomTypeId", "Room Type with the given Id was not found");
 				}
