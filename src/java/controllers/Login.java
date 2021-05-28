@@ -62,7 +62,7 @@ public class Login extends HttpServlet {
 				}
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
 			rd.forward(request, response);
 			return;
 		} catch (SQLException e) {

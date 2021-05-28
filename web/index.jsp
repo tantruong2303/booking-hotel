@@ -21,8 +21,10 @@
 	<body class="flex flex-col min-h-screen">
 		<%
 		  
-			  ArrayList<Room> list = (ArrayList<Room>) GetParam.getClientAttribute(request,"rooms", new ArrayList<Room>());
-			
+			ArrayList<Room> list = (ArrayList<Room>) GetParam.getClientAttribute(request,"rooms", new ArrayList<Room>());
+			String minPrice = (String) GetParam.getClientParams(request, "minPrice", "0");
+			String maxPrice = (String) GetParam.getClientParams(request, "maxPrice", "9999999");
+			String numOfPeople = (String) GetParam.getClientParams(request, "numOfPeople", "2");
 		%>
 
 
@@ -35,11 +37,11 @@
 					<div class="flex space-x-2">
 						<div class="grid grid-form justify-items-stretch  ">
 							<label for="minPrice" class="block font-medium">Min price</label>
-							<input type="number" value="0" name="minPrice" id="minPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+							<input type="number" value="<%=minPrice%>" name="minPrice" id="minPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
 						</div>
 						<div class="grid grid-form justify-items-stretch  ">
 							<label for="maxPrice" class="block font-medium">Max price</label>
-							<input type="number" value="9999999" name="maxPrice" id="maxPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+							<input type="number" value="<%=maxPrice%>" name="maxPrice" id="maxPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
 						</div>
 					</div>
 
@@ -47,7 +49,7 @@
 
 						<div class="grid grid-form justify-items-stretch  ">
 							<label for="numOfPeople" class="block font-medium">Number Of People</label>
-							<input type="number" value="2" name="numOfPeople" id="numOfPeople" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+							<input type="number" value="<%=numOfPeople%>" name="numOfPeople" id="numOfPeople" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
 						</div>
 
 

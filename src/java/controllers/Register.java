@@ -69,7 +69,7 @@ public class Register extends HttpServlet {
 				}
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.REGISTER);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.REGISTER_PAGE);
 			rd.forward(request, response);
 		} catch (IOException | SQLException | ServletException e) {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
