@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
+import daos.RoomDAO;
+import dtos.BookingInfo;
 import utils.GetParam;
 import utils.Helper;
 
@@ -22,23 +24,24 @@ import utils.Helper;
  *
  * @author Lenovo
  */
-@WebServlet(name = "CancerBookingInfo", urlPatterns = { "/CancelBookingInfo" })
+@WebServlet(name = "CancerBookingInfo", urlPatterns = {"/CancelBookingInfo"})
 public class CancelBookingInfo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
+        RoomDAO roomDAO = new RoomDAO();
 
         try {
             if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
@@ -49,16 +52,26 @@ public class CancelBookingInfo extends HttpServlet {
                     Integer.MAX_VALUE);
 
             if (bookingInfoId != null) {
-
-                boolean result = bookingInfoDAO.cancerBookingInfo(bookingInfoId);
-
-                if (!result) {
-                    RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-                    rd.forward(request, response);
+                BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoById(bookingInfoId);
+                if (bookingInfo == null) {
+                    request.setAttribute("cancelBookingInfoError", "Booking information with the given Id was not found");
                 } else {
-                    RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
-                    rd.forward(request, response);
+                    boolean isCancelBookingInfo = bookingInfoDAO.cancelBookingInfo(bookingInfoId);
+
+                    if (!isCancelBookingInfo) {
+                        request.setAttribute("errorMessage", "Some thing went wrong");
+                    } else {
+                        boolean isChangeState = roomDAO.changeState(bookingInfo.getRoomId(), 1);
+                        if (!isChangeState) {
+                            request.setAttribute("errorMessage", "Some thing went wrong");
+                        } else {
+                            RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
+                            rd.forward(request, response);
+                        }
+                    }
                 }
+
+                
             }
             RequestDispatcher rd = request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO);
             rd.forward(request, response);
@@ -74,10 +87,10 @@ public class CancelBookingInfo extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -88,10 +101,10 @@ public class CancelBookingInfo extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
