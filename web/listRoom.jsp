@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="utils.GetParam"%>
 <%@page import="utils.Validator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dtos.Room"%>
@@ -19,8 +20,8 @@
 	<body class="flex flex-col min-h-screen">
 		<%
 		  
-			  ArrayList<Room> list = (ArrayList<Room>) Validator.getClientParams( request,"rooms", new ArrayList<Room>());
-		
+			  ArrayList<Room> list = (ArrayList<Room>) GetParam.getClientAttribute( request,"rooms", new ArrayList<Room>());
+			
 		%>
 
 
@@ -55,7 +56,7 @@
 								<img src="<%= list.get(i).getImageUrl()%>" alt="alt" class="w-32"/>
 							</td>
 							<td  class="p-1 border border-black text-center">
-								<a href="/UpdateRoomServlet?roomId=<%= list.get(i).getRoomId()%>" class="bg-blue-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-blue-600">Update</a>
+								<a href="/UpdateRoom?roomId=<%= list.get(i).getRoomId()%>" class="bg-blue-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-blue-600">Update</a>
 							</td>
 							<td  class="p-1 border border-black text-center">
 								<a href="#" class="bg-red-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-red-600">Delete</a>

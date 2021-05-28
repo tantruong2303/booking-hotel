@@ -17,18 +17,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
-import utils.Validator;
 
 /**
  *
  * @author Lenovo
  */
-@WebServlet(urlPatterns = {"/AddRoomServlet"})
+@WebServlet(urlPatterns = {"/AddRoom"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 	* 100)
-public class AddRoomServlet extends HttpServlet {
+public class AddRoom extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -54,22 +54,18 @@ public class AddRoomServlet extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		RoomDAO roomDAO = new RoomDAO();
-		String addRoomPage = "addRoom.jsp";
-		String errorPage = "error.jsp";
-		String loginPage = "login.jsp";
 
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
 				return;
 			}
 			ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
-
 			request.setAttribute("roomTypes", roomTypes);
-			RequestDispatcher rd = request.getRequestDispatcher(addRoomPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_ROOM_PAGE);
 			rd.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		}
 	}
@@ -86,45 +82,50 @@ public class AddRoomServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-
 		RoomDAO roomDAO = new RoomDAO();
-		String listRoomPage = "/RoomListController";
-		String loginPage = "login.jsp";
-		String errorPage = "error.jsp";
 		String[] extensions = {"png", "jpg", "svg", "jpeg", "bmp"};
-
+		
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
 				return;
 			}
 
-			Float price = Validator.getFloatParams(request, "price", "Price", 1, 999999);
-			Integer statePrams = Validator.getIntParams(request, "state", "Is Disable", 0, 1);
-			String description = Validator.getStringParam(request, "description", "Description", 1, 500);
-			Integer roomTypeId = Validator.getIntParams(request, "roomTypeId", "Room type", 0, Integer.MAX_VALUE);
-			String imageUrl = Validator.getFileParam(request, "photo", "Image", 2000000, extensions);
+			Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
+			Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
+			Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
+			String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
+			Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 3);
+			System.out.println(roomTypeId);
+			String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, extensions);
 
-			if (price != null && statePrams != null && imageUrl != null && description != null
+			if (roomId != null && price != null && statePrams != null && imageUrl != null && description != null
 				&& roomTypeId != null) {
+
 				RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
+				Room isExistRoom = roomDAO.getRoomById(roomId);
 				if (roomType == null) {
-					request.setAttribute("updateRoomError", "Internal error!");
+					request.setAttribute("roomTypeIdError", "Room type with the given ID was not found");
+				} else if (isExistRoom != null) {
+					request.setAttribute("roomId", "Room with the given ID is taken");
 				} else {
 					Room newRoom = new Room(price, statePrams, imageUrl, description, roomType);
+
 					boolean result = roomDAO.addRoom(newRoom);
 					if (!result) {
-						request.setAttribute("addRoomError", "Internal error!");
+						request.setAttribute("errorMessage", "Some thing went wrong, please try again");
 					} else {
-						response.sendRedirect(listRoomPage);
+						response.sendRedirect(Routers.LIST_ROOM);
 						return;
 					}
+
 				}
 
 			}
 			this.doGet(request, response);
 			return;
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		}
 	}

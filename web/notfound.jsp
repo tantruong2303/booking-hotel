@@ -24,7 +24,8 @@
 						Opp.. Some Thing Went Wrong
 					</h1>
 					<a class="inline-block col-start-2 px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300" href="index.jsp">Go Back To Home</a>
-				</div><%@include file="./includes/footer.jsp" %>
+				</div>
+				<%@include file="./includes/footer.jsp" %>
 			</div>
 		</main>
 
