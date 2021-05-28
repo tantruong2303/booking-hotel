@@ -21,26 +21,25 @@ import javax.servlet.http.HttpSession;
 
 import constant.Routers;
 import utils.Helper;
-import utils.Validator;
 
 /**
  *
  * @author Lenovo
  */
-@WebServlet(name = "ViewUserInfo", urlPatterns = { "/ViewUserInfo" })
+@WebServlet(name = "ViewUserInfo", urlPatterns = {"/ViewUserInfo"})
 public class ViewUserInfo extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-	 * methods.
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
 
@@ -54,13 +53,12 @@ public class ViewUserInfo extends HttpServlet {
 			User existedUser = userDAO.getOneUserByUsername(username);
 			existedUser.setPassword("");
 			existedUser.setUserId(0);
-			request.setAttribute("userInfo", existedUser);
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO);
+			request.setAttribute("user", existedUser);
+		
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE);
 			rd.forward(request, response);
-
-			return;
-
 		} catch (Exception e) {
+			e.printStackTrace();
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		}
@@ -71,28 +69,28 @@ public class ViewUserInfo extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		processRequest(request, response);
 	}
 

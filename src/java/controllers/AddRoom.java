@@ -95,7 +95,6 @@ public class AddRoom extends HttpServlet {
 			Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
 			String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
 			Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 3);
-			System.out.println(roomTypeId);
 			String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, extensions);
 
 			if (roomId != null && price != null && statePrams != null && imageUrl != null && description != null

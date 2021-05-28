@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 public class Helper {
 
 	public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole,
-			int maxRole, String page) throws Exception {
+		int maxRole, String page) throws Exception {
 
 		if (!isLogin(request) || !correctRole(request, minRole, maxRole)) {
 			RequestDispatcher rd = request.getRequestDispatcher(page);
@@ -38,6 +38,9 @@ public class Helper {
 
 	public static boolean isLogin(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return false;
+		}
 		String username = (String) session.getAttribute("username");
 
 		return username != null;

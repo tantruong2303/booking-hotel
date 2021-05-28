@@ -5,27 +5,25 @@
  */
 package controllers;
 
+import constant.Routers;
 import daos.RoomDAO;
-import dtos.Room;
 import java.io.IOException;
-import java.util.ArrayList;
+import dtos.Room;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
 /**
  *
- * @author HaiCao
+ * @author heaty566
  */
-@WebServlet(name = "RoomListController", urlPatterns = {"/RoomList"})
-public class RoomList extends HttpServlet {
+@WebServlet(name = "ViewRoom", urlPatterns = {"/ViewRoom"})
+public class ViewRoom extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -40,37 +38,33 @@ public class RoomList extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		RoomDAO roomDAO = new RoomDAO();
+		
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
-			int numOfPeople = GetParam.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
-			float min = GetParam.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, 0);
-			float max = GetParam.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
-			Integer state = GetParam.getIntParams(request, "state", "State", 0, 3,3);
-			String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
-			ArrayList<Room> list;
-			if (state == 3) {
-				list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
-			} else {
-				list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, state);
+			Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+			if (roomId != null) {
+				Room room = roomDAO.getRoomById(roomId);
+				if (room != null) {
+					request.setAttribute("room", room);
+					System.out.println(room);
+					RequestDispatcher rd = request.getRequestDispatcher("viewRoomInfo.jsp");
+					rd.forward(request, response);
+					return;
+				}
 			}
 
-			request.setAttribute("rooms", list);
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
 			rd.forward(request, response);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
-
 		}
-
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
-	// + sign on the left to edit the code.">
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *

@@ -30,7 +30,7 @@
 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
-			<div   class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
+			<div   class="flex flex-col items-center justify-start w-4/5 p-4 mx-auto space-y-4 bg-white">
 
 				<form action="/Index" method = "POST" class="space-y-2 w-full">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
@@ -73,7 +73,7 @@
 						<div class="col-span-3 h-full border border-cerise-red-100">
 							<img src="<%= list.get(i).getImageUrl()%>" class="object-cover h-full w-full" />
 						</div>
-						<div class="col-span-5  relative px-2">
+						<a  href="/ViewRoom?roomId=<%= list.get(i).getRoomId()%>"class="block col-span-5  relative px-2">
 							<h1 class="font-semibold text-xl capitalize"><%= list.get(i).getRoomType().getName()%></h1>
 							<div class="text-"><%= list.get(i).getRoomType().getNumOfPeople()%> People(s)</div>
 							<div class="">
@@ -83,7 +83,7 @@
 								<span class="text-3xl font-medium">$<%= list.get(i).getPrice()%></span>
 							</div>
 
-						</div>
+						</a>
 					</div>
 
 
