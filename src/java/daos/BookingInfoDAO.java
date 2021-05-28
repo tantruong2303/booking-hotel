@@ -82,7 +82,7 @@ public class BookingInfoDAO {
         }
     }
 
-    public boolean cancerBookingInfo(Integer bookingInfoId) throws SQLException {
+    public boolean cancelBookingInfo(Integer bookingInfoId) throws SQLException {
         Connection connection = null;
         PreparedStatement pstmt = null;
 

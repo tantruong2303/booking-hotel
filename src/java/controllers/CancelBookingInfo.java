@@ -50,7 +50,7 @@ public class CancelBookingInfo extends HttpServlet {
 
             if (bookingInfoId != null) {
 
-                boolean result = bookingInfoDAO.cancerBookingInfo(bookingInfoId);
+                boolean result = bookingInfoDAO.cancelBookingInfo(bookingInfoId);
 
                 if (!result) {
                     RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
