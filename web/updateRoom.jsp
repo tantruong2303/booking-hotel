@@ -38,15 +38,15 @@
 						<div class="flex-1">
 							<img class="border rounded-sm border-cerise-red-500" src="<%= room.getImageUrl() %>" alt="photo" id="pre-photo"/>
 						</div>
-						<form method="POST" action="/UpdateRoom?roomId=<%= room.getRoomId() %>"   class="flex-1 px-2">
+						<form method="POST" action="/UpdateRoom?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">Room Type</label>
 
 								<select name="roomTypeId" class="p-1 block w-full  border rounded-sm border-cerise-red-500 focus:outline-none" >
 									<c:forEach items="${roomTypes}" var="roomType">
-									<option  ${room.getRoomType().getRoomTypeId() == roomType.getRoomTypeId()  ? 'selected="selected"' : ''} value="${roomType.getRoomTypeId()}"  label="${roomType.getName()} - ${roomType.getNumOfPeople()}  people(s)">
+										<option  ${room.getRoomType().getRoomTypeId() == roomType.getRoomTypeId()  ? 'selected="selected"' : ''} value="${roomType.getRoomTypeId()}"  label="${roomType.getName()} - ${roomType.getNumOfPeople()}  people(s)">
 
-									</option>
+										</option>
 									</c:forEach>
 								</select>
 								<p class="capitalize text-red-500"><%=roomTypeIdError %></p>
@@ -62,7 +62,10 @@
 								<p class="capitalize text-red-500"><%=descriptionError %></p>
 							</div>					
 
-
+							<div class="space-y-2">
+								<label class="font-medium" for="photo">Photo</label>
+								<input type="file" name="photo" class="block" id="photo"/> 
+							</div>
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">State</label>
 								<div class="">
@@ -78,6 +81,7 @@
 										<label for="state3" >Rent</label>
 										<input type="radio" name="state" id="state3" value="2" ${room.getState() == 2  ?  'checked="checked"' : ''}/>
 									</span>
+
 								</div>
 
 								<p class="capitalize text-red-500"><%=stateError %></p>
@@ -96,7 +100,20 @@
 
 			</div>
 		</main>
+		<script>
+				window.onload = function (){
+					document.getElementById("photo").addEventListener("change", function (){
+						const reader = new FileReader();
+						reader.onload = function() {
+							const dataURL = reader.result;
+							const output = document.getElementById("pre-photo");
+							output.src = dataURL;
+						};
+						reader.readAsDataURL(this.files[0]);			
+					}, false);
+				};				
+								
+		</script>
 
-		
 	</body>
 </html>
