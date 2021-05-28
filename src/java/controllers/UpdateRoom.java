@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
+import javax.servlet.annotation.MultipartConfig;
 import utils.GetParam;
 import utils.Helper;
 
@@ -26,6 +27,8 @@ import utils.Helper;
  * @author Lenovo
  */
 @WebServlet(name = "UpdateRoomServlet", urlPatterns = {"/UpdateRoom"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
+	* 100)
 public class UpdateRoom extends HttpServlet {
 
 	/**
@@ -95,7 +98,7 @@ public class UpdateRoom extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		RoomDAO roomDAO = new RoomDAO();
-	
+		String[] extensions = {"png", "jpg", "svg", "jpeg", "bmp"};
 		try {
 
 			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
@@ -107,7 +110,7 @@ public class UpdateRoom extends HttpServlet {
 			Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 2);
 			String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
 			Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
-
+			String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, extensions);
 			if (price != null && roomId != null && statePrams != null && roomTypeId != null) {
 
 				RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
@@ -118,14 +121,13 @@ public class UpdateRoom extends HttpServlet {
 				if (room == null) {
 					request.setAttribute("errorMessage", "Room with the given Id was not found");
 				} else {
-					Room newRoom = new Room(roomId, price, statePrams, room.getImageUrl(), description, roomType);
+					Room newRoom = new Room(roomId, price, statePrams, imageUrl, description, roomType);
 					boolean result = roomDAO.updateRoom(newRoom);
 					if (!result) {
-						request.setAttribute("errorMessage", "some thing went wrong");
+						request.setAttribute("errorMessage", "Some thing went wrong");
 					} else {
 						response.sendRedirect(Routers.LIST_ROOM);
 						return;
-
 					}
 
 				}
