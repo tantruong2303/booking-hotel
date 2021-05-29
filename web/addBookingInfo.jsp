@@ -18,8 +18,6 @@
 		<%
 			Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
 			String errorMessage =(String)  GetParam.getClientAttribute(request, "errorMessage", ""); 
-			String startDateError =(String) GetParam.getClientAttribute(request,"startDateError", "" ); 
-			String endDateError =(String) GetParam.getClientAttribute(request,"endDateError", "" ); 
 		%> 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">

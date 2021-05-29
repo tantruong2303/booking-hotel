@@ -53,14 +53,12 @@ public class AddBookingInfo extends HttpServlet {
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
 				return;
-			}
+			}   
 
 			Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
-			String startDate = GetParam.getStringParam(request, "startDate", "Start Date", 1, 50);
-			String endDate = GetParam.getStringParam(request, "endDate", "End Date", 1, 50);
-			System.out.println(startDate);
-			System.out.println(roomId);
-			System.out.println(endDate);
+			String startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
+			String endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
+
 			if (startDate != null && endDate != null && roomId != null) {
 				Integer numberOfDay = bookingInfoDAO.computeNumberOfDay(request, startDate, endDate);
 
@@ -68,7 +66,7 @@ public class AddBookingInfo extends HttpServlet {
 				User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 
 				Room room = roomDAO.getRoomById(roomId);
-				System.out.println(numberOfDay);
+
 				if (numberOfDay == null || numberOfDay <= 0) {
 					request.setAttribute("errorMessage", "The time which picked is invalid");
 				} else if (room == null) {
@@ -100,9 +98,17 @@ public class AddBookingInfo extends HttpServlet {
 				}
 
 			}
-			System.out.println("hello");
+                        if (roomId != null) {
+                                Room room = roomDAO.getRoomById(roomId);
+                                request.setAttribute("room", room);
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
 			rd.forward(request, response);
+                        }
+                        else {
+                            RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
+                        }
+                        
 
 		} catch (Exception e) {
 			e.printStackTrace();

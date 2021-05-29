@@ -1,5 +1,10 @@
 package utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,4 +85,33 @@ public class Helper {
 		}
 		return false;
 	}
+        
+        public static Integer convertStringDateToInteger(String date) {
+                try {
+                        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+                        Date dateTypeDate = formatter1.parse(date);
+                        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyyMMdd");
+                        return Integer.parseInt(formatter2.format(dateTypeDate));
+                } catch (ParseException e) {
+                        return null;
+                }
+        }
+        
+        public static Date convertStringToDate(String date){
+                try {
+                        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+                        return formatter1.parse(date);
+                } catch (ParseException e) {
+                        return null;
+                }
+        }
+        
+        public static Date getToDayTime(){
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+        
+                return convertStringToDate( formatter.format(calendar.getTime()));
+        }
+  
 }
