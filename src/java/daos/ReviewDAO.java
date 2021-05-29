@@ -54,25 +54,25 @@ public class ReviewDAO {
 	}
 
 	public ArrayList<Review> getReviewByRoomId(int roomId) {
-            
+
 		try {
 			Connection connection = Connector.getConnection();
-                        RoomDAO roomDAO = new RoomDAO();
-                        UserDAO userDAO = new UserDAO();
+			RoomDAO roomDAO = new RoomDAO();
+			UserDAO userDAO = new UserDAO();
 			ArrayList<Review> reviews = new ArrayList<>();
 
 			String sql = "SELECT rate, message, tbl_User.fullName as fullName, tbl_User.username as username FROM tbl_Review LEFT JOIN tbl_User  ON  tbl_User.userId = tbl_Review.userId  WHERE tbl_Review.roomId = ? ";
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, roomId);
 			ResultSet result = pstmt.executeQuery();
-                        
+
 			while (result.next()) {
 				int rate = result.getInt("rate");
 				String message = result.getString("message");
 				String username = result.getString("username");
-                                User user = userDAO.getOneUserByUsername(username);
-                                Room room = roomDAO.getRoomById(roomId);
-                                
+				User user = userDAO.getOneUserByUsername(username);
+				Room room = roomDAO.getRoomById(roomId);
+
 				Review review = new Review(message, rate, user, room);
 				reviews.add(review);
 			}
