@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import utils.Connector;
@@ -24,18 +25,18 @@ import utils.Helper;
 public class BookingInfoDAO {
 
 	public Integer computeNumberOfDay(HttpServletRequest request, String startDate, String endDate) {
+		if (startDate != null && endDate != null) {
 
-		Integer start = Helper.convertStringDateToInteger(startDate);
-		Integer end = Helper.convertStringDateToInteger(endDate);
+			Date start = Helper.convertStringToDate(startDate);
+			Date end = Helper.convertStringToDate(endDate);
 
-		if (start != null && end != null) {
-
-			if (start > end) {
-				request.setAttribute("startDateError", "Start day must be before end day!");
+			if (start.after(end)) {
+				request.setAttribute("errorMessage", "Start day must be before end day!");
 				return null;
+			} else {
+				long diff = end.getTime() - start.getTime();
+				return (int) (diff / (1000 * 60 * 60 * 24));
 			}
-
-			return end - start;
 		}
 		return null;
 	}
@@ -79,7 +80,7 @@ public class BookingInfoDAO {
 
 		try {
 			connection = Connector.getConnection();
-			String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE bookingInfoId = ?";
+			String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE roomId = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, status);
 			pstmt.setInt(2, bookingInfoId);
@@ -101,14 +102,47 @@ public class BookingInfoDAO {
 		}
 	}
 
-	public BookingInfo getBookingInfoById(Integer bookingInfoId) throws SQLException {
+	public ArrayList<BookingInfo> getBookingWithUserId(Integer userId) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet result = null;
+		
+		try {
+			connection = Connector.getConnection();
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, userId);
+			result = pstmt.executeQuery();
+			ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
+
+			while (result.next()) {
+				Integer bookingInfoIdSql = result.getInt("bookingInfoId");
+				Integer userIdSql = result.getInt("userId");
+				Integer roomIdSql = result.getInt("roomId");
+				String startDateSql = result.getString("startDate");
+				String endDateSql = result.getString("endDate");
+				Integer numberOfDaySql = result.getInt("numberOfDay");
+				Integer statusSql = result.getInt("status");
+				Float totalSql = result.getFloat("total");
+				BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql, numberOfDaySql,
+					statusSql, totalSql);
+				bookingInfos.add(bookingInfo);
+			}
+			result.close();
+			return bookingInfos;
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+
+	public BookingInfo getBookingInfoByRoomId(Integer bookingInfoId) throws SQLException {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
 
 		try {
 			connection = Connector.getConnection();
-			String sql = "SELECT * FROM tbl_BookingInfo WHERE bookingInfoId = ?";
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE roomId = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, bookingInfoId);
 
@@ -119,11 +153,12 @@ public class BookingInfoDAO {
 				Integer userIdSql = result.getInt("userId");
 				Integer roomIdSql = result.getInt("roomId");
 				String startDateSql = result.getString("startDate");
-				String endDateSql = result.getString("startDate");
+				String endDateSql = result.getString("endDate");
 				Integer numberOfDaySql = result.getInt("numberOfDay");
 				Integer statusSql = result.getInt("status");
 				Float totalSql = result.getFloat("total");
-				return new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql, numberOfDaySql, statusSql, totalSql);
+				return new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql, numberOfDaySql,
+					statusSql, totalSql);
 			}
 
 			return null;

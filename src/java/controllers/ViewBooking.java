@@ -10,10 +10,10 @@ import daos.BookingInfoDAO;
 import daos.RoomDAO;
 import daos.UserDAO;
 import dtos.BookingInfo;
-import dtos.Room;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,8 +28,8 @@ import utils.Helper;
  *
  * @author heaty566
  */
-@WebServlet(name = "Checkout", urlPatterns = {"/CheckOut"})
-public class CheckOut extends HttpServlet {
+@WebServlet(name = "ViewBooking", urlPatterns = {"/ViewBooking"})
+public class ViewBooking extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -42,49 +42,36 @@ public class CheckOut extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-
 		response.setContentType("text/html;charset=UTF-8");
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
-		RoomDAO roomDAO = new RoomDAO();
+		UserDAO userDAO = new UserDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
 
-			Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 1,
-				Integer.MAX_VALUE);
+			HttpSession session = request.getSession(false);
+			User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 
-			if (roomId != null) {
-				BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByRoomId(roomId);
-				if (bookingInfo == null) {
-					request.setAttribute("errorMessage", "Booking information with the given Id was not found");
-				} else {
-					boolean isUpdate = bookingInfoDAO.updateBookingInfopStatus(roomId, 1);
-					if (!isUpdate) {
-						request.setAttribute("errorMessage", "Some thing went wrong");
-					} else {
-						boolean isChangeState = roomDAO.changeState(bookingInfo.getRoomId(), 1);
-						if (!isChangeState) {
-							request.setAttribute("errorMessage", "Some thing went wrong");
-						} else {
-							response.sendRedirect(Routers.LIST_ROOM);
-							return;
-						}
-					}
-				}
-
+			if (user != null) {
+				ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingWithUserId(user.getUserId());
+			
+				request.setAttribute("bookingInfos", bookingInfos);
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE);
+				rd.forward(request, response);
+				return;
 			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
-			rd.forward(request, response);
-			return;
 
 		} catch (Exception e) {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 			return;
 		}
+		RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
+		rd.forward(request, response);
+		return;
 
 	}
 
@@ -115,7 +102,6 @@ public class CheckOut extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		processRequest(request, response);
-
 	}
 
 	/**

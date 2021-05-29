@@ -20,6 +20,8 @@ import daos.ReviewDAO;
 import daos.RoomDAO;
 import daos.UserDAO;
 import dtos.BookingInfo;
+import dtos.User;
+import javax.servlet.http.HttpSession;
 import utils.GetParam;
 import utils.Helper;
 
@@ -42,14 +44,62 @@ public class CancelBookingInfo extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		ReviewDAO reviewDAO = new ReviewDAO();
-		RoomDAO roomDAO = new RoomDAO();
-		UserDAO userDAO = new UserDAO();
-		String errorPage = "error.jsp";
-		String loginPage = "login.jsp";
-		String listReviewPage = "listReview.jsp";
+		processRequest(request, response);
 
+	}
+
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+
+		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
+		RoomDAO roomDAO = new RoomDAO();
+		UserDAO userDao = new UserDAO();
+
+		try {
+			System.out.println("--------------");
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+				return;
+			}
+
+			Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 1,
+				Integer.MAX_VALUE);
+		
+			if (roomId != null) {
+				BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByRoomId(roomId);
+				HttpSession session = request.getSession(false);
+				User user = userDao.getOneUserByUsername((String) session.getAttribute("username"));
+				if (bookingInfo == null) {
+					request.setAttribute("errorMessage", "Booking information with the given Id was not found");
+				} else if (user.getRole() != 1 && bookingInfo.getUserId() != (user.getUserId())) {
+					request.setAttribute("errorMessage", "Action is not allow");
+				} else {
+					System.out.println("--dsad------------");
+					boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(roomId, 0);
+					if (!isCancelBookingInfo) {
+						request.setAttribute("errorMessage", "Some thing went wrong");
+					} else {
+						boolean isChangeState = roomDAO.changeState(bookingInfo.getRoomId(), 1);
+						if (!isChangeState) {
+							request.setAttribute("errorMessage", "Some thing went wrong");
+						} else {
+							response.sendRedirect(Routers.VIEW_BOOKING);
+							return;
+						}
+					}
+				}
+
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE);
+			rd.forward(request, response);
+			return;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
+			return;
+		}
 	}
 
 	/**
@@ -63,49 +113,7 @@ public class CancelBookingInfo extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-
-		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
-		RoomDAO roomDAO = new RoomDAO();
-
-		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
-				return;
-			}
-
-			Integer bookingInfoId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 1,
-				Integer.MAX_VALUE);
-
-			if (bookingInfoId != null) {
-				BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoById(bookingInfoId);
-				if (bookingInfo == null) {
-					request.setAttribute("cancelBookingInfoError", "Booking information with the given Id was not found");
-				} else {
-					boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(bookingInfoId, 0);
-					if (!isCancelBookingInfo) {
-						request.setAttribute("errorMessage", "Some thing went wrong");
-					} else {
-						boolean isChangeState = roomDAO.changeState(bookingInfo.getRoomId(), 1);
-						if (!isChangeState) {
-							request.setAttribute("errorMessage", "Some thing went wrong");
-						} else {
-							RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
-							rd.forward(request, response);
-							return;
-						}
-					}
-				}
-
-			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE);
-			rd.forward(request, response);
-			return;
-
-		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
-			return;
-		}
+		processRequest(request, response);
 	}
 
 	/**

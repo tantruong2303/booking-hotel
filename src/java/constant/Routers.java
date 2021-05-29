@@ -16,7 +16,9 @@ public class Routers {
 	public final static String UPDATE_USER_PAGE = "updateUserInfo.jsp";
 	public final static String VIEW_USER_INFO_PAGE = "viewUserInfo.jsp";
 	public final static String VIEW_ROOM_INFO_PAGE = "viewRoomInfo.jsp";
+	public final static String VIEW_BOOKING_PAGE = "viewBooking.jsp";
 
+	public final static String VIEW_BOOKING = "/ViewBooking";
 	public final static String VIEW_ROOM_INFO = "/ViewRoom";
 	public final static String ADD_BOOKING_INFO = "/AddBookingInfo";
 	public final static String ADD_REVIEW = "/AddReview";

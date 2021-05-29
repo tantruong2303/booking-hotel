@@ -24,6 +24,7 @@ import constant.Routers;
 import daos.ReviewDAO;
 import dtos.Review;
 import java.util.ArrayList;
+import java.util.Date;
 import utils.GetParam;
 import utils.Helper;
 
@@ -61,7 +62,6 @@ public class AddBookingInfo extends HttpServlet {
 
 			if (startDate != null && endDate != null && roomId != null) {
 				Integer numberOfDay = bookingInfoDAO.computeNumberOfDay(request, startDate, endDate);
-
 				HttpSession session = request.getSession(false);
 				User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 
