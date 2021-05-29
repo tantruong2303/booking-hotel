@@ -20,6 +20,7 @@
 	<body class="flex flex-col min-h-screen">
 		<%
 			  ArrayList<Room> list = (ArrayList<Room>) GetParam.getClientAttribute( request,"rooms", new ArrayList<Room>());
+			  String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
 		%>
 
 
@@ -28,6 +29,9 @@
 			<div   class="flex flex-col items-center justify-start w-full p-4 mx-auto space-y-4 bg-white">
 				<form action="/RoomList" method = "POST" class="space-y-2 w-full">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
+					<p class="col-start-2 text-red-500 ">
+						<%=errorMessage%>
+					</p>
 					<div class="flex space-x-2">
 						<div class="grid grid-form justify-items-stretch  ">
 							<label for="minPrice" class="block font-medium">Min price</label>
@@ -89,6 +93,8 @@
 							<th>Description</th>
 							<th>Photo</th>
 							<th></th>
+							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 
@@ -104,9 +110,17 @@
 							<td  class="p-1 border border-black">
 								<img src="<%= list.get(i).getImageUrl()%>" alt="alt" class="w-32"/>
 							</td>
+
+							<% if ( list.get(i).getState() == 2)  {%>
+							<td class="p-1 border border-black text-center">
+								<a href="/CheckOut?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to checkout') " class="bg-blue-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-blue-600">Check Out</a>
+							</td>
+						
+							<% } else { %>
 							<td  class="p-1 border border-black text-center">
 								<a href="/UpdateRoom?roomId=<%= list.get(i).getRoomId()%>" class="bg-blue-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-blue-600">Update</a>
 							</td>
+							<% } %>
 						</tr>
 						<% }%>
 					</tbody>

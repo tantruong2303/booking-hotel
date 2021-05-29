@@ -9,6 +9,9 @@
 		<li>
 			<a href="/ViewUserInfo" class="duration-200 hover:text-cerise-red">My Profile</a>
 		</li>
+		<li>
+			<a href="/ViewBooking" class="duration-200 hover:text-cerise-red">View Booking</a>
+		</li>
 		<% if (Helper.correctRole(request, 1,1)){ %>
 
 		<li>
