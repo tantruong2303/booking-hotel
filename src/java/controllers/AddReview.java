@@ -49,8 +49,6 @@ public class AddReview extends HttpServlet {
 		UserDAO userDAO = new UserDAO();
 
 		try {
-			
-			System.out.println("hello");
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
@@ -69,7 +67,7 @@ public class AddReview extends HttpServlet {
 					Review review = new Review(message, rate, user, room);
 					boolean result = reviewDAO.addReview(review);
 					if (result) {
-						RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE + "?roomId" + roomId);
+						RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO + "?roomId=" + roomId);
 						rd.forward(request, response);
 					}
 				}
