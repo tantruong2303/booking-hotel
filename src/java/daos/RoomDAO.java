@@ -97,6 +97,8 @@ public class RoomDAO {
 		return null;
 	}
 
+	
+
 	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder) {
 		ArrayList<Room> list = new ArrayList<>();
 		try {
@@ -159,7 +161,7 @@ public class RoomDAO {
 				String nameSql = result.getString("name");
 				int roomTypeIdSql = result.getInt("roomTypeId");
 				int numOfPeopleSql = result.getInt("numOfPeople");
-				
+
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 				Room room = new Room(roomIdSql, priceSql, stateSQL, imageUrl, descriptionSql, roomType);
 				list.add(room);

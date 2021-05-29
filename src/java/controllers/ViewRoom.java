@@ -6,9 +6,11 @@
 package controllers;
 
 import constant.Routers;
+import daos.ReviewDAO;
 import daos.RoomDAO;
 import java.io.IOException;
 import dtos.Room;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
+import dtos.Review;
 
 /**
  *
@@ -38,7 +41,8 @@ public class ViewRoom extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		RoomDAO roomDAO = new RoomDAO();
-		
+		ReviewDAO reviewDAO = new ReviewDAO();
+
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
@@ -46,10 +50,12 @@ public class ViewRoom extends HttpServlet {
 			Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
 			if (roomId != null) {
 				Room room = roomDAO.getRoomById(roomId);
-				if (room != null) {
+				ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
+				if (room != null && reviews != null) {
 					request.setAttribute("room", room);
-					System.out.println(room);
-					RequestDispatcher rd = request.getRequestDispatcher("viewRoomInfo.jsp");
+					request.setAttribute("reviews", reviews);
+
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE);
 					rd.forward(request, response);
 					return;
 				}

@@ -62,12 +62,10 @@ public class UpdateRoom extends HttpServlet {
 			}
 			Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
 			if (roomId != null) {
-
 				Room room = roomDAO.getRoomById(roomId);
 				if (room == null) {
 					request.setAttribute("messageError", "Room with the given id was not found");
 				} else {
-
 					request.setAttribute("room", room);
 					ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
 					request.setAttribute("roomTypes", roomTypes);
