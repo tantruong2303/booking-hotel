@@ -24,18 +24,19 @@ import utils.Helper;
 public class BookingInfoDAO {
     
     public Integer computeNumberOfDay(HttpServletRequest request, String startDate, String endDate) {
-
-        Integer start = Helper.convertStringDateToInteger(startDate);
-        Integer end = Helper.convertStringDateToInteger(endDate);
-
-        if (start != null && end != null) {
-
-            if (start > end) {
-                request.setAttribute("startDateError", "Start day must be before end day!");
+        if (startDate != null && endDate != null) {
+            
+             Date start = Helper.convertStringToDate(startDate);
+             Date end = Helper.convertStringToDate(endDate);
+               
+            if (start.after(end)) {
+                request.setAttribute("errorMessage", "Start day must be before end day!");
                 return null;
             }
-
-            return end - start;
+            else {
+                 long diff = end.getTime() - start.getTime();
+                 return (int) (diff / (1000*60*60*24));
+            }
         }
         return null;
     }
