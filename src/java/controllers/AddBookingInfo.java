@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+import daos.ReviewDAO;
+import dtos.Review;
+import java.util.ArrayList;
 import utils.GetParam;
 import utils.Helper;
 
@@ -28,72 +31,81 @@ import utils.Helper;
  *
  * @author Lenovo
  */
-@WebServlet(name = "AddBookingInfo", urlPatterns = { "/AddBookingInfo" })
+@WebServlet(name = "AddBookingInfo", urlPatterns = {"/AddBookingInfo"})
 public class AddBookingInfo extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-	 * methods.
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDAO = new UserDAO();
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
 				return;
 			}
 
 			Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
 			String startDate = GetParam.getStringParam(request, "startDate", "Start Date", 1, 50);
 			String endDate = GetParam.getStringParam(request, "endDate", "End Date", 1, 50);
+			System.out.println(startDate);
+			System.out.println(roomId);
+			System.out.println(endDate);
+			if (startDate != null && endDate != null && roomId != null) {
+				Integer numberOfDay = bookingInfoDAO.computeNumberOfDay(request, startDate, endDate);
 
-			Integer numberOfDay = bookingInfoDAO.computeNumberOfDay(request, startDate, endDate);
+				HttpSession session = request.getSession(false);
+				User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 
-			HttpSession session = request.getSession();
-			User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
-
-			if (startDate != null && endDate != null && numberOfDay != null && roomId != null) {
 				Room room = roomDAO.getRoomById(roomId);
-				if (room == null) {
+				System.out.println(numberOfDay);
+				if (numberOfDay == null || numberOfDay <= 0) {
+					request.setAttribute("errorMessage", "The time which picked is invalid");
+				} else if (room == null) {
 					request.setAttribute("roomIdError", "Room with the given Id was not found");
+					
 				} else {
-                                        if (room.getState() != 1) {
-                                                request.setAttribute("roomIdError", "Room is not available");
-                                        } else {
-                                                Float total = numberOfDay * room.getPrice();
-                                                BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay,
-                                                                -1, total);
-                                                boolean isAddBookingInfo = bookingInfoDAO.addBookingInfo(bookingInfo);
-                                                if (!isAddBookingInfo) {
-                                                        request.setAttribute("errorMessage", "Some thing went wrong");
-                                                } else {
-                                                        boolean isChangeState = roomDAO.changeState(room.getRoomId(), 2);
-                                                        if (!isChangeState) {
-                                                                request.setAttribute("errorMessage", "Some thing went wrong");
-                                                        }
-                                                        else {
-                                                                RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
-                                                                rd.forward(request, response);
-                                                        }
-                                                }
-                                        }	
+					if (room.getState() != 1) {
+
+						request.setAttribute("roomIdError", "Room is not available");
+					} else {
+						Float total = numberOfDay * room.getPrice();
+						BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay,
+							-1, total);
+						boolean isAddBookingInfo = bookingInfoDAO.addBookingInfo(bookingInfo);
+						if (!isAddBookingInfo) {
+							request.setAttribute("errorMessage", "Some thing went wrong");
+						} else {
+							boolean isChangeState = roomDAO.changeState(room.getRoomId(), 2);
+							if (!isChangeState) {
+								request.setAttribute("errorMessage", "Some thing went wrong");
+							} else {
+
+								RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX);
+								rd.forward(request, response);
+								return;
+							}
+						}
+					}
 				}
 
 			}
-
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
+			System.out.println("hello");
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
 			rd.forward(request, response);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		}
@@ -104,28 +116,56 @@ public class AddBookingInfo extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		processRequest(request, response);
+		throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		RoomDAO roomDAO = new RoomDAO();
+		ReviewDAO reviewDAO = new ReviewDAO();
+
+		try {
+			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
+				return;
+			}
+			Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+			if (roomId != null) {
+				Room room = roomDAO.getRoomById(roomId);
+				ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
+				if (room != null && reviews != null) {
+					request.setAttribute("room", room);
+					request.setAttribute("reviews", reviews);
+
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
+					rd.forward(request, response);
+					return;
+				}
+			}
+
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+			rd.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
+		}
 	}
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
