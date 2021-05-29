@@ -13,7 +13,8 @@ public class Room {
 
 	private int roomId;
 	private float price;
-	private boolean isDisable;
+        //0 disable 1 available 2 rent
+	private int state;
 	private String imageUrl;
 	private String description;
 	private RoomType roomType;
@@ -21,19 +22,19 @@ public class Room {
 	public Room() {
 	}
 
-	public Room(int roomId, float price, boolean isDisable, String imageUrl, String description, RoomType roomType) {
+	public Room(int roomId, float price, int state, String imageUrl, String description, RoomType roomType) {
 		this.roomId = roomId;
 		this.price = price;
-		this.isDisable = isDisable;
+		this.state = state;
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.roomType = roomType;
 	}
 
-	public Room(float price, boolean isDisable, String imageUrl, String description, RoomType roomType) {
+	public Room(float price, int state, String imageUrl, String description, RoomType roomType) {
 
 		this.price = price;
-		this.isDisable = isDisable;
+		this.state = state;
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.roomType = roomType;
@@ -55,12 +56,12 @@ public class Room {
 		this.price = price;
 	}
 
-	public boolean isIsDisable() {
-		return isDisable;
+	public int getState() {
+		return state;
 	}
 
-	public void setIsDisable(boolean isDisable) {
-		this.isDisable = isDisable;
+	public void setState(int state) {
+		this.state = state;
 	}
 
 	public String getImageUrl() {
@@ -85,6 +86,11 @@ public class Room {
 
 	public void setRoomType(RoomType roomType) {
 		this.roomType = roomType;
+	}
+
+	@Override
+	public String toString() {
+		return "Room{" + "roomId=" + roomId + ", price=" + price + ", state=" + state + ", imageUrl=" + imageUrl + ", description=" + description + ", roomType=" + roomType + '}';
 	}
 
 }

@@ -5,28 +5,27 @@
  */
 package controllers;
 
-import daos.AuthDAO;
-import daos.UserDAO;
+import daos.RoomDAO;
+import dtos.Room;
+import dtos.RoomType;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import utils.Validator;
-import dtos.User;
-import java.sql.SQLException;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpSession;
-import utils.Helper;
+
+import constant.Routers;
+import utils.GetParam;
 
 /**
  *
- * @author HaiCao
+ * @author heaty566
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "IndexServlet", urlPatterns = {"/Index"})
+public class Index extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -40,44 +39,22 @@ public class RegisterServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		UserDAO userDAO = new UserDAO();
-		AuthDAO auth = new AuthDAO();
 
-		String registerPage = "register.jsp";
-		String loginPage = "login.jsp";
+		RoomDAO roomDAO = new RoomDAO();
 
 		try {
-			String username = Validator.getStringParam(request, "username", "Username", 1, 50);
-			String password = Validator.getStringParam(request, "password", "Password", 1, 50);
-			String confirmPassword = Validator.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-			String fullName = Validator.getStringParam(request, "fullName", "FullName", 1, 50);
-			String email = Validator.getStringParam(request, "email", "Email", 1, 50);
-			String phone = Validator.getStringParam(request, "phone", "Phone", 1, 20);
-			Integer role = Validator.getIntParams(request, "role", "Role", 0, 1, 0);
+			int numOfPeople = GetParam.getIntParams(request, "numOfPeople", "Number of people", 1, 10, 1);
+			float min = GetParam.getFloatParams(request, "minPrice", "price", 1, Float.MAX_VALUE, 0);
+			float max = GetParam.getFloatParams(request, "maxPrice", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
+			String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
+			ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, 1);
 
-			if (username != null && password != null && confirmPassword != null && fullName != null && email != null
-				&& phone != null && role != null) {
-
-				User existedUser = userDAO.getOneUserByUsername(username);
-				if (existedUser != null) {
-
-					request.setAttribute("usernameError", "Username is taken");
-				} else if (!password.equals(confirmPassword)) {
-					request.setAttribute("confirmPassword", "Confirm Password is not matches password");
-				} else {
-
-					password = Helper.encrypt(password, 28);
-					User newUser = new User(username, password, fullName, email, phone, role);
-					auth.addUser(newUser);
-					RequestDispatcher rd = request.getRequestDispatcher(loginPage);
-					rd.forward(request, response);
-					return;
-				}
-			}
-
-			RequestDispatcher rd = request.getRequestDispatcher(registerPage);
+			request.setAttribute("rooms", list);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
 			rd.forward(request, response);
-		} catch (IOException | SQLException | ServletException e) {
+		} catch (IOException | ServletException e) {
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 
 		}
 	}

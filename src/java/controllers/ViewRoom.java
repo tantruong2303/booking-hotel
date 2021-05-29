@@ -5,20 +5,28 @@
  */
 package controllers;
 
+import constant.Routers;
+import daos.ReviewDAO;
+import daos.RoomDAO;
 import java.io.IOException;
+import dtos.Room;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import utils.GetParam;
+import utils.Helper;
+import dtos.Review;
 
 /**
  *
- * @author HaiCao
+ * @author heaty566
  */
-@WebServlet(name = "AddReviewServlet", urlPatterns = {"/AddReviewServlet"})
-public class AddReviewServlet extends HttpServlet {
+@WebServlet(name = "ViewRoom", urlPatterns = {"/ViewRoom"})
+public class ViewRoom extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -32,7 +40,34 @@ public class AddReviewServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+		RoomDAO roomDAO = new RoomDAO();
+		ReviewDAO reviewDAO = new ReviewDAO();
 
+		try {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+				return;
+			}
+			Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+			if (roomId != null) {
+				Room room = roomDAO.getRoomById(roomId);
+				ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
+				if (room != null && reviews != null) {
+					request.setAttribute("room", room);
+					request.setAttribute("reviews", reviews);
+
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE);
+					rd.forward(request, response);
+					return;
+				}
+			}
+
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+			rd.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
+		}
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

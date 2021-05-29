@@ -5,12 +5,15 @@
  */
 package controllers;
 
-import daos.AuthDAO;
+import constant.Routers;
+import daos.BookingInfoDAO;
+import daos.RoomDAO;
 import daos.UserDAO;
+import dtos.BookingInfo;
+import dtos.Room;
 import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,16 +21,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
 
 /**
  *
- * @author Lenovo
+ * @author heaty566
  */
-@WebServlet(name = "ViewUserInfo", urlPatterns = {"/ViewUserInfo"})
-public class ViewUserInfo extends HttpServlet {
+@WebServlet(name = "Checkout", urlPatterns = {"/CheckOut"})
+public class CheckOut extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -40,32 +42,53 @@ public class ViewUserInfo extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
+
 		response.setContentType("text/html;charset=UTF-8");
-		UserDAO userDAO = new UserDAO();
+
+		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
+		RoomDAO roomDAO = new RoomDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
 				return;
 			}
-			HttpSession session = request.getSession();
-			String username = (String) session.getAttribute("username");
 
-			User existedUser = userDAO.getOneUserByUsername(username);
-			existedUser.setPassword("");
-			existedUser.setUserId(0);
-			request.setAttribute("user", existedUser);
-		
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE);
+			Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 1,
+				Integer.MAX_VALUE);
+
+			if (roomId != null) {
+				BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByRoomId(roomId);
+				if (bookingInfo == null) {
+					request.setAttribute("errorMessage", "Booking information with the given Id was not found");
+				} else {
+					boolean isUpdate = bookingInfoDAO.updateBookingInfopStatus(roomId, 1);
+					if (!isUpdate) {
+						request.setAttribute("errorMessage", "Some thing went wrong");
+					} else {
+						boolean isChangeState = roomDAO.changeState(bookingInfo.getRoomId(), 1);
+						if (!isChangeState) {
+							request.setAttribute("errorMessage", "Some thing went wrong");
+						} else {
+							response.sendRedirect(Routers.LIST_ROOM);
+							return;
+						}
+					}
+				}
+
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
 			rd.forward(request, response);
+			return;
+
 		} catch (Exception e) {
-			e.printStackTrace();
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
+			return;
 		}
+
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
-	// + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
@@ -92,6 +115,7 @@ public class ViewUserInfo extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		processRequest(request, response);
+
 	}
 
 	/**

@@ -5,26 +5,27 @@
  */
 package controllers;
 
-import daos.UserDAO;
-import dtos.User;
+import daos.RoomDAO;
+import dtos.Room;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
-import utils.Validator;
 
 /**
  *
  * @author HaiCao
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "RoomListController", urlPatterns = {"/RoomList"})
+public class RoomList extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -38,37 +39,34 @@ public class LoginServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		UserDAO userDAO = new UserDAO();
-
-		String loginPage = "login.jsp";
-		String mainPage = "index.jsp";
-
+		RoomDAO roomDAO = new RoomDAO();
 		try {
-
-			String username = Validator.getStringParam(request, "username", "Username", 1, 50);
-			String password = Validator.getStringParam(request, "password", "Password", 1, 50);
-
-			if (username != null && password != null) {
-				User existedUser = userDAO.getOneUserByUsername(username);
-				if (existedUser == null || !Helper.comparePassword(password, existedUser.getPassword(), 28)) {
-					request.setAttribute("errorMessage", "Username or password is not correct");
-				} else {
-					HttpSession session = request.getSession();
-					session.setAttribute("username", existedUser.getUsername());
-					session.setAttribute("role", existedUser.getRole());
-
-					RequestDispatcher rd = request.getRequestDispatcher(mainPage);
-					rd.forward(request, response);
-					return;
-				}
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+				return;
+			}
+			int numOfPeople = GetParam.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
+			float min = GetParam.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, 0);
+			float max = GetParam.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
+			Integer state = GetParam.getIntParams(request, "state", "State", 0, 3,3);
+			String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
+			ArrayList<Room> list;
+			if (state == 3) {
+				list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
+			} else {
+				list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, state);
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(loginPage);
+			request.setAttribute("rooms", list);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
 			rd.forward(request, response);
-			return;
-		} catch (SQLException e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
+
 		}
+
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the

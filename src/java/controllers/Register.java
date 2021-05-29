@@ -5,27 +5,27 @@
  */
 package controllers;
 
+import daos.AuthDAO;
 import daos.UserDAO;
-import dtos.User;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import dtos.User;
+import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
 import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
 /**
  *
- * @author Lenovo
+ * @author HaiCao
  */
-@WebServlet(name = "ChangePassword", urlPatterns = { "/ChangePassword" })
-public class ChangePassword extends HttpServlet {
+@WebServlet(name = "RegisterServlet", urlPatterns = { "/Register" })
+public class Register extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,47 +40,41 @@ public class ChangePassword extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
+		AuthDAO auth = new AuthDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
-				return;
-			}
-
-			String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 1, 50);
+			String username = GetParam.getStringParam(request, "username", "Username", 1, 50);
+			String password = GetParam.getStringParam(request, "password", "Password", 1, 50);
 			String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-			String oldPassword = GetParam.getStringParam(request, "oldPassword", "Old Password", 1, 50);
+			String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
+			String email = GetParam.getStringParam(request, "email", "Email", 1, 50);
+			String phone = GetParam.getPhoneParams(request, "phone", "Phone");
+			Integer role = GetParam.getIntParams(request, "role", "Role", 0, 1, 0);
 
-			HttpSession session = request.getSession();
-			String username = (String) session.getAttribute("username");
-			if (newPassword != null && confirmPassword != null && oldPassword != null && username != null) {
+			if (username != null && password != null && confirmPassword != null && fullName != null && email != null
+					&& phone != null && role != null) {
+
 				User existedUser = userDAO.getOneUserByUsername(username);
-
-				if (!Helper.comparePassword(oldPassword, existedUser.getPassword(), 28)) {
-					request.setAttribute("oldPasswordError", "is not correct");
-				} else if (!newPassword.equals(confirmPassword)) {
-					request.setAttribute("confirmPassword", "is not matches new password");
+				if (existedUser != null) {
+					request.setAttribute("usernameError", "Username is taken");
+				} else if (!password.equals(confirmPassword)) {
+					request.setAttribute("confirmPasswordError", "Confirm Password is not matches password");
 				} else {
-					newPassword = Helper.encrypt(newPassword, 28);
-					boolean result = userDAO.updateUserPasswordByUsername(existedUser.getUsername(), newPassword);
-					if (!result) {
-						request.setAttribute("changePassowrd", "Internal error!");
-					} else {
-						RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX);
-						rd.forward(request, response);
-					}
+					password = Helper.encrypt(password, 28);
+					User newUser = new User(username, password, fullName, email, phone, role);
+					auth.addUser(newUser);
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN);
+					rd.forward(request, response);
 					return;
 				}
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.REGISTER_PAGE);
 			rd.forward(request, response);
-			return;
-		} catch (Exception e) {
+		} catch (IOException | SQLException | ServletException e) {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
-			return;
 		}
-
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the

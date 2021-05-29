@@ -5,67 +5,71 @@
  */
 package controllers;
 
-import daos.RoomDAO;
-import dtos.Room;
+import daos.UserDAO;
+import dtos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
-import utils.Validator;
 
 /**
  *
  * @author HaiCao
  */
-@WebServlet(name = "RoomListController", urlPatterns = {"/RoomListController"})
-public class RoomListController extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = { "/Login" })
+public class Login extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and
-	 * <code>POST</code> methods.
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String errorPage = "error.jsp";
-		String loginPage = "login.jsp";
-		String listRoomPage = "listRoom.jsp";
-		RoomDAO roomDAO = new RoomDAO();
+		UserDAO userDAO = new UserDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, loginPage)) {
-				return;
+
+			String username = GetParam.getStringParam(request, "username", "Username", 1, 50);
+			String password = GetParam.getStringParam(request, "password", "Password", 1, 50);
+
+			if (username != null && password != null) {
+				User existedUser = userDAO.getOneUserByUsername(username);
+				if (existedUser == null || !Helper.comparePassword(password, existedUser.getPassword(), 28)) {
+					request.setAttribute("errorMessage", "Username or password is not correct");
+				} else {
+					HttpSession session = request.getSession();
+					session.setAttribute("username", existedUser.getUsername());
+					session.setAttribute("role", existedUser.getRole());
+
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX);
+					rd.forward(request, response);
+					return;
+				}
 			}
-			int numOfPeople = Validator.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
-			float min = Validator.getFloatParams(request, "min", "price", 1, Float.MAX_VALUE, 0);
-			float max = Validator.getFloatParams(request, "max", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
-			String priceOrder = Validator.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 
-			ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
-		
-			request.setAttribute("rooms", list);
-			RequestDispatcher rd = request.getRequestDispatcher(listRoomPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
 			rd.forward(request, response);
-
-		} catch (Exception e) {
-
-			RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+			return;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
-
 		}
-
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
@@ -73,28 +77,28 @@ public class RoomListController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 

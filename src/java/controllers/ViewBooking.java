@@ -5,9 +5,15 @@
  */
 package controllers;
 
+import constant.Routers;
+import daos.BookingInfoDAO;
+import daos.RoomDAO;
+import daos.UserDAO;
+import dtos.BookingInfo;
+import dtos.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,13 +21,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.GetParam;
+import utils.Helper;
 
 /**
  *
  * @author heaty566
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "ViewBooking", urlPatterns = {"/ViewBooking"})
+public class ViewBooking extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -36,21 +44,38 @@ public class LogoutServlet extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
-		String loginPage = "login.jsp";
+		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
+		UserDAO userDAO = new UserDAO();
 
 		try {
-			HttpSession session = request.getSession();
-			session.invalidate();
-			RequestDispatcher rd = request.getRequestDispatcher(loginPage);
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+				return;
+			}
+
+			HttpSession session = request.getSession(false);
+			User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
+
+			if (user != null) {
+				ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingWithUserId(user.getUserId());
+			
+				request.setAttribute("bookingInfos", bookingInfos);
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE);
+				rd.forward(request, response);
+				return;
+			}
+
+		} catch (Exception e) {
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
-		} catch (IOException | ServletException e) {
-			RequestDispatcher rd = request.getRequestDispatcher(loginPage);
-			rd.forward(request, response);
+			return;
 		}
+		RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
+		rd.forward(request, response);
+		return;
 
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
