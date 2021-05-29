@@ -31,16 +31,39 @@ import utils.Validator;
 @WebServlet(name = "AddReviewServlet", urlPatterns = {"/AddReviewServlet"})
 public class AddReviewServlet extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        ReviewDAO reviewDAO = new ReviewDAO();
+        RoomDAO roomDAO = new RoomDAO();
+        UserDAO userDAO = new UserDAO();
+        String errorPage = "error.jsp";
+        String loginPage = "login.jsp";
+        String listReviewPage = "listReview.jsp";
+
+        
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         ReviewDAO reviewDAO = new ReviewDAO();
@@ -57,56 +80,32 @@ public class AddReviewServlet extends HttpServlet {
 
             String message = Validator.getStringParam(request, "message", "message", 0, 1000, "");
             int rate = Validator.getIntParams(request, "rate", "rate", 1, 5);
-            Date createDate = new Date(System.currentTimeMillis());
 
             HttpSession session = request.getSession();
             User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 
             int roomId = Validator.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
             Room room = roomDAO.getRoomById(roomId);
-
+            if(room == null)
+                request.setAttribute("addReviewError", "Internal error!");
+            
             Review review = new Review(message, rate, user, room);
             boolean result = reviewDAO.addReview(review);
 
             if (!result) {
-                RequestDispatcher rd = request.getRequestDispatcher(errorPage);
-                rd.forward(request, response);
+                request.setAttribute("addReviewError", "Internal error!");
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher(listReviewPage);
-                rd.forward(request, response);
+                response.sendRedirect(listReviewPage);
+                return;
             }
+            
+            this.doGet(request, response);
+            return;
         } catch (Exception e) {
+            RequestDispatcher rd = request.getRequestDispatcher(errorPage);
+            rd.forward(request, response);
         }
 
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**
