@@ -53,7 +53,7 @@ public class AddBookingInfo extends HttpServlet {
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
 				return;
-			}   
+			}
 
 			Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
 			String startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
@@ -71,7 +71,7 @@ public class AddBookingInfo extends HttpServlet {
 					request.setAttribute("errorMessage", "The time which picked is invalid");
 				} else if (room == null) {
 					request.setAttribute("roomIdError", "Room with the given Id was not found");
-					
+
 				} else {
 					if (room.getState() != 1) {
 
@@ -98,17 +98,15 @@ public class AddBookingInfo extends HttpServlet {
 				}
 
 			}
-                        if (roomId != null) {
-                                Room room = roomDAO.getRoomById(roomId);
-                                request.setAttribute("room", room);
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
-			rd.forward(request, response);
-                        }
-                        else {
-                            RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
-                        }
-                        
+			if (roomId != null) {
+				Room room = roomDAO.getRoomById(roomId);
+				request.setAttribute("room", room);
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
+				rd.forward(request, response);
+			} else {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+				rd.forward(request, response);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
