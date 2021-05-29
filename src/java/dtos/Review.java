@@ -36,6 +36,12 @@ public class Review {
         this.user = user;
         this.room = room;
     }
+    
+     public Review(String message, int rate, String fullName) {     
+        this.message = message;
+        this.rate = rate;
+        this.user.setFullName(fullName);
+    }
 
     public Review(int reviewId, String message, int rate, String createDate, User user, Room room) {
         this.reviewId = reviewId;

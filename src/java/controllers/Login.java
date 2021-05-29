@@ -16,37 +16,36 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
-import utils.Validator;
 
 /**
  *
  * @author HaiCao
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = { "/Login" })
+public class Login extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and
-	 * <code>POST</code> methods.
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
 
-		String loginPage = "login.jsp";
-		String mainPage = "/IndexServlet";
-
 		try {
 
-			String username = Validator.getStringParam(request, "username", "Username", 1, 50);
-			String password = Validator.getStringParam(request, "password", "Password", 1, 50);
+			String username = GetParam.getStringParam(request, "username", "Username", 1, 50);
+			String password = GetParam.getStringParam(request, "password", "Password", 1, 50);
 
 			if (username != null && password != null) {
 				User existedUser = userDAO.getOneUserByUsername(username);
@@ -57,17 +56,19 @@ public class LoginServlet extends HttpServlet {
 					session.setAttribute("username", existedUser.getUsername());
 					session.setAttribute("role", existedUser.getRole());
 
-					RequestDispatcher rd = request.getRequestDispatcher(mainPage);
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX);
 					rd.forward(request, response);
 					return;
 				}
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(loginPage);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
 			rd.forward(request, response);
 			return;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 
@@ -76,28 +77,28 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 

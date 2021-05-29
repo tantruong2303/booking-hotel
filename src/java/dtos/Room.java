@@ -13,6 +13,7 @@ public class Room {
 
 	private int roomId;
 	private float price;
+        //0 disable 1 available 2 rent
 	private int state;
 	private String imageUrl;
 	private String description;
@@ -55,14 +56,14 @@ public class Room {
 		this.price = price;
 	}
 
-        public int getState() {
-            return state;
-        }
+	public int getState() {
+		return state;
+	}
 
-        public void setState(int state) {
-            this.state = state;
-        }
-        
+	public void setState(int state) {
+		this.state = state;
+	}
+
 	public String getImageUrl() {
 		return imageUrl;
 	}
@@ -87,11 +88,9 @@ public class Room {
 		this.roomType = roomType;
 	}
 
-    @Override
-    public String toString() {
-        return "Room{" + "roomId=" + roomId + ", price=" + price + ", state=" + state + ", imageUrl=" + imageUrl + ", description=" + description + ", roomType=" + roomType + '}';
-    }
-
-    
+	@Override
+	public String toString() {
+		return "Room{" + "roomId=" + roomId + ", price=" + price + ", state=" + state + ", imageUrl=" + imageUrl + ", description=" + description + ", roomType=" + roomType + '}';
+	}
 
 }

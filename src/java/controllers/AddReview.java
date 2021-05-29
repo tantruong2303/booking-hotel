@@ -5,12 +5,14 @@
  */
 package controllers;
 
-import daos.AuthDAO;
+import daos.ReviewDAO;
+import daos.RoomDAO;
 import daos.UserDAO;
+import dtos.Review;
+import dtos.Room;
 import dtos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.sql.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,14 +22,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
 
 /**
  *
- * @author Lenovo
+ * @author HaiCao
  */
-@WebServlet(name = "ViewUserInfo", urlPatterns = {"/ViewUserInfo"})
-public class ViewUserInfo extends HttpServlet {
+@WebServlet(name = "AddReviewServlet", urlPatterns = {"/AddReview"})
+public class AddReview extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -41,31 +44,46 @@ public class ViewUserInfo extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+		ReviewDAO reviewDAO = new ReviewDAO();
+		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDAO = new UserDAO();
 
 		try {
+			
+			System.out.println("hello");
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
-			HttpSession session = request.getSession();
-			String username = (String) session.getAttribute("username");
 
-			User existedUser = userDAO.getOneUserByUsername(username);
-			existedUser.setPassword("");
-			existedUser.setUserId(0);
-			request.setAttribute("user", existedUser);
-		
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE);
-			rd.forward(request, response);
+			String message = GetParam.getStringParam(request, "message", "message", 0, 1000, "");
+			Integer rate = GetParam.getIntParams(request, "rate", "rate", 1, 5);
+			Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+
+			HttpSession session = request.getSession();
+			User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
+			
+			if (message != null && rate != null && roomId != null) {
+
+				Room room = roomDAO.getRoomById(roomId);
+				if (room != null) {
+					Review review = new Review(message, rate, user, room);
+					boolean result = reviewDAO.addReview(review);
+					if (result) {
+						RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE + "?roomId" + roomId);
+						rd.forward(request, response);
+					}
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		}
+
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
-	// + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *

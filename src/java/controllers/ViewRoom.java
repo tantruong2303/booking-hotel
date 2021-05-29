@@ -5,29 +5,28 @@
  */
 package controllers;
 
-import daos.AuthDAO;
-import daos.UserDAO;
-import dtos.User;
+import constant.Routers;
+import daos.ReviewDAO;
+import daos.RoomDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
+import dtos.Room;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import constant.Routers;
+import utils.GetParam;
 import utils.Helper;
+import dtos.Review;
 
 /**
  *
- * @author Lenovo
+ * @author heaty566
  */
-@WebServlet(name = "ViewUserInfo", urlPatterns = {"/ViewUserInfo"})
-public class ViewUserInfo extends HttpServlet {
+@WebServlet(name = "ViewRoom", urlPatterns = {"/ViewRoom"})
+public class ViewRoom extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and
@@ -41,21 +40,28 @@ public class ViewUserInfo extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		UserDAO userDAO = new UserDAO();
+		RoomDAO roomDAO = new RoomDAO();
+		ReviewDAO reviewDAO = new ReviewDAO();
 
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
-			HttpSession session = request.getSession();
-			String username = (String) session.getAttribute("username");
+			Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+			if (roomId != null) {
+				Room room = roomDAO.getRoomById(roomId);
+				ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
+				if (room != null && reviews != null) {
+					request.setAttribute("room", room);
+					request.setAttribute("reviews", reviews);
 
-			User existedUser = userDAO.getOneUserByUsername(username);
-			existedUser.setPassword("");
-			existedUser.setUserId(0);
-			request.setAttribute("user", existedUser);
-		
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE);
+					RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE);
+					rd.forward(request, response);
+					return;
+				}
+			}
+
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
 			rd.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,8 +70,7 @@ public class ViewUserInfo extends HttpServlet {
 		}
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
-	// + sign on the left to edit the code.">
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *

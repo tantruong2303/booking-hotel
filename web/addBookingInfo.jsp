@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>SanninSC | Add Booking</title>
     </head>
     <body >
         <%
@@ -33,7 +33,7 @@
 
         %>
 
-        <h1>Login From</h1>
+        <h1>Booking From</h1>
         <form action="AddBookingInfo" method = "POST">
             <table>
                 <tr>

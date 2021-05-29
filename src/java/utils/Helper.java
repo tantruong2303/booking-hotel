@@ -20,10 +20,8 @@ public class Helper {
 		int maxRole, String page) throws Exception {
 
 		if (!isLogin(request) || !correctRole(request, minRole, maxRole)) {
-			System.out.println(correctRole(request, minRole, maxRole));
-			System.out.println(isLogin(request));
 			RequestDispatcher rd = request.getRequestDispatcher(page);
-			request.setAttribute("errorMessage", "action is not allow, please login first");
+			request.setAttribute("errorMessage", "Action is not allow, please login first");
 			rd.forward(request, response);
 			return false;
 		}
@@ -32,7 +30,7 @@ public class Helper {
 	}
 
 	public static String truncateContent(String str, int maxLength) {
-		if (str.length() > maxLength){
+		if (str.length() > maxLength) {
 			return str.substring(0, maxLength) + "...";
 		}
 		return str;
@@ -40,6 +38,9 @@ public class Helper {
 
 	public static boolean isLogin(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return false;
+		}
 		String username = (String) session.getAttribute("username");
 
 		return username != null;
