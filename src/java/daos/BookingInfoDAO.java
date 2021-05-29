@@ -15,28 +15,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import utils.Connector;
+import utils.Helper;
 
 /**
  *
  * @author Lenovo
  */
 public class BookingInfoDAO {
-
-    public Integer convertStringDateToInteger(String date) {
-        try {
-            SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-            Date dateTypeDate = formatter1.parse(date);
-            SimpleDateFormat formatter2 = new SimpleDateFormat("yyyyMMdd");
-            return Integer.parseInt(formatter2.format(dateTypeDate));
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
+    
     public Integer computeNumberOfDay(HttpServletRequest request, String startDate, String endDate) {
 
-        Integer start = this.convertStringDateToInteger(startDate);
-        Integer end = this.convertStringDateToInteger(endDate);
+        Integer start = Helper.convertStringDateToInteger(startDate);
+        Integer end = Helper.convertStringDateToInteger(endDate);
 
         if (start != null && end != null) {
 
@@ -118,10 +108,9 @@ public class BookingInfoDAO {
 
         try {
             connection = Connector.getConnection();
-            String sql = "SELECT * tbl_BookingInfo WHERE bookingInfoId = ?";
+            String sql = "SELECT * FROM tbl_BookingInfo WHERE bookingInfoId = ?";
             pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, 0);
-            pstmt.setInt(2, bookingInfoId);
+            pstmt.setInt(1, bookingInfoId);
 
             result = pstmt.executeQuery();
 

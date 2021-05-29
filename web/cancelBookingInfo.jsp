@@ -10,7 +10,7 @@
                 bookingInfoIdError = ""; } %>
 
                 <h1>Booking From</h1>
-                <form action="CancerBookingInfo" method="POST">
+                <form action="CancelBookingInfo" method="POST">
                         <table>
                                 <tr>
                                         <td>Booking info id:</td>
@@ -22,7 +22,7 @@
                                 </tr>
 
                                 <tr>
-                                        <td><button type="submit">Cancer</button></td>
+                                        <td><button type="submit">Cancel</button></td>
                                 </tr>
                         </table>
                 </form>

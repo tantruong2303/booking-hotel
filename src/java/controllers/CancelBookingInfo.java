@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 import daos.BookingInfoDAO;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -26,7 +27,7 @@ import utils.Helper;
  *
  * @author Lenovo
  */
-@WebServlet(name = "CancerBookingInfo", urlPatterns = {"/CancelBookingInfo"})
+@WebServlet(name = "CancelBookingInfo", urlPatterns = {"/CancelBookingInfo"})
 public class CancelBookingInfo extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -82,7 +83,6 @@ public class CancelBookingInfo extends HttpServlet {
                     request.setAttribute("cancelBookingInfoError", "Booking information with the given Id was not found");
                 } else {
                     boolean isCancelBookingInfo = bookingInfoDAO.cancelBookingInfo(bookingInfoId);
-
                     if (!isCancelBookingInfo) {
                         request.setAttribute("errorMessage", "Some thing went wrong");
                     } else {
@@ -90,20 +90,22 @@ public class CancelBookingInfo extends HttpServlet {
                         if (!isChangeState) {
                             request.setAttribute("errorMessage", "Some thing went wrong");
                         } else {
-                            RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
+                            RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
                             rd.forward(request, response);
+                            return;
                         }
                     }
                 }
 
-                
             }
-            RequestDispatcher rd = request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO);
+            RequestDispatcher rd = request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE);
             rd.forward(request, response);
+            return;
 
         } catch (Exception e) {
             RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
             rd.forward(request, response);
+            return;
         }
     }
 

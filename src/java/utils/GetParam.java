@@ -6,6 +6,7 @@
 package utils;
 
 import java.io.IOException;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -129,6 +130,24 @@ public class GetParam {
 
 		return value;
 	}
+        
+        public static String getDateFromNowToFuture(HttpServletRequest request, String field, String label) {
+		String value = getStringParam(request, field, label, 10, 10);
+		if (value == null) {
+			return null;
+		}
+		
+                Date date = Helper.convertStringToDate(value);
+                Date today = Helper.getToDayTime();
+                
+                if (today.after(date)) {
+                    request.setAttribute("errorMessage", label + " should be in future");
+			return null;
+                }
+
+		return value;
+	}
+
 
 	public static Object getClientAttribute(HttpServletRequest request, String field, Object defaultValue) {
 		Object value = request.getAttribute(field);
