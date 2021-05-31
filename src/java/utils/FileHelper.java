@@ -22,6 +22,8 @@ import java.util.UUID;
  */
 public class FileHelper {
 
+	public static final String[] imageExtension = { "png", "jpg", "svg", "jpeg", "bmp" };
+
 	public static String uploadFile(HttpServletRequest request, Part filePart) throws IOException, ServletException {
 		String UPLOAD_DIR = "images";
 

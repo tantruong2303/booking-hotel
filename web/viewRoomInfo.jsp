@@ -16,6 +16,10 @@
 			Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
 			ArrayList<Review> reviews = (ArrayList<Review>) GetParam.getClientAttribute(request,"reviews", new ArrayList<Review>() );
 			String errorMessage =(String)  GetParam.getClientAttribute(request, "errorMessage", ""); 
+				String messageError =(String)  GetParam.getClientAttribute(request, "messageError", ""); 
+				System.out.println("------------");
+System.out.println(messageError);
+			
 		%> 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
@@ -81,7 +85,7 @@
 								    id="message"
 								    placeholder="Comment..."
 								    ></textarea>
-
+								<p class="col-start-2 text-red-500 "><%= messageError%></p>
 							</div>
 							<div>
 
