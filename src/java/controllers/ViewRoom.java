@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controllers;
 
 import constant.Routers;
@@ -21,92 +17,56 @@ import utils.GetParam;
 import utils.Helper;
 import dtos.Review;
 
-/**
- *
- * @author heaty566
- */
-@WebServlet(name = "ViewRoom", urlPatterns = {"/ViewRoom"})
+@WebServlet(name = "ViewRoom", urlPatterns = { "/ViewRoom" })
 public class ViewRoom extends HttpServlet {
 
-	/**
-	 * Processes requests for both HTTP <code>GET</code> and
-	 * <code>POST</code> methods.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		RoomDAO roomDAO = new RoomDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
 
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+		if (roomId == null) {
+			return false;
+		}
+
+		Room room = roomDAO.getRoomById(roomId);
+		if (room == null) {
+			request.setAttribute("errorMessage", "Room with the given ID was not found");
+			return false;
+		}
+
+		ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
+		if (reviews == null) {
+			request.setAttribute("errorMessage", "Reviews with the given ID was not found");
+			return false;
+		}
+
+		request.setAttribute("room", room);
+		request.setAttribute("reviews", reviews);
+		return true;
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
-			Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
-			if (roomId != null) {
-				Room room = roomDAO.getRoomById(roomId);
-				ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
-				if (room != null && reviews != null) {
-					request.setAttribute("room", room);
-					request.setAttribute("reviews", reviews);
 
-					RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE);
-					rd.forward(request, response);
-					return;
-				}
+			if (this.getHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE);
+				rd.forward(request, response);
+				return;
 			}
-
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
 			rd.forward(request, response);
 		} catch (Exception e) {
-			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			response.sendRedirect(Routers.ERROR);
 		}
 	}
-
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-	/**
-	 * Handles the HTTP <code>GET</code> method.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		processRequest(request, response);
-	}
-
-	/**
-	 * Handles the HTTP <code>POST</code> method.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		processRequest(request, response);
-	}
-
-	/**
-	 * Returns a short description of the servlet.
-	 *
-	 * @return a String containing servlet description
-	 */
-	@Override
-	public String getServletInfo() {
-		return "Short description";
-	}// </editor-fold>
 
 }

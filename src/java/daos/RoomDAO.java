@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package daos;
 
 import dtos.Room;
@@ -14,15 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import utils.Connector;
 
-/**
- *
- * @author HaiCao
- */
 public class RoomDAO {
 
 	public boolean addRoom(Room room) throws SQLException {
-                Connection connection = null;
-                PreparedStatement pstmt = null;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		try {
 			connection = Connector.getConnection();
 			String sql = "INSERT INTO tbl_Room (price, description, state, imageUrl, roomTypeId) VALUES (?,?,?,?,?)";
@@ -50,12 +42,12 @@ public class RoomDAO {
 	}
 
 	public boolean updateRoom(Room room) throws SQLException {
-		
+
 		String sql = "UPDATE tbl_Room SET price = ?, description = ?, state = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";
-                Connection connection = null;
-                PreparedStatement pstmt = null;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
 		try {
-                        connection = Connector.getConnection();
+			connection = Connector.getConnection();
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setFloat(1, room.getPrice());
 			pstmt.setString(2, room.getDescription());
@@ -78,8 +70,8 @@ public class RoomDAO {
 			}
 		}
 	}
-        
-        public boolean changeState(Integer roomId, Integer state) {
+
+	public boolean changeState(Integer roomId, Integer state) {
 		Connection connection = Connector.getConnection();
 		String sql = "UPDATE tbl_Room SET state = ? WHERE roomId = ?";
 
@@ -87,7 +79,7 @@ public class RoomDAO {
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, state);
 			pstmt.setInt(2, roomId);
-			
+
 			pstmt.executeUpdate();
 			pstmt.close();
 			return true;
@@ -102,8 +94,8 @@ public class RoomDAO {
 			Connection connection = Connector.getConnection();
 
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId "
-				+ "FROM tbl_Room " + "LEFT JOIN tbl_RoomType " + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
-				+ "WHERE roomId = ? ";
+					+ "FROM tbl_Room " + "LEFT JOIN tbl_RoomType " + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
+					+ "WHERE roomId = ? ";
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, roomId);
@@ -133,15 +125,13 @@ public class RoomDAO {
 		return null;
 	}
 
-	
-
 	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder) {
 		ArrayList<Room> list = new ArrayList<>();
 		try {
 			Connection connection = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY price "
-				+ order;
+					+ order;
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setFloat(1, numOfPeople);
@@ -179,7 +169,7 @@ public class RoomDAO {
 			Connection connection = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND state = ? ORDER BY price "
-				+ order;
+					+ order;
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setFloat(1, numOfPeople);
