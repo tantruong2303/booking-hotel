@@ -23,7 +23,6 @@ public class ChangePassword extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
 		UserDAO userDAO = new UserDAO();
 
 		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 1, 50);
@@ -63,14 +62,9 @@ public class ChangePassword extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.sendRedirect(Routers.INDEX);
-	}
-
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
@@ -88,8 +82,4 @@ public class ChangePassword extends HttpServlet {
 
 	}
 
-	@Override
-	public String getServletInfo() {
-		return "Short description";
-	}
 }

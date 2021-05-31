@@ -36,9 +36,8 @@ public class UpdateRoom extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
-		RoomDAO roomDAO = new RoomDAO();
 
+		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
 		if (roomId == null) {
 			return false;
@@ -61,11 +60,32 @@ public class UpdateRoom extends HttpServlet {
 
 	}
 
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		try {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+				return;
+			}
+			if (this.getHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM_PAGE);
+				rd.forward(request, response);
+				return;
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM);
+			rd.forward(request, response);
+
+		} catch (Exception e) {
+			response.sendRedirect(Routers.ERROR);
+		}
+
+	}
+
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
-		RoomDAO roomDAO = new RoomDAO();
 
+		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
 		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
 		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 2);
@@ -106,29 +126,9 @@ public class UpdateRoom extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
-				return;
-			}
-			if (this.getHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM_PAGE);
-				rd.forward(request, response);
-				return;
-			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM);
-			rd.forward(request, response);
-
-		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
-		}
-
-	}
-
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
 				return;
@@ -144,10 +144,5 @@ public class UpdateRoom extends HttpServlet {
 			response.sendRedirect(Routers.ERROR);
 		}
 	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
-	}// </editor-fold>
 
 }

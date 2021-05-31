@@ -66,15 +66,4 @@ public class ViewBooking extends HttpServlet {
 		}
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.sendRedirect(Routers.INDEX);
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
-	}
-
 }

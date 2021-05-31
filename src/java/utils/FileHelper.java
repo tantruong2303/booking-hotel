@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package utils;
 
 import java.io.File;
@@ -16,10 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.util.UUID;
 
-/**
- *
- * @author heaty566
- */
 public class FileHelper {
 
 	public static final String[] imageExtension = { "png", "jpg", "svg", "jpeg", "bmp" };

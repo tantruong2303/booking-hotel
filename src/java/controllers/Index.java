@@ -25,7 +25,6 @@ public class Index extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
 
 		RoomDAO roomDAO = new RoomDAO();
 
@@ -48,6 +47,7 @@ public class Index extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
@@ -61,17 +61,6 @@ public class Index extends HttpServlet {
 			response.sendRedirect(Routers.ERROR);
 		}
 
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.sendRedirect(Routers.INDEX);
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
 	}
 
 }

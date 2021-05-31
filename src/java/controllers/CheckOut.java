@@ -21,33 +21,17 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
 
-/**
- *
- * @author heaty566
- */
 @WebServlet(name = "Checkout", urlPatterns = { "/CheckOut" })
 public class CheckOut extends HttpServlet {
 
-	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-	 * methods.
-	 *
-	 * @param request  servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
-	 */
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-
-		response.setContentType("text/html;charset=UTF-8");
-
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 		RoomDAO roomDAO = new RoomDAO();
 
 		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 1, Integer.MAX_VALUE);
 
-		if (roomId != null) {
+		if (roomId == null) {
 			return false;
 		}
 
@@ -76,12 +60,7 @@ public class CheckOut extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendRedirect(Routers.INDEX);
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
 				return;
@@ -91,17 +70,13 @@ public class CheckOut extends HttpServlet {
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;
 			}
+
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
 			rd.forward(request, response);
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);
 		}
 
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
 	}
 
 }

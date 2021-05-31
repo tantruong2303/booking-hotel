@@ -26,7 +26,7 @@ public class RoomList extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
+
 		RoomDAO roomDAO = new RoomDAO();
 
 		int numOfPeople = GetParam.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
@@ -49,6 +49,7 @@ public class RoomList extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 
 		try {
 			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
@@ -63,17 +64,6 @@ public class RoomList extends HttpServlet {
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);
 		}
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.sendRedirect(Routers.INDEX);
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
 	}
 
 }

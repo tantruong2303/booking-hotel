@@ -22,11 +22,25 @@ import utils.Helper;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
 public class AddRoom extends HttpServlet {
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+
+		RoomDAO roomDAO = new RoomDAO();
+
+		ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
+		if (roomTypes == null) {
+			request.setAttribute("errorMessage", "Room Type is empty");
+			return false;
+		}
+		request.setAttribute("roomTypes", roomTypes);
+		return true;
+
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
 				return;
@@ -45,24 +59,8 @@ public class AddRoom extends HttpServlet {
 		}
 	}
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
-		RoomDAO roomDAO = new RoomDAO();
-
-		ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
-		if (roomTypes == null) {
-			request.setAttribute("errorMessage", "Room Type is empty");
-			return false;
-		}
-		request.setAttribute("roomTypes", roomTypes);
-		return true;
-
-	}
-
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
 		RoomDAO roomDAO = new RoomDAO();
 
 		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
@@ -101,7 +99,7 @@ public class AddRoom extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
 				return;
@@ -117,11 +115,6 @@ public class AddRoom extends HttpServlet {
 			response.sendRedirect(Routers.ERROR);
 
 		}
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
 	}
 
 }

@@ -1,12 +1,12 @@
-<%-- 
-    Document   : login
-    Created on : May 24, 2021, 1:40:57 PM
-    Author     : HaiCao
---%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="utils.GetParam"%>
 <%@page import="utils.Validator"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+	String username =(String) GetParam.getClientParams(request,"username",""); 
+	String usernameError =(String) GetParam.getClientAttribute(request,"usernameError", "" ); 
+	String passwordError =(String) GetParam.getClientAttribute(request,"passwordError", "" ); 
+	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,18 +15,13 @@
 		<title>SanninSC | Login</title>
 	</head>
 	<body class="flex flex-col min-h-screen">
-		<%
-			String username =(String) GetParam.getClientParams(request,"username",""); 
-			String usernameError =(String) GetParam.getClientAttribute(request,"usernameError", "" ); 
-			String passwordError =(String) GetParam.getClientAttribute(request,"passwordError", "" ); 
-			String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
-		%>
+		
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
-				<form action="Login" method="POST"  class="space-y-8 fade-in mt-8 ">
+				<form action="Login" method="POST"  class="mt-8 space-y-8 fade-in ">
 					<div class="grid grid-form justify-items-stretch">
-						<h1 class="text-4xl font-semibold col-start-2">Login</h1>
+						<h1 class="col-start-2 text-4xl font-semibold">Login</h1>
 					</div>
 
 					<div class="space-y-2">
@@ -52,7 +47,7 @@
 
 
 						<div class="grid grid-form">
-							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300" />Sign In</button>
+							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Sign In</button>
 						</div>
 					</div>
 				</form>

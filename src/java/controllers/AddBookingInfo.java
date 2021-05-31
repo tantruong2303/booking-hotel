@@ -23,13 +23,64 @@ import dtos.Review;
 import java.util.ArrayList;
 import utils.GetParam;
 import utils.Helper;
+import utils.Validator;
 
 @WebServlet(name = "AddBookingInfo", urlPatterns = { "/AddBookingInfo" })
 public class AddBookingInfo extends HttpServlet {
 
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+
+		RoomDAO roomDAO = new RoomDAO();
+		ReviewDAO reviewDAO = new ReviewDAO();
+
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+		if (roomId == null) {
+			return false;
+		}
+		Room room = roomDAO.getRoomById(roomId);
+		if (room == null) {
+			request.setAttribute("errorMessage", "Room with the given ID was not found");
+			return false;
+		}
+		ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
+		if (reviews == null) {
+			request.setAttribute("errorMessage", "Reviews with the given ID was not found");
+			return false;
+		}
+
+		request.setAttribute("room", room);
+		request.setAttribute("reviews", reviews);
+		return true;
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+
+		try {
+			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
+				return;
+			}
+
+			if (this.getHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
+				rd.forward(request, response);
+				return;
+			}
+
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+			rd.forward(request, response);
+		} catch (Exception e) {
+			// redirect on 500
+			response.sendRedirect(Routers.ERROR);
+		}
+
+	}
+
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
 		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDAO = new UserDAO();
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
@@ -37,17 +88,12 @@ public class AddBookingInfo extends HttpServlet {
 		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
 		String startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
 		String endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
-		System.out.println("------------1321");
-		System.out.println(roomId);
-		System.out.println(startDate);
-		System.out.println(endDate);
 		if (startDate == null || endDate == null || roomId == null) {
 			return false;
 		}
 
-		Integer numberOfDay = bookingInfoDAO.computeNumberOfDay(request, startDate, endDate);
+		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
 		HttpSession session = request.getSession(false);
-		System.out.println(numberOfDay);
 		if (numberOfDay == null || numberOfDay <= 0) {
 			request.setAttribute("errorMessage", "The time which picked is invalid");
 			return false;
@@ -87,58 +133,10 @@ public class AddBookingInfo extends HttpServlet {
 		return true;
 	}
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
-		RoomDAO roomDAO = new RoomDAO();
-		ReviewDAO reviewDAO = new ReviewDAO();
-
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
-		if (roomId == null) {
-			return false;
-		}
-		Room room = roomDAO.getRoomById(roomId);
-		if (room == null) {
-			request.setAttribute("errorMessage", "Room with the given ID was not found");
-			return false;
-		}
-		ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
-		if (reviews == null) {
-			request.setAttribute("errorMessage", "Reviews with the given ID was not found");
-			return false;
-		}
-
-		request.setAttribute("room", room);
-		request.setAttribute("reviews", reviews);
-		return true;
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
-				return;
-			}
-
-			if (this.getHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
-				rd.forward(request, response);
-				return;
-			}
-
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
-			rd.forward(request, response);
-		} catch (Exception e) {
-			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
-		}
-
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
 				return;
@@ -155,11 +153,6 @@ public class AddBookingInfo extends HttpServlet {
 			response.sendRedirect(Routers.ERROR);
 		}
 
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
 	}
 
 }

@@ -26,7 +26,7 @@ public class Login extends HttpServlet {
 
 	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
+
 		// initialize resource
 		UserDAO userDAO = new UserDAO();
 
@@ -52,14 +52,9 @@ public class Login extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.sendRedirect(Routers.INDEX);
-	}
-
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (processRequest(request, response)) {
 
@@ -75,11 +70,6 @@ public class Login extends HttpServlet {
 			// redirect on 500
 			response.sendRedirect(Routers.ERROR);
 		}
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
 	}
 
 }

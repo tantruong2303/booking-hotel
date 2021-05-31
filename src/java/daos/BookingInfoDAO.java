@@ -14,23 +14,6 @@ import utils.Helper;
 
 public class BookingInfoDAO {
 
-	public Integer computeNumberOfDay(HttpServletRequest request, String startDate, String endDate) {
-		if (startDate != null && endDate != null) {
-
-			Date start = Helper.convertStringToDate(startDate);
-			Date end = Helper.convertStringToDate(endDate);
-
-			if (start.after(end)) {
-				request.setAttribute("errorMessage", "Start day must be before end day!");
-				return null;
-			} else {
-				long diff = end.getTime() - start.getTime();
-				return (int) (diff / (1000 * 60 * 60 * 24));
-			}
-		}
-		return null;
-	}
-
 	public boolean addBookingInfo(BookingInfo bookingInfo) throws SQLException {
 		Connection connection = null;
 		PreparedStatement pstmt = null;

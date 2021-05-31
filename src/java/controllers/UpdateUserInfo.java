@@ -31,7 +31,7 @@ public class UpdateUserInfo extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
+
 		UserDAO userDAO = new UserDAO();
 
 		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
@@ -60,9 +60,28 @@ public class UpdateUserInfo extends HttpServlet {
 
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		try {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+				return;
+			}
+			if (postHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO);
+				rd.forward(request, response);
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_INFO);
+			rd.forward(request, response);
+		} catch (Exception e) {
+			response.sendRedirect(Routers.ERROR);
+		}
+	}
+
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		response.setContentType("text/html;charset=UTF-8");
+
 		UserDAO userDAO = new UserDAO();
 
 		HttpSession session = request.getSession();
@@ -86,6 +105,7 @@ public class UpdateUserInfo extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
@@ -99,28 +119,5 @@ public class UpdateUserInfo extends HttpServlet {
 			response.sendRedirect(Routers.ERROR);
 		}
 	}
-
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
-				return;
-			}
-			if (postHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO);
-				rd.forward(request, response);
-			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_INFO);
-			rd.forward(request, response);
-		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
-		}
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
-	}// </editor-fold>
 
 }

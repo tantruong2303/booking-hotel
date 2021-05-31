@@ -1,9 +1,15 @@
-<%-- Document : ViewRoomInfo Created on : May 28, 2021, 6:14:12 PM Author : heaty566 --%> <%@page import="java.util.List"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dtos.Review"%>
 <%@page import="dtos.Room"%>
 <%@page import="utils.GetParam"%> 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+	Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
+	ArrayList<Review> reviews = (ArrayList<Review>) GetParam.getClientAttribute(request,"reviews", new ArrayList<Review>() );
+	String errorMessage =(String)  GetParam.getClientAttribute(request, "errorMessage", ""); 
+	String messageError =(String)  GetParam.getClientAttribute(request, "messageError", ""); 		
+%> 
 <!DOCTYPE html>
 <html>
 	<head>
@@ -12,15 +18,6 @@
 		<title>Sannin SC | Room Information</title>
 	</head>
 	<body class="flex flex-col min-h-screen">
-		<%
-			Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
-			ArrayList<Review> reviews = (ArrayList<Review>) GetParam.getClientAttribute(request,"reviews", new ArrayList<Review>() );
-			String errorMessage =(String)  GetParam.getClientAttribute(request, "errorMessage", ""); 
-				String messageError =(String)  GetParam.getClientAttribute(request, "messageError", ""); 
-				System.out.println("------------");
-System.out.println(messageError);
-			
-		%> 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
@@ -67,7 +64,7 @@ System.out.println(messageError);
 									>
 								</div>
 								<a href="/AddBookingInfo?roomId=<%=room.getRoomId()%>"
-								   class="text-center block col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600"
+								   class="block col-start-2 px-16 py-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600"
 								   >
 									Booking Now
 								</a>

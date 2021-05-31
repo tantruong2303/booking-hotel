@@ -22,12 +22,6 @@ import utils.Helper;
 @WebServlet(name = "CancelBookingInfo", urlPatterns = { "/CancelBookingInfo" })
 public class CancelBookingInfo extends HttpServlet {
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.sendRedirect(Routers.INDEX);
-	}
-
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		response.setContentType("text/html;charset=UTF-8");
@@ -94,11 +88,6 @@ public class CancelBookingInfo extends HttpServlet {
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);
 		}
-	}
-
-	@Override
-	public String getServletInfo() {
-		return "Short description";
 	}
 
 }
