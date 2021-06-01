@@ -3,23 +3,23 @@ package controllers;
 
 import daos.AuthDAO;
 import daos.UserDAO;
+import dtos.User;
+
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import dtos.User;
-import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
+
 import constant.Routers;
+
 import utils.GetParam;
 import utils.Helper;
 
-/**
- *
- * @author HaiCao
- */
 @WebServlet(name = "RegisterServlet", urlPatterns = { "/Register" })
 public class Register extends HttpServlet {
 
@@ -45,7 +45,7 @@ public class Register extends HttpServlet {
 			return false;
 		}
 
-		// checking exist username
+		// get current user
 		User existedUser = userDAO.getOneUserByUsername(username);
 		if (existedUser != null) {
 			request.setAttribute("usernameError", "Username is taken");
@@ -74,6 +74,7 @@ public class Register extends HttpServlet {
 				// forward on 200
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN);
 				rd.forward(request, response);
+				return;
 			}
 			// forward on 400
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.REGISTER_PAGE);

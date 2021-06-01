@@ -3,9 +3,11 @@ package controllers;
 
 import daos.RoomDAO;
 import dtos.Room;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,12 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
+
 import utils.GetParam;
 
-/**
- *
- * @author heaty566
- */
 @WebServlet(name = "IndexServlet", urlPatterns = { "/Index" })
 public class Index extends HttpServlet {
 

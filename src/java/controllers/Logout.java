@@ -2,6 +2,7 @@
 package controllers;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import constant.Routers;
 
-/**
- *
- * @author heaty566
- */
 @WebServlet(name = "LogoutServlet", urlPatterns = { "/Logout" })
 public class Logout extends HttpServlet {
 

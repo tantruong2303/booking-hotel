@@ -2,13 +2,16 @@
 package controllers;
 
 import constant.Routers;
+
 import daos.BookingInfoDAO;
 import daos.UserDAO;
 import dtos.BookingInfo;
 import dtos.User;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import utils.Helper;
 
 @WebServlet(name = "ViewBooking", urlPatterns = { "/ViewBooking" })
@@ -49,19 +53,22 @@ public class ViewBooking extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
 				return;
 			}
+		
 
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE);
 				rd.forward(request, response);
+				return;
 			}
 
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
 			rd.forward(request, response);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.sendRedirect(Routers.ERROR);
 		}
 	}
