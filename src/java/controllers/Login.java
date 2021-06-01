@@ -3,8 +3,10 @@ package controllers;
 
 import daos.UserDAO;
 import dtos.User;
+
 import java.io.IOException;
 import java.sql.SQLException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+
 import utils.GetParam;
 import utils.Helper;
 
-/**
- *
- * @author HaiCao
- */
 @WebServlet(name = "LoginServlet", urlPatterns = { "/Login" })
 public class Login extends HttpServlet {
 
@@ -57,10 +56,9 @@ public class Login extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (processRequest(request, response)) {
-
+				
 				// forward on 200
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX);
-				rd.forward(request, response);
+				response.sendRedirect(Routers.INDEX);
 				return;
 			}
 			// forward on 400

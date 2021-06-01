@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controllers;
 
 import daos.UserDAO;
 import dtos.User;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -19,13 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+
 import utils.GetParam;
 import utils.Helper;
 
-/**
- *
- * @author Lenovo
- */
 @WebServlet(name = "UpdateUserInfo", urlPatterns = { "/UpdateUserInfo" })
 public class UpdateUserInfo extends HttpServlet {
 

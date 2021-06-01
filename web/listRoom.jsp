@@ -109,6 +109,9 @@
 							<td class="p-1 text-center border border-black">
 								<a href="/CheckOut?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to checkout') " class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">Check Out</a>
 							</td>
+							<td class="p-1 text-center border border-black">
+								<a href="/CancelBookingInfo?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to cancel') " class="inline-block p-2 font-medium text-white duration-200 bg-red-500 rounded-sm hover:bg-red-600">Cancel</a>
+							</td>
 						
 							<% } else { %>
 							<td  class="p-1 text-center border border-black">

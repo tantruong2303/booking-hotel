@@ -2,20 +2,24 @@
 package controllers;
 
 import constant.Routers;
+
 import daos.ReviewDAO;
 import daos.RoomDAO;
-import java.io.IOException;
 import dtos.Room;
+import dtos.Review;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import utils.GetParam;
 import utils.Helper;
-import dtos.Review;
 
 @WebServlet(name = "ViewRoom", urlPatterns = { "/ViewRoom" })
 public class ViewRoom extends HttpServlet {

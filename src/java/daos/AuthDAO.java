@@ -2,15 +2,13 @@
 package daos;
 
 import dtos.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import utils.Connector;
 
-/**
- *
- * @author Lenovo
- */
 public class AuthDAO {
 
 	public boolean addUser(User user) throws SQLException {
