@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package utils;
 
 import java.io.File;
@@ -10,17 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.util.UUID;
 
-/**
- *
- * @author heaty566
- */
 public class FileHelper {
+
+	public static final String[] imageExtension = { "png", "jpg", "svg", "jpeg", "bmp" };
 
 	public static String uploadFile(HttpServletRequest request, Part filePart) throws IOException, ServletException {
 		String UPLOAD_DIR = "images";

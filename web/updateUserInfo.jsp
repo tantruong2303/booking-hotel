@@ -1,12 +1,13 @@
-<%-- 
-    Document   : updateUserInfo
-    Created on : May 25, 2021, 1:54:33 PM
-    Author     : Lenovo
---%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="dtos.User"%>
 <%@page import="utils.GetParam"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+	User user =(User) GetParam.getClientAttribute(request,"user", new User() );	
+	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
+	String fullNameError=(String) GetParam.getClientAttribute(request,"fullNameError", "" ); 
+	String emailError=(String) GetParam.getClientAttribute(request,"emailError", "" ); 
+	String phoneError=(String) GetParam.getClientAttribute(request,"phoneError", "" ); 
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,24 +15,14 @@
 		<link href="./asset/styles.css" rel="stylesheet" />
 		<title>SanninSC | Register</title>
 	</head>
-
 	<body class="flex flex-col min-h-screen">
-		<% 
-			User user =(User) GetParam.getClientAttribute(request,"user", new User() );	
-			
-			String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
-			String fullNameError=(String) GetParam.getClientAttribute(request,"fullNameError", "" ); 
-			String emailError=(String) GetParam.getClientAttribute(request,"emailError", "" ); 
-			String phoneError=(String) GetParam.getClientAttribute(request,"phoneError", "" ); 
-		%>
-
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div
 			    class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
-				<form action="UpdateUserInfo" method="POST"   class="space-y-8 fade-in mt-8 ">
+				<form action="UpdateUserInfo" method="POST"   class="mt-8 space-y-8 fade-in ">
 					<div class="grid justify-items-stretch">
-						<h1 class="text-4xl font-semibold col-start-2">Update User Information</h1>
+						<h1 class="col-start-2 text-4xl font-semibold">Update User Information</h1>
 					</div>
 
 					<div class="space-y-2">
@@ -74,7 +65,7 @@
 						</div>
 
 						<div class="grid grid-form">
-							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300" />Update</button>
+							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update</button>
 						</div>
 					</div>
 				</form>

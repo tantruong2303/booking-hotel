@@ -1,12 +1,10 @@
-<%-- 
-    Document   : viewUserInfo
-    Created on : May 25, 2021, 2:18:29 PM
-    Author     : Lenovo
---%>
-
 <%@page import="dtos.User"%>
 <%@page import="utils.GetParam"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "");	
+	User user =(User) GetParam.getClientAttribute(request,"user", new User() );	
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,18 +13,13 @@
 		<title>Sannin SC | User Information </title>
 	</head>
 	<body class="flex flex-col min-h-screen">
-		<%
-		
-			String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
-			User user =(User) GetParam.getClientAttribute(request,"user", new User() );	
-		%>
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
 				
-				<div   class="space-y-8 fade-in mt-8 ">
+				<div   class="mt-8 space-y-8 fade-in ">
 					<div class="grid grid-form justify-items-stretch">
-						<h1 class="text-4xl font-semibold col-span-2">User Information</h1>
+						<h1 class="col-span-2 text-4xl font-semibold">User Information</h1>
 					</div>
 
 					<div class="space-y-2">
@@ -61,9 +54,9 @@
 							<p><%=user.getRole()  == 0? "Customer" : "Manager" %></p>
 						</div>
 						<div class="flex space-x-2">
-							<a  href="/UpdateUserInfo" class=" block p-2 text-center col-start-2  mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300" />Update Information</a>
+							<a  href="/UpdateUserInfo" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update Information</a>
 
-							<a  href="/changePassword.jsp" class=" block p-2 text-center col-start-2  mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300" />Change Pasword</a>
+							<a  href="/changePassword.jsp" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Change Pasword</a>
 						</div>
 
 					</div>

@@ -1,21 +1,14 @@
 package daos;
 
 import dtos.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import utils.Connector;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author HaiCao
- */
 public class UserDAO {
 
 	public User getOneUserByUsername(String username) throws SQLException {
@@ -84,7 +77,8 @@ public class UserDAO {
 		}
 	}
 
-	public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone) throws SQLException {
+	public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone)
+			throws SQLException {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 

@@ -1,45 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package daos;
 
 import dtos.BookingInfo;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
+
 import utils.Connector;
-import utils.Helper;
 
-/**
- *
- * @author Lenovo
- */
 public class BookingInfoDAO {
-
-	public Integer computeNumberOfDay(HttpServletRequest request, String startDate, String endDate) {
-		if (startDate != null && endDate != null) {
-
-			Date start = Helper.convertStringToDate(startDate);
-			Date end = Helper.convertStringToDate(endDate);
-
-			if (start.after(end)) {
-				request.setAttribute("errorMessage", "Start day must be before end day!");
-				return null;
-			} else {
-				long diff = end.getTime() - start.getTime();
-				return (int) (diff / (1000 * 60 * 60 * 24));
-			}
-		}
-		return null;
-	}
 
 	public boolean addBookingInfo(BookingInfo bookingInfo) throws SQLException {
 		Connection connection = null;
@@ -106,7 +78,7 @@ public class BookingInfoDAO {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet result = null;
-		
+
 		try {
 			connection = Connector.getConnection();
 			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ?";
@@ -124,8 +96,8 @@ public class BookingInfoDAO {
 				Integer numberOfDaySql = result.getInt("numberOfDay");
 				Integer statusSql = result.getInt("status");
 				Float totalSql = result.getFloat("total");
-				BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql, numberOfDaySql,
-					statusSql, totalSql);
+				BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql,
+						endDateSql, numberOfDaySql, statusSql, totalSql);
 				bookingInfos.add(bookingInfo);
 			}
 			result.close();
@@ -158,7 +130,7 @@ public class BookingInfoDAO {
 				Integer statusSql = result.getInt("status");
 				Float totalSql = result.getFloat("total");
 				return new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql, numberOfDaySql,
-					statusSql, totalSql);
+						statusSql, totalSql);
 			}
 
 			return null;

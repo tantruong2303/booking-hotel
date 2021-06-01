@@ -1,11 +1,11 @@
-<%-- 
-    Document   : changePassword
-    Created on : May 25, 2021, 12:33:59 PM
-    Author     : Lenovo
---%>
-
-<%@page import="utils.GetParam"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="utils.GetParam"%>
+<%
+	String oldPasswordError=(String) GetParam.getClientAttribute(request,"oldPasswordError", "" ); 
+	String newPasswordError=(String) GetParam.getClientAttribute(request,"newPassword", "" ); 
+	String errorMessage=(String) GetParam.getClientAttribute(request,"errorMessage", "" ); 
+	String confirmPasswordError=(String) GetParam.getClientAttribute(request,"confirmPasswordError", "" ); 
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,18 +14,13 @@
 		<title>SanninSC | Change Password</title>
 	</head>
 	<body  class="flex flex-col min-h-screen" >
-		<%
-		String oldPasswordError=(String) GetParam.getClientAttribute(request,"oldPasswordError", "" ); 
-		String newPasswordError=(String) GetParam.getClientAttribute(request,"newPassword", "" ); 
-		String errorMessage=(String) GetParam.getClientAttribute(request,"errorMessage", "" ); 
-		String confirmPasswordError=(String) GetParam.getClientAttribute(request,"confirmPasswordError", "" ); 
-		%>
+		
 		<%@include file="./includes/navbar.jsp" %>
 		<main  class="flex flex-1 h-full bg-cerise-red-500">
 			<div  class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
-				<form action="ChangePassword" method="POST"   class="space-y-8 fade-in mt-8 ">
+				<form action="ChangePassword" method="POST"   class="mt-8 space-y-8 fade-in ">
 					<div class="grid grid-form justify-items-stretch">
-						<h1 class="text-4xl font-semibold col-start-2">Change Password</h1>
+						<h1 class="col-start-2 text-4xl font-semibold">Change Password</h1>
 					</div>
 
 					<div class="space-y-2">
@@ -67,15 +62,12 @@
 						</div>
 
 						<div class="grid grid-form">
-							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white bg-gray-800 rounded-sm hover:bg-gray-600 duration-300" />Update Password</button>
+							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update Password</button>
 						</div>
 					</div>
 				</form>
 				<%@include file="./includes/footer.jsp" %>
 			</div>
-
 		</main>
-
-
 	</body>
 </html>
