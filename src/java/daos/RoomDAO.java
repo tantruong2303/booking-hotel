@@ -3,11 +3,13 @@ package daos;
 
 import dtos.Room;
 import dtos.RoomType;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import utils.Connector;
 
 public class RoomDAO {

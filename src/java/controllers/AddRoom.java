@@ -3,9 +3,11 @@ package controllers;
 import daos.RoomDAO;
 import dtos.Room;
 import dtos.RoomType;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -13,7 +15,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import constant.Routers;
+
 import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
@@ -61,31 +65,34 @@ public class AddRoom extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
+		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
-
+		// get and validate params
 		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
 		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
 		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
 		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 3);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
-
 		if (roomId == null || price == null || statePrams == null || imageUrl == null || description == null
 				|| roomTypeId == null) {
 			return false;
 		}
 
+		// get room type
 		RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
 		if (roomType == null) {
 			request.setAttribute("roomTypeIdError", "Room type with the given ID was not found");
 			return false;
 		}
+
+		// get room
 		Room isExistRoom = roomDAO.getRoomById(roomId);
 		if (isExistRoom == null) {
 			request.setAttribute("roomId", "Room with the given ID is taken");
 			return false;
 		}
-
+		// handle create new room
 		Room newRoom = new Room(price, statePrams, imageUrl, description, roomType);
 		boolean result = roomDAO.addRoom(newRoom);
 		if (!result) {

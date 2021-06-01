@@ -1,6 +1,11 @@
 package controllers;
 
 import daos.BookingInfoDAO;
+import daos.RoomDAO;
+import daos.UserDAO;
+import dtos.BookingInfo;
+import dtos.User;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -10,19 +15,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import constant.Routers;
-import daos.RoomDAO;
-import daos.UserDAO;
-import dtos.BookingInfo;
-import dtos.User;
 import javax.servlet.http.HttpSession;
+
+import constant.Routers;
+
 import utils.GetParam;
 import utils.Helper;
 
 @WebServlet(name = "CancelBookingInfo", urlPatterns = { "/CancelBookingInfo" })
 public class CancelBookingInfo extends HttpServlet {
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		response.setContentType("text/html;charset=UTF-8");
 
@@ -70,14 +73,22 @@ public class CancelBookingInfo extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		UserDAO userDao = new UserDAO();
+
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
 				return;
 			}
 
-			if (this.postHandler(request, response)) {
+			if (this.getHandler(request, response)) {
+				HttpSession session = request.getSession(false);
+				User user = userDao.getOneUserByUsername((String) session.getAttribute("username"));
+				if (user.getRole() == 1) {
+					response.sendRedirect(Routers.LIST_ROOM);
+					return;
+				}
 				response.sendRedirect(Routers.VIEW_BOOKING);
 				return;
 			}

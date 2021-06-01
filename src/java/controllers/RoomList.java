@@ -3,9 +3,11 @@ package controllers;
 
 import daos.RoomDAO;
 import dtos.Room;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
+
 import utils.GetParam;
 import utils.Helper;
 
-/**
- *
- * @author HaiCao
- */
 @WebServlet(name = "RoomListController", urlPatterns = { "/RoomList" })
 public class RoomList extends HttpServlet {
 

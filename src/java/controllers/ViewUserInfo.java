@@ -3,6 +3,7 @@ package controllers;
 
 import daos.UserDAO;
 import dtos.User;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -15,12 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+
 import utils.Helper;
 
-/**
- *
- * @author Lenovo
- */
 @WebServlet(name = "ViewUserInfo", urlPatterns = { "/ViewUserInfo" })
 public class ViewUserInfo extends HttpServlet {
 

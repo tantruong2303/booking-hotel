@@ -1,10 +1,12 @@
 package daos;
 
 import dtos.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import utils.Connector;
 
 public class UserDAO {

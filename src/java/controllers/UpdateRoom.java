@@ -1,34 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controllers;
 
 import daos.RoomDAO;
 import dtos.Room;
 import dtos.RoomType;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.annotation.MultipartConfig;
 
 import constant.Routers;
-import javax.servlet.annotation.MultipartConfig;
 
 import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
 
-/**
- *
- * @author Lenovo
- */
 @WebServlet(name = "UpdateRoomServlet", urlPatterns = { "/UpdateRoom" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
