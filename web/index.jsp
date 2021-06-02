@@ -80,6 +80,9 @@
 					</div>
 					<% }%>
 				</div>
+				<% if (list.isEmpty()) {%>
+				<h1 class="text-2xl">List is empty, Please try again later</h1>
+				<% }%>
 			</div>
 		</main>
 	</body>

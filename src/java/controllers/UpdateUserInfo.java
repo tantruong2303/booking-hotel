@@ -63,8 +63,8 @@ public class UpdateUserInfo extends HttpServlet {
 				return;
 			}
 			if (postHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO);
-				rd.forward(request, response);
+				response.sendRedirect(Routers.VIEW_USER_INFO);
+				return;
 			}
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_INFO);
 			rd.forward(request, response);
