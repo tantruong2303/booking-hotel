@@ -18,11 +18,11 @@ import constant.Routers;
 
 import utils.GetParam;
 
-@WebServlet(name = "IndexServlet", urlPatterns = {"/Index"})
+@WebServlet(name = "IndexServlet", urlPatterns = { "/Index" })
 public class Index extends HttpServlet {
 
 	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException, SQLException {
+			throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
 
@@ -45,7 +45,7 @@ public class Index extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (processHandler(request, response)) {
@@ -64,7 +64,7 @@ public class Index extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (processHandler(request, response)) {

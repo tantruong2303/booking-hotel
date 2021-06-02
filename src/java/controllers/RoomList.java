@@ -19,11 +19,11 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "RoomListController", urlPatterns = {"/RoomList"})
+@WebServlet(name = "RoomListController", urlPatterns = { "/RoomList" })
 public class RoomList extends HttpServlet {
 
 	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException, SQLException {
+			throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
 
@@ -46,7 +46,7 @@ public class RoomList extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
@@ -66,7 +66,7 @@ public class RoomList extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
