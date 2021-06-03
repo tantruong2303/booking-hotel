@@ -97,7 +97,7 @@ public class AddRoom extends HttpServlet {
 		}
 
 		// handle create new room
-		Room newRoom = new Room(price, statePrams, imageUrl, description, roomType);
+		Room newRoom = new Room(roomId,price, statePrams, imageUrl, description, roomType);
 		boolean result = roomDAO.addRoom(newRoom);
 		if (!result) {
 			request.setAttribute("errorMessage", "Some thing went wrong, please try again");
@@ -117,11 +117,9 @@ public class AddRoom extends HttpServlet {
 			}
 
 			if (this.postHandler(request, response)) {
-				System.out.println("go");
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;
 			}
-			System.out.println("wrong");
 			this.doGet(request, response);
 
 		} catch (Exception e) {
