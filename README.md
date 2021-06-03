@@ -45,6 +45,18 @@ Creating a hotel website for SinninSC hotel allows user and manager to create th
 
 ![Database Page](data/database.png)
 
+### Home Page
+
+![Home Page](data/home.png)
+
+### Management Page
+
+![Management Page](data/manager.png)
+
+### Add New Room
+
+![Add New Room Page](data/newroom.png)
+
 ### Login Page
 
 ![Login Page](data/login.png)
