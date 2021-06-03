@@ -81,7 +81,7 @@ public class BookingInfoDAO {
 
 		try {
 			connection = Connector.getConnection();
-			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ?";
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ? ORDER BY id DESC";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, userId);
 			result = pstmt.executeQuery();
