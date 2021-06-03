@@ -194,7 +194,7 @@ public class GetParam {
 				request.setAttribute(field + "Error", label + " is wrong extension ." + String.join(" .", extension));
 				return null;
 			}
-			System.out.println("-----------");
+
 			return FileHelper.uploadFile(request, filePart);
 		} catch (IOException | ServletException e) {
 			e.printStackTrace();
