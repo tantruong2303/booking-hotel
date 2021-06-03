@@ -59,7 +59,8 @@ public class Register extends HttpServlet {
 		}
 
 		// handle process
-		password = Helper.encrypt(password, 28);
+                int hashingKey = Integer.parseInt(getServletContext().getInitParameter("HashingKey"));
+		password = Helper.encrypt(password, hashingKey);
 		User newUser = new User(username, password, fullName, email, phone, role);
 		auth.addUser(newUser);
 		return true;
@@ -84,5 +85,5 @@ public class Register extends HttpServlet {
 			response.sendRedirect(Routers.ERROR);
 		}
 	}
-
+ 
 }
