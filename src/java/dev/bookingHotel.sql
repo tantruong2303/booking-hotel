@@ -15,7 +15,6 @@ CREATE TABLE tbl_User
 	role int
 );
 go
-<<<<<<< HEAD
 
 CREATE TABLE tbl_RoomType
 (
@@ -31,36 +30,13 @@ CREATE TABLE tbl_Room
 	price float,
 	description varchar(250),
 	state int,
-=======
-
-CREATE TABLE tbl_RoomType
-(
-	roomTypeId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
-	name varchar(50),
-	numOfPeople int,
-)
-go
-
-CREATE TABLE tbl_Room
-(
-	roomId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
-	price float,
-	description varchar(250),
-	isDisable bit,
->>>>>>> 43f17b2 (done add room)
 	imageUrl varchar(250),
 	roomTypeId int FOREIGN KEY REFERENCES tbl_RoomType(roomTypeId)
 );
 go
-<<<<<<< HEAD
 
 
 
-=======
-
-
-
->>>>>>> 43f17b2 (done add room)
 CREATE TABLE tbl_BookingInfo
 (
 	bookingInfoId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
@@ -87,7 +63,6 @@ go
 
 INSERT INTO tbl_RoomType
 	(name, numOfPeople)
-<<<<<<< HEAD
 VALUES('queen room', 2);
 
 INSERT INTO tbl_RoomType
@@ -95,13 +70,6 @@ INSERT INTO tbl_RoomType
 VALUES('king room', 3);
 GO
 
-=======
-VALUES('Tom B. Erichsen', 2);
-INSERT INTO tbl_RoomType
-	(name, numOfPeople)
-VALUES('luxuryroom', 2);
-GO
->>>>>>> 43f17b2 (done add room)
 
 INSERT INTO tbl_RoomType
 	(name, numOfPeople)

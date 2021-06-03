@@ -3,10 +3,6 @@ package daos;
 
 import dtos.Room;
 import dtos.RoomType;
-<<<<<<< HEAD
-
-=======
->>>>>>> 43f17b2 (done add room)
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,22 +17,13 @@ public class RoomDAO {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		try {
-<<<<<<< HEAD
 			connection = Connector.getConnection();
 			String sql = "INSERT INTO tbl_Room (price, description, state, imageUrl, roomTypeId) VALUES (?,?,?,?,?)";
-=======
-			Connection connection = Connector.getConnection();
-			String sql = "INSERT INTO tbl_Room (price, description, isDisable, imageUrl, roomTypeId) VALUES (?,?,?,?,?)";
->>>>>>> 43f17b2 (done add room)
 
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setFloat(1, room.getPrice());
 			pstmt.setString(2, room.getDescription());
-<<<<<<< HEAD
 			pstmt.setInt(3, room.getState());
-=======
-			pstmt.setBoolean(3, room.isIsDisable());
->>>>>>> 43f17b2 (done add room)
 			pstmt.setString(4, room.getImageUrl());
 			pstmt.setInt(5, room.getRoomType().getRoomTypeId());
 
@@ -87,7 +74,6 @@ public class RoomDAO {
 
 	public boolean changeState(Integer roomId, Integer state) {
 		Connection connection = Connector.getConnection();
-<<<<<<< HEAD
 		String sql = "UPDATE tbl_Room SET state = ? WHERE roomId = ?";
 
 		try {
@@ -95,18 +81,6 @@ public class RoomDAO {
 			pstmt.setInt(1, state);
 			pstmt.setInt(2, roomId);
 
-=======
-		String sql = "UPDATE tbl_Room SET price = ?, description = ?, isDisable = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";
-
-		try {
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setFloat(1, room.getPrice());
-			pstmt.setString(2, room.getDescription());
-			pstmt.setBoolean(3, room.isIsDisable());
-			pstmt.setString(4, room.getImageUrl());
-			pstmt.setInt(5, room.getRoomType().getRoomTypeId());
-			pstmt.setInt(6, room.getRoomId());
->>>>>>> 43f17b2 (done add room)
 			pstmt.executeUpdate();
 			pstmt.close();
 			return true;
@@ -120,13 +94,9 @@ public class RoomDAO {
 		try {
 			Connection connection = Connector.getConnection();
 
-<<<<<<< HEAD
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId "
 					+ "FROM tbl_Room " + "LEFT JOIN tbl_RoomType " + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
 					+ "WHERE roomId = ? ";
-=======
-			String sql = "SELECT roomId, price, description, isDisable, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE roomId = ? ";
->>>>>>> 43f17b2 (done add room)
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, roomId);
@@ -137,22 +107,14 @@ public class RoomDAO {
 				int roomIdSql = result.getInt("roomId");
 				float priceSql = result.getFloat("price");
 				String imageUrl = result.getString("imageUrl");
-<<<<<<< HEAD
 				int state = result.getInt("state");
-=======
-				boolean isDisable = result.getBoolean("isDisable");
->>>>>>> 43f17b2 (done add room)
 				String descriptionSql = result.getString("description");
 
 				String nameSql = result.getString("name");
 				int roomTypeIdSql = result.getInt("roomTypeId");
 				int numOfPeopleSql = result.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-<<<<<<< HEAD
 				Room room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
-=======
-				Room room = new Room(roomIdSql, priceSql, isDisable, imageUrl, descriptionSql, roomType);
->>>>>>> 43f17b2 (done add room)
 				pstmt.close();
 				return room;
 			}
@@ -169,11 +131,7 @@ public class RoomDAO {
 		try {
 			Connection connection = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
-<<<<<<< HEAD
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY price "
-=======
-			String sql = "SELECT roomId, price, description, isDisable, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY price "
->>>>>>> 43f17b2 (done add room)
 					+ order;
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -186,7 +144,6 @@ public class RoomDAO {
 			while (result.next()) {
 				int roomIdSql = result.getInt("roomId");
 				float priceSql = result.getFloat("price");
-<<<<<<< HEAD
 				String imageUrl = result.getString("imageUrl");
 				int state = result.getInt("state");
 				String descriptionSql = result.getString("description");
@@ -234,17 +191,6 @@ public class RoomDAO {
 
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 				Room room = new Room(roomIdSql, priceSql, stateSQL, imageUrl, descriptionSql, roomType);
-=======
-				String imageUrl = result.getString("imageUrl");
-				boolean isDisable = result.getBoolean("isDisable");
-				String descriptionSql = result.getString("description");
-
-				String nameSql = result.getString("name");
-				int roomTypeIdSql = result.getInt("roomTypeId");
-				int numOfPeopleSql = result.getInt("numOfPeople");
-				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				Room room = new Room(roomIdSql, priceSql, isDisable, imageUrl, descriptionSql, roomType);
->>>>>>> 43f17b2 (done add room)
 				list.add(room);
 			}
 			pstmt.close();
