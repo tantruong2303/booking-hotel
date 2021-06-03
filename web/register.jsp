@@ -32,7 +32,7 @@
 			    class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
 				<form action="Register" method="POST"   class="mt-8 space-y-8 fade-in ">
 					<div class="grid grid-form justify-items-stretch">
-						<h1 class="col-start-2 text-4xl font-semibold">Register</h1>
+						<h1 class="col-start-2 text-4xl font-semibold">Register User</h1>
 					</div>
 
 					<div class="space-y-2">
