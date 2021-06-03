@@ -19,6 +19,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+<<<<<<< HEAD
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link href="./asset/styles.css" rel="stylesheet" />
 		<title>SanninSC | Add Room</title>
@@ -163,5 +164,32 @@
 				);
 			};
 		</script>
+=======
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>JSP Page</title>
+	</head>
+	<body>
+
+		<%
+	   String newPasswordError = (String) request.getAttribute("photoError");
+	
+           
+	   if (newPasswordError == null) {
+	       newPasswordError = "";
+	   }
+	
+		%>
+		<form method="POST" action="/AddRoomServlet" enctype="multipart/form-data">
+			<input type="number" name="numOfPeople"/>
+			<input type="number" name="pirce"/>
+			<input type="file" name="photo"/>
+			<button>Submit</button>
+			<p>
+				<%=newPasswordError %>
+			</p>
+
+		</form>
+
+>>>>>>> 161f3ae (add upload file)
 	</body>
 </html>

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class Helper {
+	
 
 	public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole,
 			int maxRole, String page) throws Exception {
