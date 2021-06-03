@@ -79,7 +79,7 @@ public class UpdateRoom extends HttpServlet {
 		throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
-		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 100, 999);
 		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
 		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);

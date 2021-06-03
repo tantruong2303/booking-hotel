@@ -1,4 +1,3 @@
-
 package controllers;
 
 import constant.Routers;
@@ -21,26 +20,26 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "ViewRoom", urlPatterns = { "/ViewRoom" })
+@WebServlet(name = "ViewRoom", urlPatterns = {"/ViewRoom"})
 public class ViewRoom extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 
 		RoomDAO roomDAO = new RoomDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
 
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
 		if (roomId == null) {
 			return false;
 		}
-
+	
 		Room room = roomDAO.getRoomById(roomId);
 		if (room == null) {
 			request.setAttribute("errorMessage", "Room with the given ID was not found");
 			return false;
 		}
-
+		
 		ArrayList<Review> reviews = reviewDAO.getReviewByRoomId(roomId);
 		if (reviews == null) {
 			request.setAttribute("errorMessage", "Reviews with the given ID was not found");
@@ -54,8 +53,9 @@ public class ViewRoom extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
 				return;
@@ -66,9 +66,12 @@ public class ViewRoom extends HttpServlet {
 				rd.forward(request, response);
 				return;
 			}
+
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
 			rd.forward(request, response);
 		} catch (Exception e) {
+
+			e.printStackTrace();
 			response.sendRedirect(Routers.ERROR);
 		}
 	}

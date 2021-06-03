@@ -37,7 +37,7 @@ public class AddBookingInfo extends HttpServlet {
 		ReviewDAO reviewDAO = new ReviewDAO();
 
 		// get and validate params
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 1, 10, 1);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
 		if (roomId == null) {
 			return false;
 		}

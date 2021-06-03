@@ -92,7 +92,7 @@ public class AddRoom extends HttpServlet {
 		// get room
 		Room isExistRoom = roomDAO.getRoomById(roomId);
 		if (isExistRoom != null) {
-			request.setAttribute("roomId", "Room with the given ID is taken");
+			request.setAttribute("roomIdError", "Room with the given ID is taken");
 			return false;
 		}
 

@@ -33,7 +33,7 @@ public class CancelBookingInfo extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDao = new UserDAO();
 
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 1, Integer.MAX_VALUE);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999);
 		if (roomId == null) {
 			return false;
 		}

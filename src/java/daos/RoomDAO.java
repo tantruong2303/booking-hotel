@@ -95,9 +95,7 @@ public class RoomDAO {
 		try {
 			Connection connection = Connector.getConnection();
 
-			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId "
-				+ "FROM tbl_Room " + "LEFT JOIN tbl_RoomType " + "ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId "
-				+ "WHERE roomId = ? ";
+			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE roomId = ? ";
 
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, roomId);

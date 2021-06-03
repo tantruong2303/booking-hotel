@@ -110,7 +110,7 @@ public class GetParam {
 	}
 
 	public static String getPhoneParams(HttpServletRequest request, String field, String label) {
-		String value = getStringParam(request, field, label, 10, 10);
+		String value = getStringParam(request, field, label, 10, 11);
 		if (value == null) {
 			return null;
 		}

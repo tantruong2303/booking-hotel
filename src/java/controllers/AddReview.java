@@ -36,7 +36,7 @@ public class AddReview extends HttpServlet {
 		// get and validate params
 		String message = GetParam.getStringParam(request, "message", "message", 1, 1000);
 		Integer rate = GetParam.getIntParams(request, "rate", "rate", 1, 5);
-		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999);
 		if (message == null || rate == null || roomId == null) {
 			return false;
 		}

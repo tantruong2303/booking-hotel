@@ -8,7 +8,7 @@
 	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
 	String minPrice = (String) GetParam.getClientParams(request, "minPrice", "0");
 	String maxPrice = (String) GetParam.getClientParams(request, "maxPrice", "9999999");
-	String numOfPeople = (String) GetParam.getClientParams(request, "numOfPeople", "2");
+	String numOfPeople = (String) GetParam.getClientParams(request, "numOfPeople", "1");
 %>
 <!DOCTYPE html>
 <html>
@@ -31,11 +31,11 @@
 					<div class="flex space-x-2">
 						<div class="grid grid-form justify-items-stretch ">
 							<label for="minPrice" class="block font-medium">Min price</label>
-							<input type="number" name="minPrice" value="<%=minPrice%>"  id="minPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+							<input type="number" name="minPrice" min="0" value="<%=minPrice%>"  id="minPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
 						</div>
 						<div class="grid grid-form justify-items-stretch ">
 							<label for="maxPrice" class="block font-medium">Max price</label>
-							<input type="number"  value="<%=maxPrice%>" name="maxPrice" id="maxPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
+							<input type="number"  value="<%=maxPrice%>" min="0" name="maxPrice" id="maxPrice" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
 						</div>
 					</div>
 

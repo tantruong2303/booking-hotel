@@ -1,4 +1,3 @@
-
 package controllers;
 
 import constant.Routers;
@@ -20,15 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "Checkout", urlPatterns = { "/CheckOut" })
+@WebServlet(name = "Checkout", urlPatterns = {"/CheckOut"})
 public class CheckOut extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 		RoomDAO roomDAO = new RoomDAO();
 
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 1, Integer.MAX_VALUE);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999);
 
 		if (roomId == null) {
 			return false;
@@ -58,7 +57,7 @@ public class CheckOut extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
