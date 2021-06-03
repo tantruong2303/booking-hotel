@@ -57,7 +57,7 @@ public class ViewRoom extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 

@@ -29,7 +29,7 @@
 						<div class="flex-1">
 							<img class="border rounded-sm border-cerise-red-500" src="<%= room.getImageUrl() %>" alt="photo" id="pre-photo"/>
 						</div>
-						<form method="POST" action="/UpdateRoom?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
+						<form method="POST" action="/BookingHotel/UpdateRoom?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">Room Type</label>
 

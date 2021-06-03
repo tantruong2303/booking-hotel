@@ -59,15 +59,15 @@ public class UpdateUserInfo extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			if (postHandler(request, response)) {
 				response.sendRedirect(Routers.VIEW_USER_INFO);
 				return;
 			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_INFO);
-			rd.forward(request, response);
+			this.doGet(request, response);
+			
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);
 		}
@@ -101,13 +101,14 @@ public class UpdateUserInfo extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_PAGE);
 				rd.forward(request, response);
 			}
+			
 
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);

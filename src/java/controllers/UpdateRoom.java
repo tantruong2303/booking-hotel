@@ -22,13 +22,13 @@ import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "UpdateRoomServlet", urlPatterns = { "/UpdateRoom" })
+@WebServlet(name = "UpdateRoomServlet", urlPatterns = {"/UpdateRoom"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
-		* 100)
+	* 100)
 public class UpdateRoom extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
@@ -55,10 +55,10 @@ public class UpdateRoom extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			if (this.getHandler(request, response)) {
@@ -76,7 +76,7 @@ public class UpdateRoom extends HttpServlet {
 	}
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
@@ -85,7 +85,7 @@ public class UpdateRoom extends HttpServlet {
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
 		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
-		if (price == null || roomId == null || statePrams == null || roomTypeId == null) {
+		if (price == null || roomId == null || statePrams == null || roomTypeId == null | description == null) {
 			return false;
 		}
 
@@ -120,10 +120,10 @@ public class UpdateRoom extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			if (this.postHandler(request, response)) {
@@ -131,8 +131,7 @@ public class UpdateRoom extends HttpServlet {
 				return;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM);
-			rd.forward(request, response);
+			this.doGet(request, response);
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);
 		}

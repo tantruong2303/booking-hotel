@@ -22,11 +22,11 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "AddReviewServlet", urlPatterns = { "/AddReview" })
+@WebServlet(name = "AddReviewServlet", urlPatterns = {"/AddReview"})
 public class AddReview extends HttpServlet {
 
 	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		// initialized resource
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -70,11 +70,11 @@ public class AddReview extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			// forward on 200

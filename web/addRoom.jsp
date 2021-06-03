@@ -25,14 +25,14 @@ GetParam.getClientAttribute(request,"errorMessage", ""); String descriptionError
                                                                 <div class="flex-1">
                                                                         <img
                                                                                 class="border rounded-sm border-cerise-red-500 max-h-96"
-                                                                                src="/asset/image/default-image.png"
+                                                                                src="/BookingHotel/asset/image/default-image.png"
                                                                                 alt="photo"
                                                                                 id="pre-photo"
                                                                         />
                                                                 </div>
                                                                 <form
                                                                         method="POST"
-                                                                        action="/AddRoom"
+                                                                        action="/BookingHotel/AddRoom"
                                                                         enctype="multipart/form-data"
                                                                         class="flex-1 px-2"
                                                                 >
@@ -114,7 +114,7 @@ GetParam.getClientAttribute(request,"errorMessage", ""); String descriptionError
                                                                                                 focus:outline-none
                                                                                         "
                                                                                 >
-									<%=description%></textarea
+<%=description%></textarea
                                                                                 >
                                                                                 <p class="text-red-500 capitalize"><%=descriptionError %></p>
                                                                         </div>

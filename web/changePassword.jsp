@@ -2,7 +2,7 @@
 <%@page import="utils.GetParam"%>
 <%
 	String oldPasswordError=(String) GetParam.getClientAttribute(request,"oldPasswordError", "" ); 
-	String newPasswordError=(String) GetParam.getClientAttribute(request,"newPassword", "" ); 
+	String newPasswordError=(String) GetParam.getClientAttribute(request,"newPasswordError", "" ); 
 	String errorMessage=(String) GetParam.getClientAttribute(request,"errorMessage", "" ); 
 	String confirmPasswordError=(String) GetParam.getClientAttribute(request,"confirmPasswordError", "" ); 
 %>
@@ -14,7 +14,7 @@
 		<title>SanninSC | Change Password</title>
 	</head>
 	<body  class="flex flex-col min-h-screen" >
-		
+
 		<%@include file="./includes/navbar.jsp" %>
 		<main  class="flex flex-1 h-full bg-cerise-red-500">
 			<div  class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
@@ -29,17 +29,6 @@
 								<%=errorMessage%>
 							</p>
 						</div>
-
-						<div class="grid grid-form justify-items-stretch">
-							<label
-							    class="block font-medium" for="newPassword">New Password</label>
-							<input type="password"
-							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
-							       name="newPassword" id="newPassword" />
-							<p class="col-start-2 text-red-500 ">
-								<%=newPasswordError%>
-							</p>
-						</div>
 						<div class="grid grid-form justify-items-stretch">
 							<label
 							    class="block font-medium" for="oldPassword">Old Password</label>
@@ -50,6 +39,17 @@
 								<%=oldPasswordError%>
 							</p>
 						</div>	
+						<div class="grid grid-form justify-items-stretch">
+							<label
+							    class="block font-medium" for="newPassword">New Password</label>
+							<input type="password"
+							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
+							       name="newPassword" id="newPassword" />
+							<p class="col-start-2 text-red-500 ">
+								<%=newPasswordError%>
+							</p>
+						</div>
+
 						<div class="grid grid-form justify-items-stretch">
 							<label
 							    class="block font-medium" for="confirmPassword">Confirm Password</label>

@@ -73,10 +73,11 @@ public class Register extends HttpServlet {
 		try {
 			if (processRequest(request, response)) {
 				// forward on 200
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN);
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
 				rd.forward(request, response);
 				return;
-			}
+			}	
+			
 			// forward on 400
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.REGISTER_PAGE);
 			rd.forward(request, response);

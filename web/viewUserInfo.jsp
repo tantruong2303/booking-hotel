@@ -54,9 +54,9 @@
 							<p><%=user.getRole()  == 0? "Customer" : "Manager" %></p>
 						</div>
 						<div class="flex space-x-2">
-							<a  href="/UpdateUserInfo" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update Information</a>
+							<a  href="/BookingHotel/UpdateUserInfo" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update Information</a>
 
-							<a  href="/changePassword.jsp" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Change Pasword</a>
+							<a  href="/BookingHotel/changePassword.jsp" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Change Pasword</a>
 						</div>
 
 					</div>

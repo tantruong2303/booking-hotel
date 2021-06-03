@@ -52,7 +52,7 @@ public class BookingInfoDAO {
 
 		try {
 			connection = Connector.getConnection();
-			String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE roomId = ?";
+			String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE roomId = ? and status = -1";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, status);
 			pstmt.setInt(2, bookingInfoId);
@@ -81,7 +81,7 @@ public class BookingInfoDAO {
 
 		try {
 			connection = Connector.getConnection();
-			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ? ORDER BY id DESC";
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ? ORDER BY bookingInfoId DESC";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, userId);
 			result = pstmt.executeQuery();
