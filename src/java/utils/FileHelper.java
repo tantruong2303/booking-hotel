@@ -13,7 +13,7 @@ import javax.servlet.http.Part;
 
 public class FileHelper {
 
-	public static final String[] imageExtension = { "png", "jpg", "svg", "jpeg", "bmp" };
+	public static final String[] imageExtension = {"png", "jpg", "svg", "jpeg", "bmp"};
 
 	public static String uploadFile(HttpServletRequest request, Part filePart) throws IOException, ServletException {
 		String UPLOAD_DIR = "images";
@@ -22,6 +22,11 @@ public class FileHelper {
 			String fileName = (String) UUID.randomUUID().toString() + getFileName(filePart);
 			String applicationPath = request.getServletContext().getRealPath("");
 			String basePath = applicationPath + File.separator + UPLOAD_DIR + File.separator;
+			File theDir = new File(basePath);
+			if (!theDir.exists()) {
+				theDir.mkdirs();
+			}
+
 			InputStream inputStream = null;
 			OutputStream outputStream = null;
 			try {

@@ -81,7 +81,7 @@ public class UpdateRoom extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
 		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
-		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 2);
+		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
 		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);

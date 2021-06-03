@@ -68,10 +68,6 @@
 										<label for="state2" >Avaible</label>
 										<input type="radio" name="state" id="state2" value="1" ${room.getState() == 1  ?  'checked="checked"' : ''}/>
 									</span>
-									<span>
-										<label for="state3" >Rent</label>
-										<input type="radio" name="state" id="state3" value="2" ${room.getState() == 2  ?  'checked="checked"' : ''}/>
-									</span>
 
 								</div>
 
