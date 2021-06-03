@@ -19,18 +19,48 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
+<<<<<<< HEAD
 @WebServlet(name = "ChangePassword", urlPatterns = { "/ChangePassword" })
 public class ChangePassword extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
+=======
+/**
+ *
+ * @author Lenovo
+ */
+@WebServlet(name = "ChangePassword", urlPatterns = {"/ChangePassword"})
+public class ChangePassword extends HttpServlet {
+
+	/**
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+
+>>>>>>> 43f17b2 (done add room)
 		UserDAO userDAO = new UserDAO();
 
+<<<<<<< HEAD
 		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 1, 50);
 		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
 		String oldPassword = GetParam.getStringParam(request, "oldPassword", "Old Password", 1, 50);
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
+=======
+		try {
+			if (!Helper.protectedRouter(request, response, 0, 1, loginPage)) {
+				return;
+			}
+>>>>>>> 43f17b2 (done add room)
 
 		if (newPassword == null || confirmPassword == null || oldPassword == null || username == null) {
 			return false;
@@ -60,6 +90,7 @@ public class ChangePassword extends HttpServlet {
 
 		return true;
 
+<<<<<<< HEAD
 	}
 
 	@Override
@@ -76,6 +107,37 @@ public class ChangePassword extends HttpServlet {
 			}
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD);
 			rd.forward(request, response);
+=======
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+	// + sign on the left to edit the code.">
+	/**
+	 * Handles the HTTP <code>GET</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		processRequest(request, response);
+	}
+
+	/**
+	 * Handles the HTTP <code>POST</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		processRequest(request, response);
+	}
+>>>>>>> 43f17b2 (done add room)
 
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);

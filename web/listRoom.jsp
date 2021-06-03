@@ -18,10 +18,19 @@
 		<title>SanninSC | List Room Page</title>
 	</head>
 	<body class="flex flex-col min-h-screen">
+<<<<<<< HEAD
+=======
+		<%
+		  
+			  ArrayList<Room> list = (ArrayList<Room>) Validator.getClientParams( request,"rooms", new ArrayList<Room>());
+		
+		%>
+>>>>>>> 43f17b2 (done add room)
 
 
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
+<<<<<<< HEAD
 			<div   class="flex flex-col items-center justify-start w-full p-4 mx-auto space-y-4 bg-white">
 				<form action="/RoomList" method = "POST" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
@@ -81,6 +90,12 @@
 				<table  class="w-full border border-black">
 					<thead>
 						<tr class="text-white bg-blue-500">
+=======
+			<div   class="flex flex-col items-center justify-between w-full p-4 mx-auto space-y-10 bg-white">
+				<table  class="border  border-black w-full">
+					<thead>
+						<tr class="bg-blue-500 text-white">
+>>>>>>> 43f17b2 (done add room)
 							<th>No</th>
 							<th>Id</th>
 							<th>Name</th>
@@ -89,22 +104,36 @@
 							<th>Description</th>
 							<th>Photo</th>
 							<th></th>
+<<<<<<< HEAD
 							
 							
+=======
+							<th></th>
+>>>>>>> 43f17b2 (done add room)
 						</tr>
 					</thead>
 					<tbody>
 						<% for (int i = 0; i < list.size(); i++) { %>
+<<<<<<< HEAD
 						<tr class="<%= list.get(i).getState() == 0 ? "bg-red-200" :  list.get(i).getState() == 2 ?" bg-yellow-300": "bg-white" %>"> 
 							<td class="p-1 text-center border border-black"><%= i+1 %></td>
 							<td class="p-1 text-center border border-black"><%= list.get(i).getRoomId()%></td>
 							<td class="p-1 capitalize border border-black"><%= list.get(i).getRoomType().getName()%></td>
 							<td class="p-1 text-center border border-black">$<%= list.get(i).getPrice()%></td>
 							<td class="p-1 text-center border border-black"><%= list.get(i).getRoomType().getNumOfPeople()%></td>
+=======
+						<tr class="<%= list.get(i).isIsDisable() ? "bg-red-200" :" bg-white" %>"> 
+							<td class="p-1 border border-black text-center"><%= i+1 %></td>
+							<td class="p-1 border border-black text-center"><%= list.get(i).getRoomId()%></td>
+							<td class="p-1 border border-black capitalize"><%= list.get(i).getRoomType().getName()%></td>
+							<td class="p-1 border border-black text-center">$<%= list.get(i).getPrice()%></td>
+							<td class="p-1 border border-black text-center"><%= list.get(i).getRoomType().getNumOfPeople()%></td>
+>>>>>>> 43f17b2 (done add room)
 							<td class="p-1 border border-black"><%= list.get(i).getDescription()%></td>
 							<td  class="p-1 border border-black">
 								<img src="<%= list.get(i).getImageUrl()%>" alt="alt" class="w-32"/>
 							</td>
+<<<<<<< HEAD
 							<td class="p-1 text-center border border-black">
 								<% if ( list.get(i).getState() == 2)  {%>
 
@@ -119,6 +148,14 @@
 								<a href="/UpdateRoom?roomId=<%= list.get(i).getRoomId()%>" class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">Update</a>
 							</td>
 							<% } %>
+=======
+							<td  class="p-1 border border-black text-center">
+								<a href="/UpdateRoomServlet?roomId=<%= list.get(i).getRoomId()%>" class="bg-blue-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-blue-600">Update</a>
+							</td>
+							<td  class="p-1 border border-black text-center">
+								<a href="#" class="bg-red-500 p-2 inline-block font-medium text-white rounded-sm duration-200 hover:bg-red-600">Delete</a>
+							</td>
+>>>>>>> 43f17b2 (done add room)
 						</tr>
 						<% }%>
 					</tbody>
