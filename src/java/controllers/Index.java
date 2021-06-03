@@ -32,13 +32,7 @@ public class Index extends HttpServlet {
 		String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 		ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, 1);
 
-		if (list == null) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
-			return false;
-		}
-
 		request.setAttribute("rooms", list);
-
 		return true;
 
 	}
@@ -72,7 +66,7 @@ public class Index extends HttpServlet {
 				rd.forward(request, response);
 				return;
 			}
-
+			
 			response.sendRedirect(Routers.ERROR);
 		} catch (Exception e) {
 			e.printStackTrace();
