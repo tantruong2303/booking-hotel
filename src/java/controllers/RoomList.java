@@ -1,4 +1,3 @@
-
 package controllers;
 
 import daos.RoomDAO;
@@ -23,7 +22,7 @@ import utils.Helper;
 @WebServlet(name = "RoomListController", urlPatterns = { "/RoomList" })
 public class RoomList extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
+	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
@@ -55,7 +54,7 @@ public class RoomList extends HttpServlet {
 				return;
 			}
 
-			if (this.getHandler(request, response)) {
+			if (this.processHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
 				rd.forward(request, response);
 			}
@@ -65,4 +64,23 @@ public class RoomList extends HttpServlet {
 		}
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+
+		try {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+				return;
+			}
+
+			if (this.processHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
+				rd.forward(request, response);
+			}
+
+		} catch (Exception e) {
+			response.sendRedirect(Routers.ERROR);
+		}
+	}
 }

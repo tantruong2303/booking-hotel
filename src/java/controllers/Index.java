@@ -1,4 +1,3 @@
-
 package controllers;
 
 import daos.RoomDAO;
@@ -22,7 +21,7 @@ import utils.GetParam;
 @WebServlet(name = "IndexServlet", urlPatterns = { "/Index" })
 public class Index extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
+	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
@@ -32,13 +31,8 @@ public class Index extends HttpServlet {
 		float max = GetParam.getFloatParams(request, "maxPrice", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
 		String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 		ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, 1);
-		if (list == null) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
-			return false;
-		}
 
 		request.setAttribute("rooms", list);
-
 		return true;
 
 	}
@@ -48,7 +42,7 @@ public class Index extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (getHandler(request, response)) {
+			if (processHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
 				rd.forward(request, response);
 				return;
@@ -56,7 +50,26 @@ public class Index extends HttpServlet {
 
 			response.sendRedirect(Routers.ERROR);
 		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendRedirect(Routers.ERROR);
+		}
 
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		try {
+			if (processHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+				rd.forward(request, response);
+				return;
+			}
+			
+			response.sendRedirect(Routers.ERROR);
+		} catch (Exception e) {
+			e.printStackTrace();
 			response.sendRedirect(Routers.ERROR);
 		}
 
