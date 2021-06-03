@@ -16,4 +16,8 @@
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <param-name>HashingKey</param-name>
+        <param-value>28</param-value>
+    </context-param>
 </web-app>

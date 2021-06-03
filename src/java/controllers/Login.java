@@ -38,7 +38,8 @@ public class Login extends HttpServlet {
 
 		// checking exist user and correct password
 		User existedUser = userDAO.getOneUserByUsername(username);
-		if (existedUser == null || !Helper.comparePassword(password, existedUser.getPassword(), 28)) {
+                int hashingKey = Integer.parseInt(getServletContext().getInitParameter("HashingKey"));
+		if (existedUser == null || !Helper.comparePassword(password, existedUser.getPassword(), hashingKey)) {
 			request.setAttribute("errorMessage", "Username or password is not correct");
 			return false;
 		}
