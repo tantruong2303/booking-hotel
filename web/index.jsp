@@ -63,11 +63,11 @@
 				</form>
 				<div class="grid grid-cols-2 gap-2">
 					<% for (int i = 0; i < list.size(); i++) { %>
-					<div class="grid h-40 grid-cols-8 grid-rows-1 overflow-hidden duration-300 transform bg-white border rounded-md shadow-lg cursor-pointer border-cerise-red-100 hover:bg-cerise-red-50 ">
+					<a href="/BookingHotel/ViewRoom?roomId=<%= list.get(i).getRoomId()%>" class="grid h-40 grid-cols-8 grid-rows-1 overflow-hidden duration-300 transform bg-white border rounded-md shadow-lg cursor-pointer border-cerise-red-100 hover:bg-cerise-red-50 ">
 						<div class="h-full col-span-3 border border-cerise-red-100">
 							<img src="<%= list.get(i).getImageUrl()%>" class="object-cover w-full h-full" />
 						</div>
-						<a  href="/BookingHotel/ViewRoom?roomId=<%= list.get(i).getRoomId()%>"class="relative block col-span-5 px-2">
+						<div   class="relative block col-span-5 px-2">
 							<h1 class="text-xl font-semibold capitalize"><%= list.get(i).getRoomType().getName()%></h1>
 							<div class="text-"><%= list.get(i).getRoomType().getNumOfPeople()%> People(s)</div>
 							<div class="">
@@ -76,8 +76,8 @@
 							<div class="absolute right-2 bottom-8">
 								<span class="text-3xl font-medium">$<%= list.get(i).getPrice()%></span>
 							</div>
-						</a>
-					</div>
+						</div>
+					</a>
 					<% }%>
 				</div>
 				<% if (list.isEmpty()) {%>

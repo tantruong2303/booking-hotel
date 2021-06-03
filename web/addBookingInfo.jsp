@@ -1,5 +1,12 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%> <%@page import="utils.GetParam"%> <%@page import="dtos.Room"%> <% Room room =(Room)
-GetParam.getClientAttribute(request,"room", new Room()); String errorMessage =(String) GetParam.getClientAttribute(request, "errorMessage", ""); %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%> 
+<%@page import="utils.GetParam"%>
+<%@page import="dtos.Room"%>
+<% 
+	Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
+	String errorMessage =(String) GetParam.getClientAttribute(request, "errorMessage", "");
+	String startDateError =(String) GetParam.getClientAttribute(request, "startDateError", "");
+	String endDateError =(String) GetParam.getClientAttribute(request, "endDateError", "");
+%>
 <!DOCTYPE html>
 <html>
         <head>
@@ -17,11 +24,11 @@ GetParam.getClientAttribute(request,"room", new Room()); String errorMessage =(S
                                                 <div class="flex">
                                                         <div class="flex-1">
                                                                 <img
-                                                                        class="border rounded-sm border-cerise-red-500 max-h-96"
-                                                                        src="<%= room.getImageUrl()%>"
-                                                                        alt="photo"
-                                                                        id="pre-photo"
-                                                                />
+								    class="border rounded-sm border-cerise-red-500 max-h-96"
+								    src="<%= room.getImageUrl()%>"
+								    alt="photo"
+								    id="pre-photo"
+								    />
                                                         </div>
                                                         <div class="flex-1 px-2">
                                                                 <p class="text-red-500 capitalize"><%=errorMessage %></p>
@@ -38,7 +45,7 @@ GetParam.getClientAttribute(request,"room", new Room()); String errorMessage =(S
                                                                 <div class="space-y-2 text-2xl">
                                                                         <span class="font-medium">Number of People: </span>
                                                                         <span class="w-full capitalize"
-                                                                                ><%=room.getRoomType().getNumOfPeople()%></span
+									      ><%=room.getRoomType().getNumOfPeople()%></span
                                                                         >
                                                                 </div>
                                                                 <div class="space-y-2 text-2xl">
@@ -48,61 +55,52 @@ GetParam.getClientAttribute(request,"room", new Room()); String errorMessage =(S
                                                                 <div class="space-y-2 text-2xl">
                                                                         <span class="font-medium">Description: </span>
                                                                         <span id="description" class="w-full capitalize"
-                                                                                ><%=room.getDescription()%></span
+									      ><%=room.getDescription()%></span
                                                                         >
                                                                 </div>
                                                                 <div>
                                                                         <form method="POST" action="/BookingHotel/AddBookingInfo?roomId=<%=room.getRoomId() %>">
                                                                                 <div>
                                                                                         <label for="startDate" class="block font-medium"
-                                                                                                >Start Date</label
+											       >Start Date</label
                                                                                         >
                                                                                         <input
-                                                                                                id="startDate"
-                                                                                                type="date"
-                                                                                                class="
-                                                                                                        p-1
-                                                                                                        border
-                                                                                                        rounded-sm
-                                                                                                        border-cerise-red-500
-                                                                                                        focus:outline-none
-                                                                                                "
-                                                                                                name="startDate"
-                                                                                        />
+											    id="startDate"
+											    type="date"
+											    class="
+											    p-1
+											    border
+											    rounded-sm
+											    border-cerise-red-500
+											    focus:outline-none
+											    "
+											    name="startDate"
+											    />
+											<p class="col-start-2 text-red-500 ">
+												<%=startDateError%>
+											</p>		
                                                                                 </div>
                                                                                 <div>
                                                                                         <label for="endDate" class="block font-medium"
-                                                                                                >End Date</label
+											       >End Date</label
                                                                                         >
                                                                                         <input
-                                                                                                id="endDate"
-                                                                                                type="date"
-                                                                                                class="
-                                                                                                        p-1
-                                                                                                        border
-                                                                                                        rounded-sm
-                                                                                                        border-cerise-red-500
-                                                                                                        focus:outline-none
-                                                                                                "
-                                                                                                name="endDate"
-                                                                                        />
+											    id="endDate"
+											    type="date"
+											    class="
+											    p-1
+											    border
+											    rounded-sm
+											    border-cerise-red-500
+											    focus:outline-none
+											    "
+											    name="endDate"
+											    />
+											<p class="col-start-2 text-red-500 ">
+												<%=endDateError%>
+											</p>
                                                                                 </div>
-                                                                                <button
-                                                                                        class="
-                                                                                                block
-                                                                                                col-start-2
-                                                                                                px-16
-                                                                                                py-2
-                                                                                                mt-8
-                                                                                                font-semibold
-                                                                                                text-white
-                                                                                                duration-300
-                                                                                                bg-gray-800
-                                                                                                rounded-sm
-                                                                                                ext-center
-                                                                                                hover:bg-gray-600
-                                                                                        "
-                                                                                >
+                                                                                <button    class="block  col-start-2  px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm   hover:bg-gray-600 " >
                                                                                         Booking Now
                                                                                 </button>
                                                                         </form>
