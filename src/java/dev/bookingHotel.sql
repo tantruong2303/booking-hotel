@@ -76,3 +76,4 @@ INSERT INTO tbl_RoomType
 VALUES('luxury room', 2);
 GO
 
+INSERT INTO tbl_Room (description,imageUrl,isDisable,price,roomTypeId)VALUES('Hello', '/url', 0, 123, 1);

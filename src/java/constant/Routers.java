@@ -28,7 +28,7 @@ public class Routers {
 	public final static String INDEX = "/BookingHotel/Index";
 	public final static String LOGIN = "/BookingHotel/login.jsp";
 	public final static String LOGOUT = "/BookingHotel/Logout";
-	public final static String REGISTER = "/BookingHotelregister.jsp";
+	public final static String REGISTER = "/BookingHotel/register.jsp";
 	public final static String LIST_ROOM = "/BookingHotel/RoomList";
 	public final static String UPDATE_ROOM = "/BookingHotel/UpdateRoom";
 	public final static String UPDATE_USER_INFO = "/BookingHotel/UpdateUserInfo";

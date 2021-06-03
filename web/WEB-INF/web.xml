@@ -8,12 +8,16 @@
         <welcome-file>/IndexServlet</welcome-file>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
-    <error-page>
+<!--    <error-page>
         <location>/notfound.jsp</location>
-    </error-page>
+    </error-page>-->
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <param-name>HashingKey</param-name>
+        <param-value>28</param-value>
+    </context-param>
 </web-app>
