@@ -27,11 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "AddBookingInfo", urlPatterns = { "/AddBookingInfo" })
+@WebServlet(name = "AddBookingInfo", urlPatterns = {"/AddBookingInfo"})
 public class AddBookingInfo extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -63,11 +63,11 @@ public class AddBookingInfo extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
 				return;
 			}
 
@@ -88,7 +88,7 @@ public class AddBookingInfo extends HttpServlet {
 	}
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDAO = new UserDAO();
@@ -150,7 +150,7 @@ public class AddBookingInfo extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {

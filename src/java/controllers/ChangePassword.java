@@ -67,17 +67,18 @@ public class ChangePassword extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			if (postHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO);
-				rd.forward(request, response);
+				response.sendRedirect(Routers.VIEW_USER_INFO);
+				return;
 			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE);
 			rd.forward(request, response);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.sendRedirect(Routers.ERROR);
 		}
 

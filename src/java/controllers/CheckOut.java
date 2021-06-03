@@ -61,7 +61,7 @@ public class CheckOut extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 

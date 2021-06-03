@@ -33,14 +33,14 @@
 						<div class="flex-1">
 							<img
 							    class="border rounded-sm border-cerise-red-500 max-h-96"
-							    src="/asset/image/default-image.png"
+							    src="/BookingHotel/asset/image/default-image.png"
 							    alt="photo"
 							    id="pre-photo"
 							    />
 						</div>
 						<form
 						    method="POST"
-						    action="/AddRoom"
+						    action="/BookingHotel/AddRoom"
 						    enctype="multipart/form-data"
 						    class="flex-1 px-2"
 						    >
@@ -89,9 +89,7 @@
 								    name="description"
 								    id="description"
 								    class="block w-full p-1 border rounded-sm  border-cerise-red-500 focus:outline-none"
-								    >
-									<%=description%></textarea
-								>
+								    ><%=description%></textarea>
 								<p class="text-red-500 capitalize"><%=descriptionError %></p>
 							</div>
 							<div class="space-y-2">

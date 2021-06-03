@@ -24,7 +24,7 @@ public class Logout extends HttpServlet {
 			session.invalidate();
 		} catch (Exception e) {
 		} finally {
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
 			rd.forward(request, response);
 		}
 

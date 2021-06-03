@@ -78,7 +78,7 @@ public class CancelBookingInfo extends HttpServlet {
 		UserDAO userDao = new UserDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 

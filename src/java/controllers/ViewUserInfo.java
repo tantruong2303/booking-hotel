@@ -1,4 +1,3 @@
-
 package controllers;
 
 import daos.UserDAO;
@@ -19,17 +18,18 @@ import constant.Routers;
 
 import utils.Helper;
 
-@WebServlet(name = "ViewUserInfo", urlPatterns = { "/ViewUserInfo" })
+@WebServlet(name = "ViewUserInfo", urlPatterns = {"/ViewUserInfo"})
 public class ViewUserInfo extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		UserDAO userDAO = new UserDAO();
 
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		User existedUser = userDAO.getOneUserByUsername(username);
+		
 		if (existedUser == null) {
 			request.setAttribute("errorMessage", "User with the given ID was not found");
 			return false;
@@ -44,18 +44,22 @@ public class ViewUserInfo extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
+		
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE);
 				rd.forward(request, response);
+				return;
 			}
+			response.sendRedirect(Routers.ERROR);
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.sendRedirect(Routers.ERROR);
 		}
 	}

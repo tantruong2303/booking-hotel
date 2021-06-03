@@ -48,7 +48,7 @@
                                                                         <span id="description" class="w-full capitalize"><%=room.getDescription()%></span>
                                                                 </div>
                                                                 <div>
-                                                                        <form method="POST" action="/AddBookingInfo?roomId=<%=room.getRoomId() %>">
+                                                                        <form method="POST" action="/BookingHotel/AddBookingInfo?roomId=<%=room.getRoomId() %>">
                                                                                 <div>
                                                                                         <label for="startDate" class="block font-medium">Start Date</label>
                                                                                         <input  id="startDate" type="date" class="p-1 border rounded-sm  border-cerise-red-500 focus:outline-none" name="startDate" />

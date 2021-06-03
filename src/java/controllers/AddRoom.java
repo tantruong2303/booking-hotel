@@ -22,12 +22,13 @@ import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(urlPatterns = { "/AddRoom" })
+@WebServlet(urlPatterns = {"/AddRoom"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
-		* 100)
+	* 100)
 public class AddRoom extends HttpServlet {
+
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
 
@@ -43,20 +44,21 @@ public class AddRoom extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 
 			if (this.getHandler(request, response)) {
-				response.sendRedirect(Routers.LIST_ROOM);
+
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_ROOM_PAGE);
+				rd.forward(request, response);
 				return;
 			}
-
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_ROOM_PAGE);
-			rd.forward(request, response);
+			response.sendRedirect(Routers.LIST_ROOM);
+			return;
 		} catch (Exception e) {
 			response.sendRedirect(Routers.ERROR);
 
@@ -64,7 +66,7 @@ public class AddRoom extends HttpServlet {
 	}
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
 		// get and validate params
@@ -72,10 +74,11 @@ public class AddRoom extends HttpServlet {
 		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
 		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
-		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 3);
+		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 50);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
+
 		if (roomId == null || price == null || statePrams == null || imageUrl == null || description == null
-				|| roomTypeId == null) {
+			|| roomTypeId == null) {
 			return false;
 		}
 
@@ -88,10 +91,11 @@ public class AddRoom extends HttpServlet {
 
 		// get room
 		Room isExistRoom = roomDAO.getRoomById(roomId);
-		if (isExistRoom == null) {
+		if (isExistRoom != null) {
 			request.setAttribute("roomId", "Room with the given ID is taken");
 			return false;
 		}
+
 		// handle create new room
 		Room newRoom = new Room(price, statePrams, imageUrl, description, roomType);
 		boolean result = roomDAO.addRoom(newRoom);
@@ -105,20 +109,23 @@ public class AddRoom extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
 				return;
 			}
 
 			if (this.postHandler(request, response)) {
+				System.out.println("go");
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;
 			}
+			System.out.println("wrong");
+			this.doGet(request, response);
 
-			response.sendRedirect(Routers.ADD_ROOM);
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.sendRedirect(Routers.ERROR);
 
 		}
