@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 /**
  *
  * @author HaiCao
@@ -29,15 +28,15 @@ public class Review {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        
+
         this.createDate = formatter.format(calendar.getTime());
         this.message = message;
         this.rate = rate;
         this.user = user;
         this.room = room;
     }
-    
-     public Review(String message, int rate, String fullName) {     
+
+    public Review(String message, int rate, String fullName) {
         this.message = message;
         this.rate = rate;
         this.user.setFullName(fullName);
@@ -102,8 +101,8 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{" + "reviewId=" + reviewId + ", message=" + message + ", rate=" + rate + ", createDate=" + createDate + ", user=" + user + ", room=" + room + '}';
+        return "Review{" + "reviewId=" + reviewId + ", message=" + message + ", rate=" + rate + ", createDate="
+                + createDate + ", user=" + user + ", room=" + room + '}';
     }
 
-    
 }

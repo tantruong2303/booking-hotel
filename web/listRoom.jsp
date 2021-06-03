@@ -20,7 +20,6 @@
 	<body class="flex flex-col min-h-screen">
 
 
-
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-start w-full p-4 mx-auto space-y-4 bg-white">

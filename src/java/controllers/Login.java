@@ -57,7 +57,7 @@ public class Login extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (processRequest(request, response)) {
-				
+
 				// forward on 200
 				response.sendRedirect(Routers.INDEX);
 				return;
