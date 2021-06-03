@@ -8,9 +8,9 @@
         <welcome-file>/IndexServlet</welcome-file>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
-<!--    <error-page>
-        <location>/notfound.jsp</location>
-    </error-page>-->
+    <error-page>
+        <location>/error.jsp</location>
+    </error-page>
     <session-config>
         <session-timeout>
             30

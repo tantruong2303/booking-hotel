@@ -145,16 +145,7 @@ GetParam.getClientAttribute(request,"errorMessage", ""); String descriptionError
                                                                                                         id="state2"
                                                                                                         value="1"
                                                                                                 />
-                                                                                        </span>
-                                                                                        <span>
-                                                                                                <label for="state3">Rent</label>
-                                                                                                <input
-                                                                                                        type="radio"
-                                                                                                        name="state"
-                                                                                                        id="state3"
-                                                                                                        value="2"
-                                                                                                />
-                                                                                        </span>
+                                                                                        </span>       
                                                                                 </div>
 
                                                                                 <p class="text-red-500 capitalize"><%=isDisableError %></p>
