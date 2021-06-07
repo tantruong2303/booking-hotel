@@ -63,7 +63,7 @@
 									      ><%=room.getDescription()%></span
 									>
 								</div>
-								<a href="/BookingHotel/AddBookingInfo?roomId=<%=room.getRoomId()%>"
+								<a href="/BookingHotel/AddBookingController?roomId=<%=room.getRoomId()%>"
 								   class="block col-start-2 px-16 py-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600"
 								   >
 									Booking Now
@@ -73,7 +73,7 @@
 						</div>
 					</div>
 					<div class="py-2 border-t-2">
-						<form class="flex items-center py-2 space-x-2" method="POST" action="/BookingHotel/AddReview?roomId=<%=room.getRoomId() %>">
+						<form class="flex items-center py-2 space-x-2" method="POST" action="AddReviewController?roomId=<%=room.getRoomId() %>">
 							<div>
 								<label class="block w-32 font-medium" for="message">My Feedback</label>
 								<textarea

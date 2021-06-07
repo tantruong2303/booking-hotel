@@ -37,7 +37,7 @@ ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute
 						</div>
 						<form
 						    method="POST"
-						    action="/BookingHotel/AddRoom"
+						    action="AddRoomController"
 						    enctype="multipart/form-data"
 						    class="flex-1 px-2"
 						    >

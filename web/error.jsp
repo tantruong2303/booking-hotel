@@ -13,11 +13,9 @@
                         <div class="flex flex-col items-center justify-center w-4/5 p-4 mx-auto space-y-10 bg-white">
                                 <div class="text-center">
                                         <h1 class="text-4xl font-semibold">Opp.. Some Thing Went Wrong</h1>
-                                        <a
-                                                class="inline-block col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm  hover:bg-gray-600"
-                                                href="index.jsp"
-                                                >Go Back To Home</a
-                                        >
+                                        <a      class="inline-block col-start-2 px-16  py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600 " href="/BookingHotel/IndexController">
+						Go Back To Home
+					</a >
                                 </div>
                                 <%@include file="./includes/footer.jsp" %>
                         </div>

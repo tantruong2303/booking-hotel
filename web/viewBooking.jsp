@@ -42,7 +42,7 @@
 						</div>
 						<% if (list.get(i).getStatus() == -1) {%>
 						<a
-						    href="/BookingHotel/CancelBookingInfo?roomId=<%=  list.get(i).getRoomId()%>"
+						    href="/BookingHotel/CancelBookingController?roomId=<%=  list.get(i).getRoomId()%>"
 						    onclick="return confirm('Are you sure to cancel')"
 						    class="inline-block p-2 font-medium text-white bg-red-500"
 						    >Cancel</a

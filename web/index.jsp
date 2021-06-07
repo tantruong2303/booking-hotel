@@ -26,7 +26,7 @@
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-start w-4/5 p-4 mx-auto space-y-4 bg-white">
 
-				<form action="/BookingHotel/Index" method = "POST" class="w-full space-y-2">
+				<form action="IndexController" method = "POST" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
 					<div class="flex space-x-2">
 						<div class="grid grid-form justify-items-stretch ">
@@ -63,7 +63,7 @@
 				</form>
 				<div class="grid grid-cols-2 gap-2">
 					<% for (int i = 0; i < list.size(); i++) { %>
-					<a href="/BookingHotel/ViewRoom?roomId=<%= list.get(i).getRoomId()%>" class="grid h-40 grid-cols-8 grid-rows-1 overflow-hidden duration-300 transform bg-white border rounded-md shadow-lg cursor-pointer border-cerise-red-100 hover:bg-cerise-red-50 ">
+					<a href="/BookingHotel/ViewRoomController?roomId=<%= list.get(i).getRoomId()%>" class="grid h-40 grid-cols-8 grid-rows-1 overflow-hidden duration-300 transform bg-white border rounded-md shadow-lg cursor-pointer border-cerise-red-100 hover:bg-cerise-red-50 ">
 						<div class="h-full col-span-3 border border-cerise-red-100">
 							<img src="<%= list.get(i).getImageUrl()%>" class="object-cover w-full h-full" />
 						</div>
