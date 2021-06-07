@@ -123,6 +123,19 @@ public class GetParam {
 		return value;
 	}
 
+        public static String getEmailParams(HttpServletRequest request, String field, String label){
+            String value = getStringParam(request, field, label, 11, 50);
+            if (value == null) {
+			return null;
+		}
+            String errorMessage = Validator.getEmail(value);
+            if (!errorMessage.isEmpty()) {
+			request.setAttribute(field + "Error", label + errorMessage);
+			return null;
+		}
+            return value;
+        }
+        
 	public static String getDateFromNowToFuture(HttpServletRequest request, String field, String label) {
 		String value = getStringParam(request, field, label, 10, 10);
 		if (value == null) {

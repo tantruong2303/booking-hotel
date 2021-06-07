@@ -16,6 +16,16 @@ public class Validator {
 
 		return "";
 	}
+        
+        public static String getEmail(String value){
+            String pattern = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$";
+            boolean isMatched = Pattern.matches(pattern, value);
+		if (!isMatched) {
+			return "is not correct format. Please enter a valid email";
+		}
+
+		return "";
+        }
 
 	public static Integer computeNumberOfDay(HttpServletRequest request, String startDate, String endDate) {
 		if (startDate != null && endDate != null) {
