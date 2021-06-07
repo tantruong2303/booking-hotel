@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 import utils.GetParam;
 import utils.Helper;
@@ -82,7 +84,9 @@ public class AddReviewController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer customerRole = (Integer)env.lookup("customerRole");
+			if (!Helper.protectedRouter(request, response, customerRole, customerRole, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			// forward on 200
