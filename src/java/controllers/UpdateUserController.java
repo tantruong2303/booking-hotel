@@ -1,4 +1,3 @@
-
 package controllers;
 
 import daos.UserDAO;
@@ -22,11 +21,11 @@ import javax.naming.InitialContext;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "UpdateUserController", urlPatterns = { "/UpdateUserController" })
+@WebServlet(name = "UpdateUserController", urlPatterns = {"/Both/UpdateUserController"})
 public class UpdateUserController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		UserDAO userDAO = new UserDAO();
 
@@ -59,14 +58,14 @@ public class UpdateUserController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
                         // check valid user's role
@@ -83,12 +82,13 @@ public class UpdateUserController extends HttpServlet {
 			this.doGet(request, response);
 
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		UserDAO userDAO = new UserDAO();
 
@@ -115,14 +115,14 @@ public class UpdateUserController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
                         // check valid user's role
@@ -135,10 +135,13 @@ public class UpdateUserController extends HttpServlet {
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_PAGE);
 				rd.forward(request, response);
+				return;
 			}
-
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

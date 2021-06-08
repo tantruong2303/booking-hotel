@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "CheckoutController", urlPatterns = { "/CheckoutController" })
+@WebServlet(name = "CheckoutController", urlPatterns = { "/Manager/CheckoutController" })
 public class CheckOutController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
@@ -87,7 +87,8 @@ public class CheckOutController extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
 			rd.forward(request, response);
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}

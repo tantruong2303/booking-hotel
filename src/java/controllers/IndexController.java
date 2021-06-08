@@ -23,27 +23,32 @@ import utils.GetParam;
  *
  * @author heaty566
  */
-@WebServlet(name = "IndexController", urlPatterns = { "/IndexController" })
+@WebServlet(name = "IndexController", urlPatterns = {"/IndexController"})
 public class IndexController extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-	 * methods.
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		RoomDAO roomDAO = new RoomDAO();
 
-		int numOfPeople = GetParam.getIntParams(request, "numOfPeople", "Number of people", 1, 10, 1);
-		float min = GetParam.getFloatParams(request, "minPrice", "price", 1, Float.MAX_VALUE, 0);
-		float max = GetParam.getFloatParams(request, "maxPrice", "price", 1, Float.MAX_VALUE, Float.MAX_VALUE);
+		Integer numOfPeople = GetParam.getIntParams(request, "numOfPeople", "Number of people", 1, 10, 1);
+		Float min = GetParam.getFloatParams(request, "minPrice", "Min price", 0, Float.MAX_VALUE, 0);
+		Float max = GetParam.getFloatParams(request, "maxPrice", "Max price", 0, Float.MAX_VALUE, Float.MAX_VALUE);
 		String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
+
+		if (min == null || max == null || numOfPeople == null || priceOrder == null) {
+			return false;
+		}
+
 		ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, 1);
 
 		request.setAttribute("rooms", list);
@@ -56,26 +61,25 @@ public class IndexController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (processHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
-				rd.forward(request, response);
-				return;
-			}
+			processHandler(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+			rd.forward(request, response);
+			return;
 
-			response.sendRedirect(Routers.ERROR);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}
@@ -83,26 +87,25 @@ public class IndexController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (processHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
-				rd.forward(request, response);
-				return;
-			}
+			processHandler(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+			rd.forward(request, response);
+			return;
 
-			response.sendRedirect(Routers.ERROR);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}

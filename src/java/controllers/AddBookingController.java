@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "AddBookingController", urlPatterns = { "/AddBookingController" })
+@WebServlet(name = "AddBookingController", urlPatterns = { "/Customer/AddBookingController" })
 public class AddBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -96,7 +96,8 @@ public class AddBookingController extends HttpServlet {
 			rd.forward(request, response);
 		} catch (Exception e) {
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}
@@ -191,7 +192,8 @@ public class AddBookingController extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}

@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="./asset/styles.css" rel="stylesheet" />
+		<link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
 		<title>SanninSC</title>
 	</head>
 	<body class="flex flex-col min-h-screen">
@@ -63,7 +63,7 @@
 				</form>
 				<div class="grid grid-cols-2 gap-2">
 					<% for (int i = 0; i < list.size(); i++) { %>
-					<a href="/BookingHotel/ViewRoomController?roomId=<%= list.get(i).getRoomId()%>" class="grid h-40 grid-cols-8 grid-rows-1 overflow-hidden duration-300 transform bg-white border rounded-md shadow-lg cursor-pointer border-cerise-red-100 hover:bg-cerise-red-50 ">
+					<a href="/BookingHotel/Both/ViewRoomController?roomId=<%= list.get(i).getRoomId()%>" class="grid h-40 grid-cols-8 grid-rows-1 overflow-hidden duration-300 transform bg-white border rounded-md shadow-lg cursor-pointer border-cerise-red-100 hover:bg-cerise-red-50 ">
 						<div class="h-full col-span-3 border border-cerise-red-100">
 							<img src="<%= list.get(i).getImageUrl()%>" class="object-cover w-full h-full" />
 						</div>

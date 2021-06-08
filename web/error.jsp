@@ -4,7 +4,7 @@
 <html>
         <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                <link href="./asset/styles.css" rel="stylesheet" />
+                <link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
                 <title>SanninSC | Not Found</title>
         </head>
         <body class="flex flex-col min-h-screen">

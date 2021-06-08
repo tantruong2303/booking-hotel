@@ -24,7 +24,7 @@ import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "AddRoomController", urlPatterns = { "/AddRoomController" })
+@WebServlet(name = "AddRoomController", urlPatterns = { "/Manager/AddRoomController" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
 public class AddRoomController extends HttpServlet {
@@ -74,8 +74,8 @@ public class AddRoomController extends HttpServlet {
 			response.sendRedirect(Routers.LIST_ROOM);
 			return;
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
-
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 
@@ -149,7 +149,8 @@ public class AddRoomController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 
 		}
 	}

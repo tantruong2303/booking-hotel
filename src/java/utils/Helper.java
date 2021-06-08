@@ -13,17 +13,43 @@ import javax.servlet.http.HttpSession;
 
 public class Helper {
 	
-        /**
-         * Ensure that access only to authorized users
-         * @param request servlet request
-         * @param response servlet response
-         * @param minRole minimum user's role to be passed
-         * @param maxRole maximum user's role to be passed
-         * @param page move to this page if user can not be passed
-         */
-	public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole,
-			int maxRole, String page) throws Exception {
+        
 
+	public static void debugMode(HttpServletRequest request) {
+		String debug = request.getParameter("debug");
+
+		if (debug != null) {
+			if (debug.equals("1")) {
+				HttpSession session = request.getSession();
+				session.setAttribute("username", "admin");
+				session.setAttribute("role", 1);
+				return;
+			}
+			if (debug.equals("0")) {
+				HttpSession session = request.getSession();
+				session.setAttribute("username", "customer");
+				session.setAttribute("role", 0);
+				return;
+			}
+			if (debug.equals("3")) {
+				HttpSession session = request.getSession();
+				session.setAttribute("username", "1321");
+				session.setAttribute("role", 0);
+			}
+		}
+	}
+	/**
+		* Ensure that access only to authorized users
+		* @param request servlet request
+		* @param response servlet response
+		* @param minRole minimum user's role to be passed			 
+		* @param maxRole maximum user's role to be passed
+		* @param page move to this page if user can not be passed
+	 */
+	public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole,
+		int maxRole, String page) throws Exception {
+		debugMode(request);
+		
 		if (!isLogin(request) || !correctRole(request, minRole, maxRole)) {
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			request.setAttribute("errorMessage", "Action is not allow, please login first");

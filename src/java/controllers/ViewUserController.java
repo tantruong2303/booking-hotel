@@ -20,18 +20,18 @@ import javax.naming.InitialContext;
 
 import utils.Helper;
 
-@WebServlet(name = "ViewUserController", urlPatterns = { "/ViewUserController" })
+@WebServlet(name = "ViewUserController", urlPatterns = {"/Both/ViewUserController"})
 public class ViewUserController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		UserDAO userDAO = new UserDAO();
 
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		User existedUser = userDAO.getOneUserByUsername(username);
-
+		
 		if (existedUser == null) {
 			request.setAttribute("errorMessage", "User with the given ID was not found");
 			return false;
@@ -49,14 +49,14 @@ public class ViewUserController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 
 		response.setContentType("text/html;charset=UTF-8");
 		try {
@@ -73,10 +73,12 @@ public class ViewUserController extends HttpServlet {
 				rd.forward(request, response);
 				return;
 			}
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

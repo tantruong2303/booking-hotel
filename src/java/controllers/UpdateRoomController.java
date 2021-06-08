@@ -24,7 +24,7 @@ import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "UpdateRoomController", urlPatterns = { "/UpdateRoomController" })
+@WebServlet(name = "UpdateRoomController", urlPatterns = {"/Manager/UpdateRoomController"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
 public class UpdateRoomController extends HttpServlet {
@@ -85,7 +85,8 @@ public class UpdateRoomController extends HttpServlet {
 			rd.forward(request, response);
 
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}
@@ -159,7 +160,8 @@ public class UpdateRoomController extends HttpServlet {
 
 			this.doGet(request, response);
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

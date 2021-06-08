@@ -50,7 +50,7 @@ public class RegisterController extends HttpServlet {
 		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
 		String email = GetParam.getEmailParams(request,  "email", "Email");
 		String phone = GetParam.getPhoneParams(request, "phone", "Phone");
-		Integer role = GetParam.getIntParams(request, "role", "Role", 0, 1, 0);
+		Integer role = GetParam.getIntParams(request, "role", "Role", 0, 1);
 
 		// get and validate params
 		if (username == null || password == null || confirmPassword == null || fullName == null || email == null
@@ -92,7 +92,8 @@ public class RegisterController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		response.sendRedirect(Routers.REGISTER);
+		RequestDispatcher rd = request.getRequestDispatcher(Routers.REGISTER_PAGE);
+		rd.forward(request, response);
 	}
 
 	/**
@@ -120,7 +121,8 @@ public class RegisterController extends HttpServlet {
 			rd.forward(request, response);
 		} catch (SQLException e) {
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

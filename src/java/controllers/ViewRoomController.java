@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "ViewRoomController", urlPatterns = { "/ViewRoomController" })
+@WebServlet(name = "ViewRoomController", urlPatterns = { "/Both/ViewRoomController" })
 public class ViewRoomController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -83,12 +83,13 @@ public class ViewRoomController extends HttpServlet {
 				return;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

@@ -24,7 +24,7 @@ import javax.naming.InitialContext;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "CancelBookingController", urlPatterns = { "/CancelBookingController" })
+@WebServlet(name = "CancelBookingController", urlPatterns = { "/Both/CancelBookingController" })
 public class CancelBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -113,7 +113,8 @@ public class CancelBookingController extends HttpServlet {
 			rd.forward(request, response);
 
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

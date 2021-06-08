@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 
 import utils.Helper;
 
-@WebServlet(name = "ViewBookingController", urlPatterns = { "/ViewBookingController" })
+@WebServlet(name = "ViewBookingController", urlPatterns = { "/Customer/ViewBookingController" })
 public class ViewBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -83,7 +83,8 @@ public class ViewBookingController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

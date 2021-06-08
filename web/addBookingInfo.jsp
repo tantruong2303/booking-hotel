@@ -11,7 +11,7 @@
 <html>
         <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                <link href="./asset/styles.css" rel="stylesheet" />
+                <link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
                 <title>Sannin SC | Room Information</title>
         </head>
         <body class="flex flex-col min-h-screen">
