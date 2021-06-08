@@ -92,7 +92,8 @@ public class AddBookingController extends HttpServlet {
 			rd.forward(request, response);
 		} catch (Exception e) {
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}
@@ -171,7 +172,7 @@ public class AddBookingController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
 				return;
 			}
 			if (postHandler(request, response)) {
@@ -184,7 +185,8 @@ public class AddBookingController extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}

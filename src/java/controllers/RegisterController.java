@@ -93,7 +93,8 @@ public class RegisterController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		response.sendRedirect(Routers.REGISTER);
+		RequestDispatcher rd = request.getRequestDispatcher(Routers.REGISTER_PAGE);
+		rd.forward(request, response);
 	}
 
 	/**
@@ -121,7 +122,8 @@ public class RegisterController extends HttpServlet {
 			rd.forward(request, response);
 		} catch (SQLException e) {
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

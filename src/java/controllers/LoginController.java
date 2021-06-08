@@ -77,7 +77,8 @@ public class LoginController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		response.sendRedirect(Routers.LOGIN);
+		RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
+		rd.forward(request, response);
 	}
 
 	/**
@@ -104,7 +105,8 @@ public class LoginController extends HttpServlet {
 			rd.forward(request, response);
 		} catch (SQLException e) {
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

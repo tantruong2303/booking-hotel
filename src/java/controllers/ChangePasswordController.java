@@ -86,7 +86,8 @@ public class ChangePasswordController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}
@@ -105,6 +106,7 @@ public class ChangePasswordController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		response.sendRedirect(Routers.CHANGE_PASSWORD);
+		RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE);
+                rd.forward(request, response);
 	}
 }

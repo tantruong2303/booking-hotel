@@ -107,7 +107,8 @@ public class CancelBookingController extends HttpServlet {
 			rd.forward(request, response);
 
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 
