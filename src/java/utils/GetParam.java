@@ -29,7 +29,7 @@ public class GetParam {
 	}
 
 	public static String getStringParam(HttpServletRequest request, String field, String label, int min, int max,
-			String defaultValue) {
+		String defaultValue) {
 		String value = getStringParam(request, field, label, min, max);
 		if (value == null) {
 			return defaultValue;
@@ -65,7 +65,7 @@ public class GetParam {
 	}
 
 	public static Integer getIntParams(HttpServletRequest request, String field, String label, int min, int max,
-			int defaultValue) {
+		int defaultValue) {
 		Integer value = getIntParams(request, field, label, min, max);
 		if (value == null) {
 			return defaultValue;
@@ -100,7 +100,7 @@ public class GetParam {
 	}
 
 	public static Float getFloatParams(HttpServletRequest request, String field, String label, float min, float max,
-			float defaultValue) {
+		float defaultValue) {
 		Float value = getFloatParams(request, field, label, min, max);
 		if (value == null) {
 			return defaultValue;
@@ -110,7 +110,7 @@ public class GetParam {
 	}
 
 	public static String getPhoneParams(HttpServletRequest request, String field, String label) {
-		String value = getStringParam(request, field, label, 10, 10);
+		String value = getStringParam(request, field, label, 10, 11);
 		if (value == null) {
 			return null;
 		}
@@ -159,7 +159,7 @@ public class GetParam {
 	}
 
 	public static String getFileParam(HttpServletRequest request, String field, String label, long maxSize,
-			String[] extension) {
+		String[] extension) {
 		try {
 			Part filePart = request.getPart(field);
 			if (filePart == null) {

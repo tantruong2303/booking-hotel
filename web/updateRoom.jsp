@@ -24,13 +24,12 @@
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
 				<div class="space-y-2">
-
 					<h1 class="text-4xl font-semibold">Update Room Form</h1>
 					<div class="flex">
 						<div class="flex-1">
 							<img class="border rounded-sm border-cerise-red-500" src="<%= room.getImageUrl() %>" alt="photo" id="pre-photo"/>
 						</div>
-						<form method="POST" action="/UpdateRoom?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
+						<form method="POST" action="UpdateRoomController?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">Room Type</label>
 
@@ -69,20 +68,11 @@
 										<label for="state2" >Avaible</label>
 										<input type="radio" name="state" id="state2" value="1" ${room.getState() == 1  ?  'checked="checked"' : ''}/>
 									</span>
-									<span>
-										<label for="state3" >Rent</label>
-										<input type="radio" name="state" id="state3" value="2" ${room.getState() == 2  ?  'checked="checked"' : ''}/>
-									</span>
 
 								</div>
 
 								<p class="text-red-500 capitalize"><%=stateError %></p>
 							</div>
-
-
-
-
-
 							<button class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" type="submit">Update Room</button>
 						</form>
 					</div>

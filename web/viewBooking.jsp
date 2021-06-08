@@ -26,7 +26,7 @@
 					<p class="col-start-2 text-red-500"><%=errorMessage %></p>
 					<% for (int i = 0; i < list.size(); i++) { %>
 					<div
-					    class="block w-full p-2 duration-300 transform bg-white border rounded-md shadow-lg  border-cerise-red-100 hover:bg-cerise-red-50"
+					    class="block w-full p-2 duration-300 transform bg-white border rounded-md shadow-lg  border-cerise-red-100 hover:bg-cerise-red-50 <%=list.get(i).getStatus() == -1 ? "bg-yellow-200": list.get(i).getStatus() == 1 ? "bg-green-200": "bg-red-200"  %>"
 					    >
 						<div>
 							<h1 class="text-xl font-semibold capitalize">
@@ -42,7 +42,7 @@
 						</div>
 						<% if (list.get(i).getStatus() == -1) {%>
 						<a
-						    href="/CancelBookingInfo?roomId=<%=  list.get(i).getRoomId()%>"
+						    href="/BookingHotel/CancelBookingController?roomId=<%=  list.get(i).getRoomId()%>"
 						    onclick="return confirm('Are you sure to cancel')"
 						    class="inline-block p-2 font-medium text-white bg-red-500"
 						    >Cancel</a
@@ -51,7 +51,11 @@
 					</div>
 					<% }%>
 				</div>
+				<% if (list.isEmpty()) {%>
+				<h1 class="text-2xl">List is empty, Please try again later</h1>
+				<% }%>
 			</div>
+
 		</main>
 	</body>
 </html>

@@ -13,7 +13,7 @@ public class Room {
 
 	private int roomId;
 	private float price;
-        //0 disable 1 available 2 rent
+	// 0 disable 1 available 2 rent
 	private int state;
 	private String imageUrl;
 	private String description;
@@ -90,7 +90,8 @@ public class Room {
 
 	@Override
 	public String toString() {
-		return "Room{" + "roomId=" + roomId + ", price=" + price + ", state=" + state + ", imageUrl=" + imageUrl + ", description=" + description + ", roomType=" + roomType + '}';
+		return "Room{" + "roomId=" + roomId + ", price=" + price + ", state=" + state + ", imageUrl=" + imageUrl
+				+ ", description=" + description + ", roomType=" + roomType + '}';
 	}
 
 }

@@ -1,20 +1,17 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%> 
-<%@page import="utils.GetParam"%>
-<%@page import="dtos.RoomType"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="utils.Validator"%>
-<% 
-	Float price =(Float) GetParam.getClientParams(request,"priceError", 0f); 
-	String description=(String) GetParam.getClientParams(request,"description", ""); 
-	String roomId=(String) GetParam.getClientParams(request,"roomId", "");
-	String photoError =(String) GetParam.getClientAttribute(request,"photoError", ""); 
-	String priceError =(String) GetParam.getClientAttribute(request,"priceError", ""); 
-	String roomIdError =(String) GetParam.getClientAttribute(request,"roomIdError", "");
-	String isDisableError =(String) GetParam.getClientAttribute(request,"stateError", "");
-	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "");
-	String descriptionError =(String) GetParam.getClientAttribute(request,"descriptionError", "");
-	String roomTypeIdError =(String) GetParam.getClientAttribute(request,"roomTypeIdError", ""); 
-	ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute(request,"roomTypes", new ArrayList<>()); 
+<%@page contentType="text/html" pageEncoding="UTF-8"%> <%@page import="utils.GetParam"%> <%@page import="dtos.RoomType"%>
+<%@page import="java.util.ArrayList" %>
+<%@page import="utils.Validator"%> 
+<% Float price =(Float) GetParam.getClientParams(request,"priceError", 0f); 
+String description=(String) GetParam.getClientParams(request,"description", "");
+String roomId=(String) GetParam.getClientParams(request,"roomId", "");
+String photoError =(String) GetParam.getClientAttribute(request,"photoError", "");
+String priceError =(String) GetParam.getClientAttribute(request,"priceError", "");
+String roomIdError =(String) GetParam.getClientAttribute(request,"roomIdError", ""); 
+String isDisableError =(String) GetParam.getClientAttribute(request,"stateError", "");
+String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "");
+String descriptionError =(String) GetParam.getClientAttribute(request,"descriptionError","");
+String roomTypeIdError =(String) GetParam.getClientAttribute(request,"roomTypeIdError", ""); 
+ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute(request,"roomTypes", new ArrayList<>()); 
 %>
 <!DOCTYPE html>
 <html>
@@ -33,14 +30,14 @@
 						<div class="flex-1">
 							<img
 							    class="border rounded-sm border-cerise-red-500 max-h-96"
-							    src="/asset/image/default-image.png"
+							    src="/BookingHotel/asset/image/default-image.png"
 							    alt="photo"
 							    id="pre-photo"
 							    />
 						</div>
 						<form
 						    method="POST"
-						    action="/AddRoom"
+						    action="AddRoomController"
 						    enctype="multipart/form-data"
 						    class="flex-1 px-2"
 						    >
@@ -53,7 +50,15 @@
 								    type="text"
 								    name="roomId"
 								    id="roomId"
-								    class="block w-full p-1 border rounded-sm  border-cerise-red-500 focus:outline-none"
+								    class="
+								    block
+								    w-full
+								    p-1
+								    border
+								    rounded-sm
+								    border-cerise-red-500
+								    focus:outline-none
+								    "
 								    />
 								<p class="text-red-500 capitalize"><%=roomIdError %></p>
 							</div>
@@ -61,7 +66,15 @@
 								<label class="font-medium" for="photo">Room Type</label>
 								<select
 								    name="roomTypeId"
-								    class="block w-full p-1 border rounded-sm  border-cerise-red-500 focus:outline-none"
+								    class="
+								    block
+								    w-full
+								    p-1
+								    border
+								    rounded-sm
+								    border-cerise-red-500
+								    focus:outline-none
+								    "
 								    >
 									<% for(RoomType roomType: roomTypes) {%>
 									<option
@@ -79,7 +92,16 @@
 								    type="number"
 								    name="price"
 								    id="price"
-								    class="block w-full p-1 border rounded-sm  border-cerise-red-500 focus:outline-none"
+								    min="0"
+								    class="
+								    block
+								    w-full
+								    p-1
+								    border
+								    rounded-sm
+								    border-cerise-red-500
+								    focus:outline-none
+								    "
 								    />
 								<p class="text-red-500 capitalize"><%=priceError %></p>
 							</div>
@@ -88,10 +110,16 @@
 								<textarea
 								    name="description"
 								    id="description"
-								    class="block w-full p-1 border rounded-sm  border-cerise-red-500 focus:outline-none"
-								    >
-									<%=description%></textarea
-								>
+								    class="
+								    block
+								    w-full
+								    p-1
+								    border
+								    rounded-sm
+								    border-cerise-red-500
+								    focus:outline-none
+								    "
+								    ><%=description%></textarea>
 								<p class="text-red-500 capitalize"><%=descriptionError %></p>
 							</div>
 							<div class="space-y-2">
@@ -121,23 +149,25 @@
 										    id="state2"
 										    value="1"
 										    />
-									</span>
-									<span>
-										<label for="state3">Rent</label>
-										<input
-										    type="radio"
-										    name="state"
-										    id="state3"
-										    value="2"
-										    />
-									</span>
+									</span>       
 								</div>
 
 								<p class="text-red-500 capitalize"><%=isDisableError %></p>
 							</div>
 
 							<button
-							    class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm  hover:bg-gray-600"
+							    class="
+							    col-start-2
+							    px-16
+							    py-2
+							    mt-8
+							    font-semibold
+							    text-white
+							    duration-300
+							    bg-gray-800
+							    rounded-sm
+							    hover:bg-gray-600
+							    "
 							    >
 								Add New
 							</button>
@@ -165,3 +195,5 @@
 		</script>
 	</body>
 </html>
+</RoomType></RoomType
+>
