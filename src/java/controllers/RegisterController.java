@@ -44,9 +44,9 @@ public class RegisterController extends HttpServlet {
 		AuthDAO auth = new AuthDAO();
 
 		// get and validate params
-		String username = GetParam.getStringParam(request, "username", "Username", 1, 50);
-		String password = GetParam.getStringParam(request, "password", "Password", 1, 50);
-		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
+		String username = GetParam.getStringParam(request, "username", "Username", 5, 50);
+		String password = GetParam.getStringParam(request, "password", "Password", 5, 50);
+		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 5, 50);
 		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
 		String email = GetParam.getEmailParams(request,  "email", "Email");
 		String phone = GetParam.getPhoneParams(request, "phone", "Phone");

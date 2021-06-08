@@ -32,7 +32,7 @@
     <env-entry>
         <env-entry-name>dbpassword</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>1234567Aa</env-entry-value>
+        <env-entry-value>123</env-entry-value>
     </env-entry>
     
     <env-entry>
