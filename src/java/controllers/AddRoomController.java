@@ -70,8 +70,8 @@ public class AddRoomController extends HttpServlet {
 			response.sendRedirect(Routers.LIST_ROOM);
 			return;
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
-
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 
@@ -142,7 +142,8 @@ public class AddRoomController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 
 		}
 	}

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+import javax.servlet.RequestDispatcher;
 
 import utils.GetParam;
 import utils.Helper;
@@ -93,7 +94,8 @@ public class AddReviewController extends HttpServlet {
 
 		} catch (Exception e) {
 			// redirect on 500
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}

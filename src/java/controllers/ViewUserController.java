@@ -67,10 +67,12 @@ public class ViewUserController extends HttpServlet {
 				rd.forward(request, response);
 				return;
 			}
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 

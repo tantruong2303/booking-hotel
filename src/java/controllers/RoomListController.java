@@ -70,7 +70,8 @@ public class RoomListController extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 
@@ -98,7 +99,8 @@ public class RoomListController extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 }

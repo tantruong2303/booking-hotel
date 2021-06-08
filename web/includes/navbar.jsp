@@ -13,7 +13,7 @@
                 <% if (Helper.correctRole(request, 1,1)){ %>
 
                 <li>
-                        <a href="/BookingHotel/RoomList" class="duration-200 hover:text-cerise-red">Manage Room</a>
+                        <a href="/BookingHotel/RoomListController" class="duration-200 hover:text-cerise-red">Manage Room</a>
                 </li>
 
                 <%} %> <% if (Helper.correctRole(request, 0,0)){ %>

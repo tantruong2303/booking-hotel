@@ -82,7 +82,8 @@ public class CheckOutController extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
 			rd.forward(request, response);
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}

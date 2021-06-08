@@ -72,10 +72,12 @@ public class IndexController extends HttpServlet {
 				return;
 			}
 
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}
@@ -99,10 +101,12 @@ public class IndexController extends HttpServlet {
 				return;
 			}
 
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}

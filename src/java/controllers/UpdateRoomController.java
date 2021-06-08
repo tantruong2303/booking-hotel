@@ -80,7 +80,8 @@ public class UpdateRoomController extends HttpServlet {
 			rd.forward(request, response);
 
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 
 	}
@@ -151,7 +152,8 @@ public class UpdateRoomController extends HttpServlet {
 
 			this.doGet(request, response);
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		}
 	}
 
