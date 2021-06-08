@@ -23,7 +23,7 @@ import javax.servlet.RequestDispatcher;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "AddReviewController", urlPatterns = {"/AddReviewController"})
+@WebServlet(name = "AddReviewController", urlPatterns = {"/Customer/AddReviewController"})
 public class AddReviewController extends HttpServlet {
 
 	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -83,10 +83,6 @@ public class AddReviewController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			if (processRequest(request, response)) {
 				Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
 				response.sendRedirect(Routers.VIEW_ROOM_INFO + "?roomId=" + roomId);

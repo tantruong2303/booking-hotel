@@ -16,7 +16,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="./asset/styles.css" rel="stylesheet" />
+		<link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
 		<title>SanninSC | Add Room</title>
 	</head>
 	<body class="flex flex-col min-h-screen">
@@ -29,7 +29,7 @@
 						<div class="flex-1">
 							<img class="border rounded-sm border-cerise-red-500" src="<%= room.getImageUrl() %>" alt="photo" id="pre-photo"/>
 						</div>
-						<form method="POST" action="UpdateRoomController?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
+						<form method="POST" action="Manager/UpdateRoomController?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
 							<div class="space-y-2">
 								<label class="font-medium" for="photo">Room Type</label>
 
@@ -65,7 +65,7 @@
 										<input type="radio" name="state" id="state1" value="0" ${room.getState() == 0  ? 'checked="checked"' : ''}/>
 									</span>
 									<span>
-										<label for="state2" >Avaible</label>
+										<label for="state2" >Available</label>
 										<input type="radio" name="state" id="state2" value="1" ${room.getState() == 1  ?  'checked="checked"' : ''}/>
 									</span>
 

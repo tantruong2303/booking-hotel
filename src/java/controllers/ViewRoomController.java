@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "ViewRoomController", urlPatterns = { "/ViewRoomController" })
+@WebServlet(name = "ViewRoomController", urlPatterns = { "/Both/ViewRoomController" })
 public class ViewRoomController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -67,10 +67,6 @@ public class ViewRoomController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE);
 				rd.forward(request, response);

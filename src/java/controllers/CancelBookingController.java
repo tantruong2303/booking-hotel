@@ -22,7 +22,7 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "CancelBookingController", urlPatterns = { "/CancelBookingController" })
+@WebServlet(name = "CancelBookingController", urlPatterns = { "/Both/CancelBookingController" })
 public class CancelBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -88,10 +88,6 @@ public class CancelBookingController extends HttpServlet {
 		UserDAO userDao = new UserDAO();
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			if (this.getHandler(request, response)) {
 				HttpSession session = request.getSession(false);
 				User user = userDao.getOneUserByUsername((String) session.getAttribute("username"));

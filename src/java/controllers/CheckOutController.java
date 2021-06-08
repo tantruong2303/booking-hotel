@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "CheckoutController", urlPatterns = { "/CheckoutController" })
+@WebServlet(name = "CheckoutController", urlPatterns = { "/Manager/CheckoutController" })
 public class CheckOutController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
@@ -70,10 +70,6 @@ public class CheckOutController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			if (this.postHandler(request, response)) {
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;

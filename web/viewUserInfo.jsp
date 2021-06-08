@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="./asset/styles.css" rel="stylesheet" />
+		<link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
 		<title>Sannin SC | User Information </title>
 	</head>
 	<body class="flex flex-col min-h-screen">
@@ -54,9 +54,9 @@
 							<p><%=user.getRole()  == 0? "Customer" : "Manager" %></p>
 						</div>
 						<div class="flex space-x-2">
-							<a  href="/BookingHotel/UpdateUserController" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update Information</a>
+							<a  href="/BookingHotel/Both/UpdateUserController" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update Information</a>
 
-							<a  href="/BookingHotel/ChangePasswordController" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Change Pasword</a>
+							<a  href="/BookingHotel/Both/ChangePasswordController" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Change Password</a>
 						</div>
 
 					</div>

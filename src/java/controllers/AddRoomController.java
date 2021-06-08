@@ -22,7 +22,7 @@ import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "AddRoomController", urlPatterns = { "/AddRoomController" })
+@WebServlet(name = "AddRoomController", urlPatterns = { "/Manager/AddRoomController" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
 public class AddRoomController extends HttpServlet {
@@ -57,10 +57,6 @@ public class AddRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			if (this.getHandler(request, response)) {
 
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_ROOM_PAGE);
@@ -130,10 +126,6 @@ public class AddRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			if (this.postHandler(request, response)) {
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;

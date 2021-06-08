@@ -19,7 +19,7 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "RoomListController", urlPatterns = {"/RoomListController"})
+@WebServlet(name = "RoomListController", urlPatterns = {"/Manager/RoomListController"})
 public class RoomListController extends HttpServlet {
 
 	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
@@ -65,10 +65,6 @@ public class RoomListController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			this.processHandler(request, response);
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
 			rd.forward(request, response);
@@ -93,10 +89,6 @@ public class RoomListController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			this.processHandler(request, response);
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
 			rd.forward(request, response);
