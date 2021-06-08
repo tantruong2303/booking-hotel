@@ -83,6 +83,13 @@ public class AddReviewController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer customerRole = (Integer)env.lookup("customerRole");
+			if (!Helper.protectedRouter(request, response, customerRole, customerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
 			if (processRequest(request, response)) {
 				Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
 				response.sendRedirect(Routers.VIEW_ROOM_INFO + "?roomId=" + roomId);

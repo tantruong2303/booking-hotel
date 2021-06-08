@@ -8,6 +8,8 @@ import dtos.BookingInfo;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -70,6 +72,13 @@ public class CheckOutController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
 			if (this.postHandler(request, response)) {
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;

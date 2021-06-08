@@ -10,7 +10,6 @@ import daos.AuthDAO;
 import daos.UserDAO;
 import dtos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,7 +48,7 @@ public class RegisterController extends HttpServlet {
 		String password = GetParam.getStringParam(request, "password", "Password", 1, 50);
 		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
 		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
-		String email = GetParam.getStringParam(request, "email", "Email", 1, 50);
+		String email = GetParam.getEmailParams(request,  "email", "Email");
 		String phone = GetParam.getPhoneParams(request, "phone", "Phone");
 		Integer role = GetParam.getIntParams(request, "role", "Role", 0, 1);
 

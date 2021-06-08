@@ -11,6 +11,8 @@ import dtos.User;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -63,6 +65,13 @@ public class ViewBookingController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer customerRole = (Integer)env.lookup("customerRole");
+			if (!Helper.protectedRouter(request, response, customerRole, customerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE);
 				rd.forward(request, response);

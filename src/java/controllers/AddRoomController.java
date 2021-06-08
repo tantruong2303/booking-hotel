@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 import utils.FileHelper;
 import utils.GetParam;
@@ -57,6 +59,12 @@ public class AddRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
 			if (this.getHandler(request, response)) {
 
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_ROOM_PAGE);
@@ -126,6 +134,13 @@ public class AddRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
 			if (this.postHandler(request, response)) {
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;

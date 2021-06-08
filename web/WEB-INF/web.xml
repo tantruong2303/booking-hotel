@@ -22,4 +22,28 @@
     <error-page>
         <location>/error.jsp</location>
     </error-page>
+    
+    <env-entry>
+        <env-entry-name>dbusername</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>sa</env-entry-value>
+    </env-entry>
+    
+    <env-entry>
+        <env-entry-name>dbpassword</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>1234567Aa</env-entry-value>
+    </env-entry>
+    
+    <env-entry>
+        <env-entry-name>customerRole</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>0</env-entry-value>
+    </env-entry>
+    
+    <env-entry>
+        <env-entry-name>managerRole</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>1</env-entry-value>
+    </env-entry>
 </web-app>

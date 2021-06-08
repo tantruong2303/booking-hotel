@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 import utils.Helper;
 
@@ -58,6 +60,14 @@ public class ViewUserController extends HttpServlet {
 
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer customerRole = (Integer)env.lookup("customerRole");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, customerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE);
 				rd.forward(request, response);

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 import utils.GetParam;
 import utils.Helper;
@@ -28,7 +30,7 @@ public class UpdateUserController extends HttpServlet {
 		UserDAO userDAO = new UserDAO();
 
 		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
-		String email = GetParam.getStringParam(request, "email", "Email", 1, 50);
+		String email = GetParam.getEmailParams(request, "email", "Email");
 		String phone = GetParam.getPhoneParams(request, "phone", "Phone");
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
@@ -66,6 +68,13 @@ public class UpdateUserController extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer customerRole = (Integer)env.lookup("customerRole");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, customerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
 			if (postHandler(request, response)) {
 				response.sendRedirect(Routers.VIEW_USER_INFO);
 				return;
@@ -116,6 +125,13 @@ public class UpdateUserController extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer customerRole = (Integer)env.lookup("customerRole");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, customerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_PAGE);
 				rd.forward(request, response);

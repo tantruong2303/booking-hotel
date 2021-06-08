@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 import utils.GetParam;
 import utils.Helper;
@@ -65,9 +67,17 @@ public class RoomListController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			this.processHandler(request, response);
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
-			rd.forward(request, response);
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
+			if (this.processHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
+				rd.forward(request, response);
+			}
 
 		} catch (Exception e) {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
@@ -89,9 +99,17 @@ public class RoomListController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			this.processHandler(request, response);
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
-			rd.forward(request, response);
+                        // check valid user's role
+                        Context env = (Context)new InitialContext().lookup("java:comp/env");
+                        Integer managerRole = (Integer)env.lookup("managerRole");
+			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
+				return;
+			}
+
+			if (this.processHandler(request, response)) {
+				RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
+				rd.forward(request, response);
+			}
 
 		} catch (Exception e) {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
