@@ -18,7 +18,7 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "ChangePasswordController", urlPatterns = {"/ChangePasswordController"})
+@WebServlet(name = "ChangePasswordController", urlPatterns = {"/Both/ChangePasswordController"})
 public class ChangePasswordController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
@@ -74,9 +74,6 @@ public class ChangePasswordController extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			if (postHandler(request, response)) {
 				response.sendRedirect(Routers.VIEW_USER_INFO);
 				return;
@@ -108,9 +105,6 @@ public class ChangePasswordController extends HttpServlet {
 
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE);
 			rd.forward(request, response);
 

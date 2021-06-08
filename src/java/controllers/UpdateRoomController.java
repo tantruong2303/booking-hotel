@@ -22,7 +22,7 @@ import utils.FileHelper;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "UpdateRoomController", urlPatterns = { "/UpdateRoomController" })
+@WebServlet(name = "UpdateRoomController", urlPatterns = {"/Manager/UpdateRoomController"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
 public class UpdateRoomController extends HttpServlet {
@@ -68,9 +68,6 @@ public class UpdateRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM_PAGE);
 				rd.forward(request, response);
@@ -142,9 +139,6 @@ public class UpdateRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 1, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			if (this.postHandler(request, response)) {
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;

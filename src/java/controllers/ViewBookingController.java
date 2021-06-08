@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import utils.Helper;
 
-@WebServlet(name = "ViewBookingController", urlPatterns = { "/ViewBookingController" })
+@WebServlet(name = "ViewBookingController", urlPatterns = { "/Customer/ViewBookingController" })
 public class ViewBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -63,10 +63,6 @@ public class ViewBookingController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
-				return;
-			}
-
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE);
 				rd.forward(request, response);

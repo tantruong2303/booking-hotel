@@ -12,7 +12,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link href="./asset/styles.css" rel="stylesheet" />
+		<link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
 		<title>SanninSC | Update User Information</title>
 	</head>
 	<body class="flex flex-col min-h-screen">
@@ -20,7 +20,7 @@
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div
 			    class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
-				<form action="UpdateUserController" method="POST"   class="mt-8 space-y-8 fade-in ">
+				<form action="Both/UpdateUserController" method="POST"   class="mt-8 space-y-8 fade-in ">
 					<div class="grid justify-items-stretch">
 						<h1 class="col-start-2 text-4xl font-semibold">Update User Information</h1>
 					</div>

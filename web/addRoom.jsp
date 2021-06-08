@@ -17,7 +17,7 @@ ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link href="./asset/styles.css" rel="stylesheet" />
+		<link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
 		<title>SanninSC | Add Room</title>
 	</head>
 	<body class="flex flex-col min-h-screen">
@@ -37,7 +37,7 @@ ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute
 						</div>
 						<form
 						    method="POST"
-						    action="AddRoomController"
+						    action="Manager/AddRoomController"
 						    enctype="multipart/form-data"
 						    class="flex-1 px-2"
 						    >
@@ -142,7 +142,7 @@ ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute
 										    />
 									</span>
 									<span>
-										<label for="state2">Avaible</label>
+										<label for="state2">Available</label>
 										<input
 										    type="radio"
 										    name="state"

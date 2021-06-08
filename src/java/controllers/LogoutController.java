@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author heaty566
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
+@WebServlet(name = "LogoutController", urlPatterns = {"/Both/LogoutController"})
 public class LogoutController extends HttpServlet {
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -40,8 +40,9 @@ public class LogoutController extends HttpServlet {
 			session.invalidate();
 		} catch (Exception e) {
 		} finally {
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
-			rd.forward(request, response);
+                        response.sendRedirect(Routers.LOGIN);
+//			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
+//			rd.forward(request, response);
 		}
 	}
 

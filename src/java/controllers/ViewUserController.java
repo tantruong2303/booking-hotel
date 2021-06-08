@@ -18,7 +18,7 @@ import constant.Routers;
 
 import utils.Helper;
 
-@WebServlet(name = "ViewUserController", urlPatterns = {"/ViewUserController"})
+@WebServlet(name = "ViewUserController", urlPatterns = {"/Both/ViewUserController"})
 public class ViewUserController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -58,10 +58,6 @@ public class ViewUserController extends HttpServlet {
 
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
-			
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE);
 				rd.forward(request, response);

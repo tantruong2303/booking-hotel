@@ -20,6 +20,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import static utils.Helper.correctRole;
+import static utils.Helper.isLogin;
 
 /**
  *
@@ -47,13 +49,42 @@ public class FilterController implements Filter {
 
         String uri = req.getRequestURI();
         String resource = uri.substring(uri.lastIndexOf("/") + 1);
+//
+//        if (resource.contains(".jsp") || resource.contains(".html")) {
+//            RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+//            rd.forward(request, response);
+//            return;
+//
+//        }
 
-        if (resource.contains(".jsp") ||resource.contains(".html")) {
-            RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-            rd.forward(request, response);
-
+        if (uri.contains("Customer")) {
+            if (!isLogin(req) || !correctRole(req, 0, 1)) {
+                RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
+                request.setAttribute("errorMessage", "Action is not allow, please login first");
+                rd.forward(request, response);
+                return;
+            }
         }
 
+        if (uri.contains("Manager")) {
+            if (!isLogin(req) || !correctRole(req, 1, 1)) {
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
+			request.setAttribute("errorMessage", "Action is not allow, please login first");
+			rd.forward(request, response);
+                        return;
+		}
+        }
+        
+        if (uri.contains("Both")) {
+            if (!isLogin(req) || !correctRole(req, 0, 1)) {
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
+			request.setAttribute("errorMessage", "Action is not allow, please login first");
+			rd.forward(request, response);
+                        return;
+		}
+        }
+        
+        
         chain.doFilter(request, response);
     }
 

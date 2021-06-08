@@ -19,7 +19,7 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "UpdateUserController", urlPatterns = {"/UpdateUserController"})
+@WebServlet(name = "UpdateUserController", urlPatterns = {"/Both/UpdateUserController"})
 public class UpdateUserController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
@@ -66,9 +66,6 @@ public class UpdateUserController extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			if (postHandler(request, response)) {
 				response.sendRedirect(Routers.VIEW_USER_INFO);
 				return;
@@ -119,9 +116,6 @@ public class UpdateUserController extends HttpServlet {
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_PAGE);
 				rd.forward(request, response);

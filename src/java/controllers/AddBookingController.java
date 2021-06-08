@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "AddBookingController", urlPatterns = { "/AddBookingController" })
+@WebServlet(name = "AddBookingController", urlPatterns = { "/Customer/AddBookingController" })
 public class AddBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
@@ -77,9 +77,6 @@ public class AddBookingController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.getHandler(request, response)) {
 				// forward on 200
@@ -172,9 +169,6 @@ public class AddBookingController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-			if (!Helper.protectedRouter(request, response, 0, 0, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			if (postHandler(request, response)) {
 				// forward on 200
 				response.sendRedirect(Routers.VIEW_BOOKING);
