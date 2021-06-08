@@ -90,6 +90,7 @@ public class CancelBookingController extends HttpServlet {
 		UserDAO userDao = new UserDAO();
 
 		try {
+                        // check valid user's role
                         Context env = (Context)new InitialContext().lookup("java:comp/env");
                         Integer customerRole = (Integer)env.lookup("customerRole");
                         Integer managerRole = (Integer)env.lookup("managerRole");

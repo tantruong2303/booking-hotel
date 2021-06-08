@@ -134,6 +134,7 @@ public class AddRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
+                        // check valid user's role
                         Context env = (Context)new InitialContext().lookup("java:comp/env");
                         Integer managerRole = (Integer)env.lookup("managerRole");
 			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {

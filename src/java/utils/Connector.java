@@ -9,6 +9,10 @@ import javax.naming.NamingException;
 
 public class Connector {
 
+        /**
+         * Get connection
+         * @return 
+         */
 	public static Connection getConnection() {
 		try {
 

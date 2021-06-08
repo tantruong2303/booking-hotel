@@ -15,6 +15,11 @@ public class FileHelper {
 
 	public static final String[] imageExtension = {"png", "jpg", "svg", "jpeg", "bmp"};
 
+        /**
+         * @param request servlet request
+         * @param filePart file part
+         * @return url of this file
+         */
 	public static String uploadFile(HttpServletRequest request, Part filePart) throws IOException, ServletException {
 		String UPLOAD_DIR = "images";
 
@@ -56,6 +61,11 @@ public class FileHelper {
 
 	}
 
+        /**
+         * Get file name
+         * @param part url of the file which we will to get file name
+         * @return file name
+         */
 	public static String getFileName(Part part) {
 		for (String content : part.getHeader("content-disposition").split(";")) {
 			if (content.trim().startsWith("filename")) {

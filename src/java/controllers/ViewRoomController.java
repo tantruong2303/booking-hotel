@@ -69,6 +69,7 @@ public class ViewRoomController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
+                        // check valid user's role
                         Context env = (Context)new InitialContext().lookup("java:comp/env");
                         Integer customerRole = (Integer)env.lookup("customerRole");
                         Integer managerRole = (Integer)env.lookup("managerRole");
