@@ -77,7 +77,7 @@ public class ViewRoomController extends HttpServlet {
 				return;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
 		} catch (Exception e) {
 

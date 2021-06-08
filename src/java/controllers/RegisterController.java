@@ -51,7 +51,7 @@ public class RegisterController extends HttpServlet {
 		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
 		String email = GetParam.getStringParam(request, "email", "Email", 1, 50);
 		String phone = GetParam.getPhoneParams(request, "phone", "Phone");
-		Integer role = GetParam.getIntParams(request, "role", "Role", 0, 1, 0);
+		Integer role = GetParam.getIntParams(request, "role", "Role", 0, 1);
 
 		// get and validate params
 		if (username == null || password == null || confirmPassword == null || fullName == null || email == null

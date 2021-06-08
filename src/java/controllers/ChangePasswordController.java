@@ -18,11 +18,11 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "ChangePasswordController", urlPatterns = { "/ChangePasswordController" })
+@WebServlet(name = "ChangePasswordController", urlPatterns = {"/ChangePasswordController"})
 public class ChangePasswordController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 		UserDAO userDAO = new UserDAO();
 
 		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 1, 50);
@@ -46,7 +46,7 @@ public class ChangePasswordController extends HttpServlet {
 			return false;
 		}
 		if (!newPassword.equals(confirmPassword)) {
-			request.setAttribute("confirmPassword", "Confirm Password is not matches new password");
+			request.setAttribute("confirmPasswordError", "Confirm Password is not matches new password");
 			return false;
 		}
 
@@ -64,14 +64,14 @@ public class ChangePasswordController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
@@ -97,16 +97,28 @@ public class ChangePasswordController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
+
 		response.setContentType("text/html;charset=UTF-8");
-		RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE);
-                rd.forward(request, response);
+		try {
+			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
+				return;
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE);
+			rd.forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
+		}
+
 	}
 }

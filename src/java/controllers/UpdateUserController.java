@@ -1,4 +1,3 @@
-
 package controllers;
 
 import daos.UserDAO;
@@ -20,11 +19,11 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "UpdateUserController", urlPatterns = { "/UpdateUserController" })
+@WebServlet(name = "UpdateUserController", urlPatterns = {"/UpdateUserController"})
 public class UpdateUserController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		UserDAO userDAO = new UserDAO();
 
@@ -57,14 +56,14 @@ public class UpdateUserController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
@@ -83,7 +82,7 @@ public class UpdateUserController extends HttpServlet {
 	}
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+		throws ServletException, IOException, SQLException {
 
 		UserDAO userDAO = new UserDAO();
 
@@ -110,14 +109,14 @@ public class UpdateUserController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (!Helper.protectedRouter(request, response, 0, 1, Routers.LOGIN_PAGE)) {
@@ -126,8 +125,10 @@ public class UpdateUserController extends HttpServlet {
 			if (this.getHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_USER_PAGE);
 				rd.forward(request, response);
+				return;
 			}
-
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
+			rd.forward(request, response);
 		} catch (Exception e) {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);

@@ -48,7 +48,7 @@ public class FilterController implements Filter {
         String uri = req.getRequestURI();
         String resource = uri.substring(uri.lastIndexOf("/") + 1);
 
-        if (resource.contains(".jsp")) {
+        if (resource.contains(".jsp") ||resource.contains(".html")) {
             RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
             rd.forward(request, response);
 
