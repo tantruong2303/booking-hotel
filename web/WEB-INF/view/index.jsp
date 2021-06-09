@@ -26,7 +26,7 @@
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-start w-4/5 p-4 mx-auto space-y-4 bg-white">
 
-				<form action="IndexController" method = "POST" class="w-full space-y-2">
+				<form action="IndexController" method = "GET" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
 					<div class="flex space-x-2">
 						<div class="grid grid-form justify-items-stretch ">

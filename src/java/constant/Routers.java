@@ -35,5 +35,5 @@ public class Routers {
 	public final static String UPDATE_ROOM = "UpdateRoomController";
 	public final static String UPDATE_USER_INFO = "UpdateUserController";
 	public final static String VIEW_USER_INFO = "ViewUserController";
-	public final static String ERROR = "error.jsp";
+	public final static String ERROR = "/WEB-INF/view/error.jsp";
 }

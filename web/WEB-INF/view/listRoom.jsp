@@ -23,7 +23,7 @@
 		<%@include file="./includes/navbar.jsp" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-start w-full p-4 mx-auto space-y-4 bg-white">
-				<form action="RoomListController" method = "POST" class="w-full space-y-2">
+				<form action="RoomListController" method = "GET" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
 					<p class="col-start-2 text-red-500 ">
 						<%=errorMessage%>
