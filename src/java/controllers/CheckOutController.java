@@ -72,7 +72,7 @@ public class CheckOutController extends HttpServlet {
 				return;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
+			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
 			rd.forward(request, response);
 		} catch (Exception e) {
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);

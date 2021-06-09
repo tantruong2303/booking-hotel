@@ -40,7 +40,7 @@ public class CommonRoleFilter implements Filter {
 			Context env = (Context) new InitialContext().lookup("java:comp/env");
 			Integer cusRole = (Integer) env.lookup("customerRole");
 			Integer manRole = (Integer) env.lookup("managerRole");
-			if (!Helper.protectedRouter(req, res, cusRole, manRole, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(req, res, cusRole, manRole, Routers.LOGIN_PAGE)) {
 				return;
 			}
 

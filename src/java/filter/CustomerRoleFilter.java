@@ -37,7 +37,7 @@ public class CustomerRoleFilter implements Filter {
 		try {
 			Context env = (Context) new InitialContext().lookup("java:comp/env");
 			Integer cusRole = (Integer) env.lookup("customerRole");
-			if (!Helper.protectedRouter(req, res, cusRole, cusRole, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(req, res, cusRole, cusRole, Routers.LOGIN_PAGE)) {
 				return;
 			}
 

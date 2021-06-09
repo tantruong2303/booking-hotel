@@ -121,14 +121,14 @@ public class AddBookingController extends HttpServlet {
 		// get room
 		Room room = roomDAO.getRoomById(roomId);
 		if (room == null) {
-			request.setAttribute("roomIdError", "Room with the given Id was not found");
+			request.setAttribute("errorMessage", "Room with the given Id was not found");
 			return false;
 
 		}
 
 		// checking room status
 		if (room.getState() != 1) {
-			request.setAttribute("roomIdError", "Room is not available");
+			request.setAttribute("errorMessage", "Room is not available");
 			return false;
 		}
 
@@ -178,6 +178,7 @@ public class AddBookingController extends HttpServlet {
 			// redirect on 500
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
+			
 		}
 
 	}

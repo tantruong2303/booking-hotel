@@ -37,7 +37,7 @@ public class ManagerRoleFilter implements Filter {
 		try {
 			Context env = (Context) new InitialContext().lookup("java:comp/env");
 			Integer manRole = (Integer) env.lookup("managerRole");
-			if (!Helper.protectedRouter(req, res, manRole, manRole, Routers.LOGIN)) {
+			if (!Helper.protectedRouter(req, res, manRole, manRole, Routers.LOGIN_PAGE)) {
 				return;
 			}
 

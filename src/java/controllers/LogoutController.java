@@ -40,8 +40,6 @@ public class LogoutController extends HttpServlet {
 		} catch (Exception e) {
 		} finally {
 			response.sendRedirect(Routers.LOGIN);
-			// RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
-			// rd.forward(request, response);
 		}
 	}
 

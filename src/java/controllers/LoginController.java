@@ -99,12 +99,11 @@ public class LoginController extends HttpServlet {
 				return;
 			}
 			// forward on 400
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LOGIN_PAGE);
-			rd.forward(request, response);
+			request.getRequestDispatcher(Routers.LOGIN_PAGE).forward(request, response);
+			
 		} catch (Exception e) {
 			// redirect on 500
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 
