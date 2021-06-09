@@ -9,9 +9,7 @@ import constant.Routers;
 import daos.RoomDAO;
 import dtos.Room;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,8 +33,7 @@ public class IndexController extends HttpServlet {
 	 * @throws ServletException if a servlet-specific error occurs
 	 * @throws IOException if an I/O error occurs
 	 */
-	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException, SQLException {
+	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 
@@ -70,44 +67,16 @@ public class IndexController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+		String url = Routers.ERROR;
 		try {
 			processHandler(request, response);
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
-			rd.forward(request, response);
-			return;
+			url = (Routers.INDEX_PAGE);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+
+		} finally {
+			request.getRequestDispatcher(url).forward(request, response);
 		}
-
-	}
-
-	/**
-	 * Handles the HTTP <code>POST</code> method.
-	 *
-	 * @param request servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		try {
-			processHandler(request, response);
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
-			rd.forward(request, response);
-			return;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
-		}
-
 	}
 
 	/**

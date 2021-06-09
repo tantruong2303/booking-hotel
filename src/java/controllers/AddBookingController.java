@@ -10,16 +10,12 @@ import daos.ReviewDAO;
 import dtos.Review;
 
 import utils.GetParam;
-import utils.Helper;
 import utils.Validator;
 
 import constant.Routers;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,11 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "AddBookingController", urlPatterns = { "/Customer/AddBookingController" })
+@WebServlet(name = "AddBookingController", urlPatterns = { "/AddBookingController" })
 public class AddBookingController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -77,33 +72,27 @@ public class AddBookingController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-
+		String url = Routers.ERROR;
 		try {
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer customerRole = (Integer)env.lookup("customerRole");
-			if (!Helper.protectedRouter(request, response, customerRole, customerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.getHandler(request, response)) {
 				// forward on 200
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.ADD_BOOKING_INFO_PAGE);
-				rd.forward(request, response);
-				return;
+				url = (Routers.ADD_BOOKING_INFO_PAGE);
+
+			} else {
+				// forward on 400
+				url = (Routers.INDEX_PAGE);
 			}
-			// forward on 400
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.INDEX_PAGE);
-			rd.forward(request, response);
+
 		} catch (Exception e) {
-			// redirect on 500
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+
+		} finally {
+			request.getRequestDispatcher(url).forward(request, response);
 		}
 
 	}
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDAO = new UserDAO();
@@ -132,14 +121,14 @@ public class AddBookingController extends HttpServlet {
 		// get room
 		Room room = roomDAO.getRoomById(roomId);
 		if (room == null) {
-			request.setAttribute("roomIdError", "Room with the given Id was not found");
+			request.setAttribute("errorMessage", "Room with the given Id was not found");
 			return false;
 
 		}
 
 		// checking room status
 		if (room.getState() != 1) {
-			request.setAttribute("roomIdError", "Room is not available");
+			request.setAttribute("errorMessage", "Room is not available");
 			return false;
 		}
 
@@ -176,12 +165,7 @@ public class AddBookingController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer customerRole = (Integer)env.lookup("customerRole");
-			if (!Helper.protectedRouter(request, response, customerRole, customerRole, Routers.LOGIN)) {
-				return;
-			}
+
 			if (postHandler(request, response)) {
 				// forward on 200
 				response.sendRedirect(Routers.VIEW_BOOKING);
@@ -194,6 +178,7 @@ public class AddBookingController extends HttpServlet {
 			// redirect on 500
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
 			rd.forward(request, response);
+			
 		}
 
 	}

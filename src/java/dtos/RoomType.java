@@ -5,11 +5,13 @@
  */
 package dtos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author heaty566
  */
-public class RoomType {
+public class RoomType implements Serializable {
 
 	int roomTypeId;
 	String name;
@@ -47,7 +49,5 @@ public class RoomType {
 	public void setNumOfPeople(int numOfPeople) {
 		this.numOfPeople = numOfPeople;
 	}
-	
-	
 
 }

@@ -9,19 +9,19 @@ import javax.naming.NamingException;
 
 public class Connector {
 
-        /**
-         * Get connection
-         * @return 
-         */
+	/**
+	 * Get connection
+	 *
+	 * @return
+	 */
 	public static Connection getConnection() {
 		try {
 
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			String url = "jdbc:sqlserver://localhost:1433;database=BookingHotel;";
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-
-			String username = (String)env.lookup("dbusername");
-			String password = (String)env.lookup("dbpassword");
+			Context env = (Context) new InitialContext().lookup("java:comp/env");
+			String username = (String) env.lookup("dbusername");
+			String password = (String) env.lookup("dbpassword");
 
 			Connection connection = DriverManager.getConnection(url, username, password);
 			System.out.println("Connect success!");

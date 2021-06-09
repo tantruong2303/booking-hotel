@@ -12,239 +12,229 @@ import utils.Connector;
 
 public class RoomDAO {
 
-	public boolean addRoom(Room room) throws SQLException {
-		Connection connection = null;
-		PreparedStatement pstmt = null;
+	private Connection conn;
+	private PreparedStatement preStm;
+	private ResultSet rs;
+
+	private void closeConnection() throws Exception {
+		if (rs != null) {
+			rs.close();
+		}
+
+		if (preStm != null) {
+			preStm.close();
+		}
+
+		if (conn != null) {
+
+			conn.close();
+		}
+	}
+
+	public boolean addRoom(Room room) throws Exception {
+		boolean isSuccess = false;
 		try {
-			connection = Connector.getConnection();
+			conn = Connector.getConnection();
 			String sql = "INSERT INTO tbl_Room (roomId,price, description, state, imageUrl, roomTypeId) VALUES (?,?,?,?,?,?)";
 
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setInt(1, room.getRoomId());
-			pstmt.setFloat(2, room.getPrice());
-			pstmt.setString(3, room.getDescription());
-			pstmt.setInt(4, room.getState());
-			pstmt.setString(5, room.getImageUrl());
-			pstmt.setInt(6, room.getRoomType().getRoomTypeId());
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, room.getRoomId());
+			preStm.setFloat(2, room.getPrice());
+			preStm.setString(3, room.getDescription());
+			preStm.setInt(4, room.getState());
+			preStm.setString(5, room.getImageUrl());
+			preStm.setInt(6, room.getRoomType().getRoomTypeId());
 
-			pstmt.executeUpdate();
-			pstmt.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			preStm.executeUpdate();
+
+			isSuccess = true;
 		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
+			this.closeConnection();
 		}
+		return isSuccess;
 	}
 
-	public boolean updateRoom(Room room) throws SQLException {
+	public boolean updateRoom(Room room) throws Exception {
 
 		String sql = "UPDATE tbl_Room SET price = ?, description = ?, state = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";
-		Connection connection = null;
-		PreparedStatement pstmt = null;
+		boolean isSuccess = false;
 		try {
-			connection = Connector.getConnection();
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setFloat(1, room.getPrice());
-			pstmt.setString(2, room.getDescription());
-			pstmt.setInt(3, room.getState());
-			pstmt.setString(4, room.getImageUrl());
-			pstmt.setInt(5, room.getRoomType().getRoomTypeId());
-			pstmt.setInt(6, room.getRoomId());
-			pstmt.executeUpdate();
-			pstmt.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			conn = Connector.getConnection();
+			preStm = conn.prepareStatement(sql);
+			preStm.setFloat(1, room.getPrice());
+			preStm.setString(2, room.getDescription());
+			preStm.setInt(3, room.getState());
+			preStm.setString(4, room.getImageUrl());
+			preStm.setInt(5, room.getRoomType().getRoomTypeId());
+			preStm.setInt(6, room.getRoomId());
+			preStm.executeUpdate();
+			isSuccess = true;
 		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
+			this.closeConnection();
 		}
+		return isSuccess;
 	}
 
-	public boolean changeState(Integer roomId, Integer state) {
-		Connection connection = Connector.getConnection();
+	public boolean changeState(Integer roomId, Integer state) throws Exception {
+		conn = Connector.getConnection();
 		String sql = "UPDATE tbl_Room SET state = ? WHERE roomId = ?";
-
+		boolean isSuccess = false;
 		try {
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setInt(1, state);
-			pstmt.setInt(2, roomId);
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, state);
+			preStm.setInt(2, roomId);
 
-			pstmt.executeUpdate();
-			pstmt.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			preStm.executeUpdate();
+
+			isSuccess = true;
+		} finally {
+			this.closeConnection();
 		}
+		return isSuccess;
 	}
 
-	public Room getRoomById(int roomId) {
+	public Room getRoomById(int roomId) throws Exception {
+		Room room = null;
 		try {
-			Connection connection = Connector.getConnection();
+			conn = Connector.getConnection();
 
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE roomId = ? ";
 
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setInt(1, roomId);
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, roomId);
+			rs = preStm.executeQuery();
 
-			ResultSet result = pstmt.executeQuery();
-
-			while (result.next()) {
-				int roomIdSql = result.getInt("roomId");
-				float priceSql = result.getFloat("price");
-				String imageUrl = result.getString("imageUrl");
-				int state = result.getInt("state");
-				String descriptionSql = result.getString("description");
-
-				String nameSql = result.getString("name");
-				int roomTypeIdSql = result.getInt("roomTypeId");
-				int numOfPeopleSql = result.getInt("numOfPeople");
+			if (rs.next()) {
+				int roomIdSql = rs.getInt("roomId");
+				float priceSql = rs.getFloat("price");
+				String imageUrl = rs.getString("imageUrl");
+				int state = rs.getInt("state");
+				String descriptionSql = rs.getString("description");
+				String nameSql = rs.getString("name");
+				int roomTypeIdSql = rs.getInt("roomTypeId");
+				int numOfPeopleSql = rs.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				Room room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
-				pstmt.close();
-				return room;
+				room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
+
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		} finally {
+			this.closeConnection();
 		}
-		return null;
+		return room;
 	}
 
-	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder) {
+	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder) throws Exception {
 		ArrayList<Room> list = new ArrayList<>();
 		try {
-			Connection connection = Connector.getConnection();
+			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY roomId ASC ,price "
 				+ order;
 
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setFloat(1, numOfPeople);
-			pstmt.setFloat(2, min);
-			pstmt.setFloat(3, max);
+			preStm = conn.prepareStatement(sql);
+			preStm.setFloat(1, numOfPeople);
+			preStm.setFloat(2, min);
+			preStm.setFloat(3, max);
 
-			ResultSet result = pstmt.executeQuery();
+			rs = preStm.executeQuery();
 
-			while (result.next()) {
-				int roomIdSql = result.getInt("roomId");
-				float priceSql = result.getFloat("price");
-				String imageUrl = result.getString("imageUrl");
-				int state = result.getInt("state");
-				String descriptionSql = result.getString("description");
+			while (rs.next()) {
+				int roomIdSql = rs.getInt("roomId");
+				float priceSql = rs.getFloat("price");
+				String imageUrl = rs.getString("imageUrl");
+				int state = rs.getInt("state");
+				String descriptionSql = rs.getString("description");
 
-				String nameSql = result.getString("name");
-				int roomTypeIdSql = result.getInt("roomTypeId");
-				int numOfPeopleSql = result.getInt("numOfPeople");
+				String nameSql = rs.getString("name");
+				int roomTypeIdSql = rs.getInt("roomTypeId");
+				int numOfPeopleSql = rs.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 				Room room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
-			pstmt.close();
-			return list;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		} finally {
+			this.closeConnection();
 		}
+		return list;
 	}
 
-	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer state) {
+	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer state) throws Exception {
 		ArrayList<Room> list = new ArrayList<>();
 		try {
-			Connection connection = Connector.getConnection();
+			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND state = ? ORDER BY price "
 				+ order;
 
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setFloat(1, numOfPeople);
-			pstmt.setFloat(2, min);
-			pstmt.setFloat(3, max);
-			pstmt.setInt(4, state);
-			ResultSet result = pstmt.executeQuery();
+			preStm = conn.prepareStatement(sql);
+			preStm.setFloat(1, numOfPeople);
+			preStm.setFloat(2, min);
+			preStm.setFloat(3, max);
+			preStm.setInt(4, state);
+			rs = preStm.executeQuery();
 
-			while (result.next()) {
-				int roomIdSql = result.getInt("roomId");
-				float priceSql = result.getFloat("price");
-				String imageUrl = result.getString("imageUrl");
-				int stateSQL = result.getInt("state");
-				String descriptionSql = result.getString("description");
-				String nameSql = result.getString("name");
-				int roomTypeIdSql = result.getInt("roomTypeId");
-				int numOfPeopleSql = result.getInt("numOfPeople");
+			while (rs.next()) {
+				int roomIdSql = rs.getInt("roomId");
+				float priceSql = rs.getFloat("price");
+				String imageUrl = rs.getString("imageUrl");
+				int stateSQL = rs.getInt("state");
+				String descriptionSql = rs.getString("description");
+				String nameSql = rs.getString("name");
+				int roomTypeIdSql = rs.getInt("roomTypeId");
+				int numOfPeopleSql = rs.getInt("numOfPeople");
 
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 				Room room = new Room(roomIdSql, priceSql, stateSQL, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
-			pstmt.close();
-			return list;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		} finally {
+			this.closeConnection();
 		}
+		return list;
 	}
 
-	public RoomType getRoomTypeById(Integer roomTypeId) {
-		Connection connection = Connector.getConnection();
+	public RoomType getRoomTypeById(Integer roomTypeId) throws Exception {
+		RoomType roomType = null;
+		conn = Connector.getConnection();
 		String sql = "SELECT roomTypeId, name, numOfPeople FROM tbl_RoomType WHERE roomTypeId = ?";
 
 		try {
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setInt(1, roomTypeId);
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, roomTypeId);
 
-			ResultSet result = pstmt.executeQuery();
-			while (result.next()) {
-				String nameSql = result.getString("name");
-				int roomTypeIdSql = result.getInt("roomTypeId");
-				int numOfPeopleSql = result.getInt("numOfPeople");
-				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				pstmt.close();
-				return roomType;
-
+			rs = preStm.executeQuery();
+			if (rs.next()) {
+				String nameSql = rs.getString("name");
+				int roomTypeIdSql = rs.getInt("roomTypeId");
+				int numOfPeopleSql = rs.getInt("numOfPeople");
+				roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		} finally {
+			this.closeConnection();
 		}
-		return null;
+
+		return roomType;
 	}
 
-	public ArrayList<RoomType> getRoomTypes() {
-		Connection connection = Connector.getConnection();
+	public ArrayList<RoomType> getRoomTypes() throws Exception {
+		conn = Connector.getConnection();
 		String sql = "SELECT roomTypeId, name, numOfPeople FROM tbl_RoomType ";
 		ArrayList<RoomType> roomTypes = new ArrayList<>();
 		try {
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			ResultSet result = pstmt.executeQuery();
-			while (result.next()) {
-				String nameSql = result.getString("name");
-				int roomTypeIdSql = result.getInt("roomTypeId");
-				int numOfPeopleSql = result.getInt("numOfPeople");
+			preStm = conn.prepareStatement(sql);
+			rs = preStm.executeQuery();
+			while (rs.next()) {
+				String nameSql = rs.getString("name");
+				int roomTypeIdSql = rs.getInt("roomTypeId");
+				int numOfPeopleSql = rs.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 				roomTypes.add(roomType);
 			}
 
-			pstmt.close();
-			return roomTypes;
-		} catch (SQLException e) {
-			return null;
+		} finally {
+			this.closeConnection();
 		}
+		return roomTypes;
 	}
 }

@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Validator {
 
-        /**
-         * Validate the VietNam's phone number format
-         * @param User input
-         * @return error string OR empty string
-        */
+	/**
+	 * Validate the VietNam's phone number format
+	 * 
+	 * @param User input
+	 * @return error string OR empty string
+	 */
 	public static String getPhoneNumber(String value) {
 		String pattern = "^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\\b";
 		boolean isMatched = Pattern.matches(pattern, value);
@@ -21,29 +22,32 @@ public class Validator {
 
 		return "";
 	}
-        
-        /**
-         * Validate the email
-         * @param User input
-         * @return error string OR empty string
-        */
-        public static String getEmail(String value){
-            String pattern = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$";
-            boolean isMatched = Pattern.matches(pattern, value);
+
+	/**
+	 * Validate the email
+	 * 
+	 * @param User input
+	 * @return error string OR empty string
+	 */
+	public static String getEmail(String value) {
+		Pattern regex = Pattern.compile("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b");
+		
+		boolean isMatched = regex.matcher(value).matches();
 		if (!isMatched) {
 			return "is not correct format. Please enter a valid email";
 		}
 
 		return "";
-        }
+	}
 
-        /**
-         * Count number of days from start day to end day
-         * @param request servlet request
-         * @param startDate start date
-         * @param endDate end date
-         * @return number of days from start day to end day
-         */
+	/**
+	 * Count number of days from start day to end day
+	 * 
+	 * @param request   servlet request
+	 * @param startDate start date
+	 * @param endDate   end date
+	 * @return number of days from start day to end day
+	 */
 	public static Integer computeNumberOfDay(HttpServletRequest request, String startDate, String endDate) {
 		if (startDate != null && endDate != null) {
 

@@ -1,4 +1,3 @@
-
 package controllers;
 
 import constant.Routers;
@@ -9,12 +8,8 @@ import dtos.BookingInfo;
 import dtos.User;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,13 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import utils.Helper;
-
-@WebServlet(name = "ViewBookingController", urlPatterns = { "/Customer/ViewBookingController" })
+@WebServlet(name = "ViewBookingController", urlPatterns = { "/ViewBookingController" })
 public class ViewBookingController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 		UserDAO userDAO = new UserDAO();
@@ -64,27 +56,19 @@ public class ViewBookingController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+		String url = Routers.ERROR;
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer customerRole = (Integer)env.lookup("customerRole");
-			if (!Helper.protectedRouter(request, response, customerRole, customerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.getHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE);
-				rd.forward(request, response);
-				return;
+				url = (Routers.VIEW_BOOKING_PAGE);
+			} else {
+				url = (Routers.LIST_ROOM);
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM);
-			rd.forward(request, response);
-
 		} catch (Exception e) {
-			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+
+		} finally {
+			request.getRequestDispatcher(url).forward(request, response);
 		}
 	}
 

@@ -9,10 +9,7 @@ import dtos.Review;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,13 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import utils.GetParam;
-import utils.Helper;
 
-@WebServlet(name = "ViewRoomController", urlPatterns = { "/Both/ViewRoomController" })
+@WebServlet(name = "ViewRoomController", urlPatterns = { "/ViewRoomController" })
 public class ViewRoomController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -67,29 +62,20 @@ public class ViewRoomController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-
+		String url = Routers.ERROR;
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer customerRole = (Integer)env.lookup("customerRole");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, customerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.getHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_PAGE);
-				rd.forward(request, response);
-				return;
+				url = (Routers.VIEW_ROOM_INFO_PAGE);
+
+			} else {
+				url = Routers.ERROR;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
 		} catch (Exception e) {
 
-			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+		} finally {
+			request.getRequestDispatcher(url).forward(request, response);
 		}
 	}
 

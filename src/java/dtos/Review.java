@@ -5,6 +5,7 @@
  */
 package dtos;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ import java.util.Date;
  *
  * @author HaiCao
  */
-public class Review {
+public class Review implements Serializable {
     private int reviewId;
     private String message;
     private int rate;

@@ -1,4 +1,3 @@
-
 package daos;
 
 import dtos.Review;
@@ -8,56 +7,63 @@ import dtos.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import utils.Connector;
 
 public class ReviewDAO {
 
-	public boolean addReview(Review review) throws SQLException {
-		Connection connection = null;
-		PreparedStatement pstmt = null;
+	private Connection conn;
+	private PreparedStatement preStm;
+	private ResultSet rs;
 
-		try {
-			connection = Connector.getConnection();
-			String sql = "INSERT INTO tbl_Review (message, rate, createDate, userId, roomId) VALUES (?,?,?,?,?)";
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, review.getMessage());
-			pstmt.setInt(2, review.getRate());
-			pstmt.setString(3, review.getCreateDate());
-			pstmt.setInt(4, review.getUser().getUserId());
-			pstmt.setInt(5, review.getRoom().getRoomId());
+	private void closeConnection() throws Exception {
+		if (rs != null) {
+			rs.close();
+		}
 
-			pstmt.executeUpdate();
-			connection.close();
-			return true;
-		} catch (SQLException e) {
-			System.out.println(e);
-			return false;
-		} finally {
+		if (preStm != null) {
+			preStm.close();
+		}
 
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
+		if (conn != null) {
+
+			conn.close();
 		}
 	}
 
-	public ArrayList<Review> getReviewByRoomId(int roomId) {
-
+	public boolean addReview(Review review) throws Exception {
+		boolean isSuccess = false;
 		try {
-			Connection connection = Connector.getConnection();
+			conn = Connector.getConnection();
+			String sql = "INSERT INTO tbl_Review (message, rate, createDate, userId, roomId) VALUES (?,?,?,?,?)";
+			preStm = conn.prepareStatement(sql);
+			preStm.setString(1, review.getMessage());
+			preStm.setInt(2, review.getRate());
+			preStm.setString(3, review.getCreateDate());
+			preStm.setInt(4, review.getUser().getUserId());
+			preStm.setInt(5, review.getRoom().getRoomId());
+
+			preStm.executeUpdate();
+
+			isSuccess = true;
+		} finally {
+			this.closeConnection();
+		}
+		return isSuccess;
+	}
+
+	public ArrayList<Review> getReviewByRoomId(int roomId) throws Exception {
+		ArrayList<Review> reviews = new ArrayList<>();
+		try {
+			conn = Connector.getConnection();
 			RoomDAO roomDAO = new RoomDAO();
 			UserDAO userDAO = new UserDAO();
-			ArrayList<Review> reviews = new ArrayList<>();
 
 			String sql = "SELECT rate, message, tbl_User.fullName as fullName, tbl_User.username as username FROM tbl_Review LEFT JOIN tbl_User  ON  tbl_User.userId = tbl_Review.userId  WHERE tbl_Review.roomId = ? ";
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setInt(1, roomId);
-			ResultSet result = pstmt.executeQuery();
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, roomId);
+			ResultSet result = preStm.executeQuery();
 
 			while (result.next()) {
 				int rate = result.getInt("rate");
@@ -69,11 +75,9 @@ public class ReviewDAO {
 				Review review = new Review(message, rate, user, room);
 				reviews.add(review);
 			}
-			pstmt.close();
-			return reviews;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		} finally {
+			this.closeConnection();
 		}
+		return reviews;
 	}
 }

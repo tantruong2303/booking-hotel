@@ -5,7 +5,7 @@ import dtos.Room;
 import dtos.RoomType;
 
 import java.io.IOException;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -17,20 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import utils.FileHelper;
 import utils.GetParam;
-import utils.Helper;
 
-@WebServlet(name = "AddRoomController", urlPatterns = { "/Manager/AddRoomController" })
+@WebServlet(name = "AddRoomController", urlPatterns = { "/AddRoomController" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
 public class AddRoomController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 
@@ -59,11 +55,6 @@ public class AddRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.getHandler(request, response)) {
 
@@ -79,8 +70,7 @@ public class AddRoomController extends HttpServlet {
 		}
 	}
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
 		// get and validate params
@@ -134,12 +124,6 @@ public class AddRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.postHandler(request, response)) {
 				response.sendRedirect(Routers.LIST_ROOM);
