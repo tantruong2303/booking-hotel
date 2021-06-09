@@ -8,8 +8,6 @@ import dtos.Room;
 import dtos.User;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,18 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.servlet.RequestDispatcher;
 
 import utils.GetParam;
-import utils.Helper;
 
-@WebServlet(name = "AddReviewController", urlPatterns = {"/Customer/AddReviewController"})
+@WebServlet(name = "AddReviewController", urlPatterns = { "/AddReviewController" })
 public class AddReviewController extends HttpServlet {
 
-	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException, SQLException {
+	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// initialized resource
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -74,23 +68,17 @@ public class AddReviewController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer customerRole = (Integer)env.lookup("customerRole");
-			if (!Helper.protectedRouter(request, response, customerRole, customerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (processRequest(request, response)) {
 				Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);

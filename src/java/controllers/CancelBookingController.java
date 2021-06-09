@@ -7,7 +7,6 @@ import dtos.BookingInfo;
 import dtos.User;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,17 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import utils.GetParam;
-import utils.Helper;
 
-@WebServlet(name = "CancelBookingController", urlPatterns = { "/Both/CancelBookingController" })
+@WebServlet(name = "CancelBookingController", urlPatterns = { "/CancelBookingController" })
 public class CancelBookingController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=UTF-8");
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
@@ -90,13 +85,6 @@ public class CancelBookingController extends HttpServlet {
 		UserDAO userDao = new UserDAO();
 
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer customerRole = (Integer)env.lookup("customerRole");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, customerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.getHandler(request, response)) {
 				HttpSession session = request.getSession(false);

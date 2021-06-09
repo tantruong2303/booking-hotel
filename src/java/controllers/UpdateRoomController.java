@@ -5,7 +5,6 @@ import dtos.Room;
 import dtos.RoomType;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -17,20 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.MultipartConfig;
 
 import constant.Routers;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import utils.FileHelper;
 import utils.GetParam;
-import utils.Helper;
 
-@WebServlet(name = "UpdateRoomController", urlPatterns = {"/Manager/UpdateRoomController"})
+@WebServlet(name = "UpdateRoomController", urlPatterns = { "/UpdateRoomController" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
 		* 100)
 public class UpdateRoomController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
@@ -69,30 +64,24 @@ public class UpdateRoomController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+		String url = Routers.ERROR;
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
+
 			if (this.getHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM_PAGE);
-				rd.forward(request, response);
-				return;
+				url = (Routers.UPDATE_ROOM_PAGE);
+			} else {
+				url = (Routers.UPDATE_ROOM);
 			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.UPDATE_ROOM);
-			rd.forward(request, response);
 
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+
+		} finally {
+			request.getRequestDispatcher(url).forward(request, response);
 		}
 
 	}
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, SQLException {
+	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 100, 999);
@@ -147,12 +136,6 @@ public class UpdateRoomController extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 			if (this.postHandler(request, response)) {
 				response.sendRedirect(Routers.LIST_ROOM);
 				return;

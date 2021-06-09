@@ -5,106 +5,112 @@ import dtos.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import utils.Connector;
 
 public class UserDAO {
 
-	public User getOneUserByUsername(String username) throws SQLException {
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		ResultSet result = null;
+	private Connection conn;
+	private PreparedStatement preStm;
+	private ResultSet rs;
 
-		try {
-			connection = Connector.getConnection();
-			String sql = "SELECT * FROM tbl_User WHERE username=?";
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, username);
-			result = pstmt.executeQuery();
-
-			if (result.next()) {
-				int userIdSql = result.getInt("userId");
-				String usernameSql = result.getString("username");
-				String passwordSql = result.getString("password");
-				String fullNameSql = result.getString("fullName");
-				String emailSql = result.getString("email");
-				String phoneSql = result.getString("phone");
-				int roleSql = result.getInt("role");
-				return new User(userIdSql, usernameSql, passwordSql, fullNameSql, emailSql, phoneSql, roleSql);
-			}
-		} catch (SQLException e) {
-			return null;
-		} finally {
-			if (result != null) {
-				result.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
+	private void closeConnection() throws Exception {
+		if (rs != null) {
+			rs.close();
 		}
-		return null;
+
+		if (preStm != null) {
+			preStm.close();
+		}
+
+		if (conn != null) {
+
+			conn.close();
+		}
 	}
 
-	public boolean updateUserPasswordByUsername(String username, String password) throws SQLException {
-		Connection connection = null;
-		PreparedStatement pstmt = null;
+	public boolean addUser(User user) throws Exception {
+		boolean isSuccess = false;
+		conn = Connector.getConnection();
+		String sql = "INSERT INTO tbl_User (username, password, fullName, email, phone, role) VALUES(?,?,?,?,?,?)";
+		preStm = conn.prepareStatement(sql);
+		try {
+			preStm.setString(1, user.getUsername());
+			preStm.setString(2, user.getPassword());
+			preStm.setString(3, user.getFullName());
+			preStm.setString(4, user.getEmail());
+			preStm.setString(5, user.getPhone());
+			preStm.setInt(6, user.getRole());
+			preStm.executeUpdate();
+
+			isSuccess = false;
+		} finally {
+			this.closeConnection();
+		}
+		return isSuccess;
+	}
+
+	public User getOneUserByUsername(String username) throws Exception {
+		User user = null;
 
 		try {
-			connection = Connector.getConnection();
-			String sql = "UPDATE tbl_User SET password = ? WHERE username = ?";
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, password);
-			pstmt.setString(2, username);
-			pstmt.executeUpdate();
+			conn = Connector.getConnection();
+			String sql = "SELECT * FROM tbl_User WHERE username=?";
+			preStm = conn.prepareStatement(sql);
+			preStm.setString(1, username);
+			rs = preStm.executeQuery();
 
-			pstmt.close();
-			connection.close();
-			return true;
-		} catch (SQLException e) {
-			return false;
+			if (rs.next()) {
+				int userIdSql = rs.getInt("userId");
+				String usernameSql = rs.getString("username");
+				String passwordSql = rs.getString("password");
+				String fullNameSql = rs.getString("fullName");
+				String emailSql = rs.getString("email");
+				String phoneSql = rs.getString("phone");
+				int roleSql = rs.getInt("role");
+				user = new User(userIdSql, usernameSql, passwordSql, fullNameSql, emailSql, phoneSql, roleSql);
+			}
 		} finally {
-
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
+			this.closeConnection();
 		}
+		return user;
+	}
+
+	public boolean updateUserPasswordByUsername(String username, String password) throws Exception {
+		boolean isSuccess = false;
+		try {
+			conn = Connector.getConnection();
+			String sql = "UPDATE tbl_User SET password = ? WHERE username = ?";
+			preStm = conn.prepareStatement(sql);
+			preStm.setString(1, password);
+			preStm.setString(2, username);
+			preStm.executeUpdate();
+
+			isSuccess = true;
+		} finally {
+			this.closeConnection();
+		}
+		return isSuccess;
 	}
 
 	public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone)
-			throws SQLException {
-		Connection connection = null;
-		PreparedStatement pstmt = null;
+		throws Exception {
+		boolean isSuccess = false;
 
 		try {
-			connection = Connector.getConnection();
+			conn = Connector.getConnection();
 			String sql = "UPDATE tbl_User SET fullName = ?, email = ?, phone = ? WHERE username = ?";
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, fullName);
-			pstmt.setString(2, email);
-			pstmt.setString(3, phone);
-			pstmt.setString(4, username);
-			pstmt.executeUpdate();
+			preStm = conn.prepareStatement(sql);
+			preStm.setString(1, fullName);
+			preStm.setString(2, email);
+			preStm.setString(3, phone);
+			preStm.setString(4, username);
+			preStm.executeUpdate();
 
-			pstmt.close();
-			connection.close();
-			return true;
-		} catch (SQLException e) {
-			return false;
+			isSuccess = true;
 		} finally {
-
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (connection != null) {
-				connection.close();
-			}
+			this.closeConnection();
 		}
+		return isSuccess;
 	}
 }

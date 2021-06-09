@@ -4,7 +4,6 @@ import daos.RoomDAO;
 import dtos.Room;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -15,17 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import utils.GetParam;
-import utils.Helper;
 
-@WebServlet(name = "RoomListController", urlPatterns = {"/Manager/RoomListController"})
+@WebServlet(name = "RoomListController", urlPatterns = { "/RoomListController" })
 public class RoomListController extends HttpServlet {
 
-	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException, SQLException {
+	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 
@@ -56,23 +51,17 @@ public class RoomListController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.processHandler(request, response)) {
 				RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
@@ -88,32 +77,28 @@ public class RoomListController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-
+		String url = Routers.ERROR;
 		try {
-                        // check valid user's role
-                        Context env = (Context)new InitialContext().lookup("java:comp/env");
-                        Integer managerRole = (Integer)env.lookup("managerRole");
-			if (!Helper.protectedRouter(request, response, managerRole, managerRole, Routers.LOGIN_PAGE)) {
-				return;
-			}
 
 			if (this.processHandler(request, response)) {
-				RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
-				rd.forward(request, response);
+				url = (Routers.LIST_ROOM_PAGE);
+			} else {
+				url = Routers.ERROR;
 			}
 
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+
+		} finally {
+			request.getRequestDispatcher(url).forward(request, response);
 		}
 	}
 }

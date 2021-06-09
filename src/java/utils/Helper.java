@@ -6,14 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class Helper {
-	
-        
 
 	public static void debugMode(HttpServletRequest request) {
 		String debug = request.getParameter("debug");
@@ -38,35 +35,38 @@ public class Helper {
 			}
 		}
 	}
+
 	/**
-		* Ensure that access only to authorized users
-		* @param request servlet request
-		* @param response servlet response
-		* @param minRole minimum user's role to be passed			 
-		* @param maxRole maximum user's role to be passed
-		* @param page move to this page if user can not be passed
+	 * Ensure that access only to authorized users
+	 * 
+	 * @param request  servlet request
+	 * @param response servlet response
+	 * @param minRole  minimum user's role to be passed
+	 * @param maxRole  maximum user's role to be passed
+	 * @param page     move to this page if user can not be passed
 	 */
 	public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole,
-		int maxRole, String page) throws Exception {
+			int maxRole, String page) throws Exception {
 		debugMode(request);
-		
+
 		if (!isLogin(request) || !correctRole(request, minRole, maxRole)) {
-			RequestDispatcher rd = request.getRequestDispatcher(page);
 			request.setAttribute("errorMessage", "Action is not allow, please login first");
-			rd.forward(request, response);
+			request.getRequestDispatcher(page).forward(request, response);
+
 			return false;
 		}
 
 		return true;
 	}
-        
-        /**
-         * Reformat string that is too long
-         * @param str input string
-         * @param maxLength 
-         * @return if string's length <= maxLength, return itself
-         *         if string's length > maxLength, return string with first maxLength characters + "..."
-         */
+
+	/**
+	 * Reformat string that is too long
+	 * 
+	 * @param str       input string
+	 * @param maxLength
+	 * @return if string's length <= maxLength, return itself if string's length >
+	 *         maxLength, return string with first maxLength characters + "..."
+	 */
 	public static String truncateContent(String str, int maxLength) {
 		if (str.length() > maxLength) {
 			return str.substring(0, maxLength) + "...";
@@ -74,12 +74,12 @@ public class Helper {
 		return str;
 	}
 
-        /**
-         * Check that user is login or not
-         * @param request servlet request
-         * @return true if logined
-         *         false if not
-         */
+	/**
+	 * Check that user is login or not
+	 * 
+	 * @param request servlet request
+	 * @return true if logined false if not
+	 */
 	public static boolean isLogin(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -90,13 +90,14 @@ public class Helper {
 		return username != null;
 	}
 
-        /**
-         * Check that user's role is valid or invalid
-         * @param request servlet request
-         * @param minRole minimum user's role to be passed
-         * @param maxRole maximum user's role to be passed
-         * @return true if minimum role <= user's role <= maximum role 
-         */
+	/**
+	 * Check that user's role is valid or invalid
+	 * 
+	 * @param request servlet request
+	 * @param minRole minimum user's role to be passed
+	 * @param maxRole maximum user's role to be passed
+	 * @return true if minimum role <= user's role <= maximum role
+	 */
 	public static boolean correctRole(HttpServletRequest request, int minRole, int maxRole) {
 		HttpSession session = request.getSession(false);
 		Integer roleR = (Integer) session.getAttribute("role");
@@ -104,12 +105,13 @@ public class Helper {
 		return roleR != null && roleR >= minRole && roleR <= maxRole;
 	}
 
-        /**
-         * Hashing password 
-         * @param value input password
-         * @param key 
-         * @return hashed password
-         */
+	/**
+	 * Hashing password
+	 * 
+	 * @param value input password
+	 * @param key
+	 * @return hashed password
+	 */
 	public static String encrypt(String value, int key) {
 		String result = "";
 		for (int i = 0; i < value.length(); i++) {
@@ -120,12 +122,13 @@ public class Helper {
 		return result;
 	}
 
-        /**
-         * Decrypt hashed password
-         * @param value input password
-         * @param key
-         * @return original password
-         */
+	/**
+	 * Decrypt hashed password
+	 * 
+	 * @param value input password
+	 * @param key
+	 * @return original password
+	 */
 	private static String decrypt(String value, int key) {
 		String result = "";
 		for (int i = 0; i < value.length(); i++) {
@@ -136,13 +139,14 @@ public class Helper {
 		return result;
 	}
 
-        /**
-         * Compare password that user type in form with password that saved in database
-         * @param inputPassword password that user enter in form
-         * @param databasePassword password that saved in database
-         * @param key
-         * @return true if correct
-         */
+	/**
+	 * Compare password that user type in form with password that saved in database
+	 * 
+	 * @param inputPassword    password that user enter in form
+	 * @param databasePassword password that saved in database
+	 * @param key
+	 * @return true if correct
+	 */
 	public static boolean comparePassword(String inputPassword, String databasePassword, int key) {
 		String decryptPassword = decrypt(databasePassword, key);
 		if (inputPassword.equals(decryptPassword)) {
@@ -151,11 +155,12 @@ public class Helper {
 		return false;
 	}
 
-        /**
-         * convert data in String type into Integer
-         * @param date
-         * @return 
-         */
+	/**
+	 * convert data in String type into Integer
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public static Integer convertStringDateToInteger(String date) {
 		try {
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -167,11 +172,12 @@ public class Helper {
 		}
 	}
 
-        /**
-         * Convert date in String type into date in Date type
-         * @param date
-         * @return date in Date type
-         */
+	/**
+	 * Convert date in String type into date in Date type
+	 * 
+	 * @param date
+	 * @return date in Date type
+	 */
 	public static Date convertStringToDate(String date) {
 		try {
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -181,9 +187,9 @@ public class Helper {
 		}
 	}
 
-        /**
-         * Get today date in Date type
-         */
+	/**
+	 * Get today date in Date type
+	 */
 	public static Date getToDayTime() {
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();

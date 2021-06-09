@@ -5,13 +5,13 @@
  */
 package dtos;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 /**
  *
  * @author Lenovo
  */
-public class User {
+public class User implements Serializable {
     private int userId;
     private String username;
     private String password;
@@ -30,8 +30,6 @@ public class User {
         this.role = role;
     }
 
-    
-    
     public User(String username, String password, String fullName, String email, String phone, int role) {
         this.userId = 0;
         this.username = username;
@@ -103,8 +101,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", fullName=" + fullName + ", email=" + email + ", phone=" + phone + ", role=" + role + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", fullName="
+                + fullName + ", email=" + email + ", phone=" + phone + ", role=" + role + '}';
     }
-    
-    
+
 }

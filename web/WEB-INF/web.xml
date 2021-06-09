@@ -4,20 +4,13 @@
         <param-name>HashingKey</param-name>
         <param-value>28</param-value>
     </context-param>
-    <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>NewServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
-    </servlet-mapping>
+   
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>/IndexServlet</welcome-file>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>/login.jsp</welcome-file>
     </welcome-file-list>
     <error-page>
         <location>/error.jsp</location>
