@@ -41,8 +41,8 @@ public class LoginController extends HttpServlet {
 		UserDAO userDAO = new UserDAO();
 
 		// validate params
-		String username = GetParam.getStringParam(request, "username", "Username", 1, 50);
-		String password = GetParam.getStringParam(request, "password", "Password", 1, 50);
+		String username = GetParam.getStringParam(request, "username", "Username", 5, 50);
+		String password = GetParam.getStringParam(request, "password", "Password", 5, 50);
 		if (username == null || password == null) {
 			return false;
 		}
@@ -100,7 +100,7 @@ public class LoginController extends HttpServlet {
 			}
 			// forward on 400
 			request.getRequestDispatcher(Routers.LOGIN_PAGE).forward(request, response);
-			
+
 		} catch (Exception e) {
 			// redirect on 500
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
