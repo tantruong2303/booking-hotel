@@ -24,7 +24,7 @@ public class CheckOutController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 
 		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999);
-
+		
 		if (roomId == null) {
 			return false;
 		}

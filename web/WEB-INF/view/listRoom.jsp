@@ -105,10 +105,10 @@
 							<td  class="p-1 border border-black">
 								<img src="<%= list.get(i).getImageUrl()%>" alt="alt" class="w-32"/>
 							</td>
-							<td class="p-1 text-center border border-black">
+							<td class="p-1 text-center border border-black space-y-2">
 								<% if ( list.get(i).getState() == 2)  {%>
 
-								<a href="CheckOutController?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to checkout') " class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">Check Out</a>
+								<a href="CheckoutController?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to checkout') " class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">Check Out</a>
 
 
 								<a href="CancelBookingController?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to cancel') " class="inline-block p-2 font-medium text-white duration-200 bg-red-500 rounded-sm hover:bg-red-600">Cancel</a>
