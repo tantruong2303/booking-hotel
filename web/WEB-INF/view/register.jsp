@@ -26,7 +26,7 @@
 	<body class="flex flex-col min-h-screen">
 
 
-		<%@include file="./includes/navbar.jsp" %>
+		<%@include file="./includes/navbar.jspf" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div
 			    class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
@@ -116,7 +116,7 @@
 						</div>
 					</div>
 				</form>
-				<%@include file="./includes/footer.jsp" %>
+				<%@include file="./includes/footer.jspf" %>
 			</div>
 		</main>
 	</body>

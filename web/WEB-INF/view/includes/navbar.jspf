@@ -1,3 +1,5 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
 <%@page import="utils.Helper"%>
 <div class="z-50 flex items-stretch justify-between h-16 px-16 bg-white shadow-md">
         <a class="p-2" href="IndexController">
