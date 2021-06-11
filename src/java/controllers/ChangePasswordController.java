@@ -23,9 +23,9 @@ public class ChangePasswordController extends HttpServlet {
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		UserDAO userDAO = new UserDAO();
 
-		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 1, 50);
-		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 1, 50);
-		String oldPassword = GetParam.getStringParam(request, "oldPassword", "Old Password", 1, 50);
+		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 5, 50);
+		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 5, 50);
+		String oldPassword = GetParam.getStringParam(request, "oldPassword", "Old Password", 5, 50);
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 

@@ -99,7 +99,7 @@ public class AddBookingController extends HttpServlet {
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 
 		// get and validate params
-		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999);
 		String startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
 		String endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
 		if (startDate == null || endDate == null || roomId == null) {

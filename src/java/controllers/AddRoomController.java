@@ -22,8 +22,8 @@ import utils.FileHelper;
 import utils.GetParam;
 
 @WebServlet(name = "AddRoomController", urlPatterns = { "/AddRoomController" })
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024
-		* 100)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 2, maxRequestSize = 1024 * 1024
+		* 5)
 public class AddRoomController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
