@@ -59,8 +59,8 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-		boolean isChangeState = roomDAO.changeState(bookingInfo.getRoomId(), 1);
-		if (!isChangeState) {
+		boolean isChangeStatus = roomDAO.changestatus(bookingInfo.getRoomId(), 1);
+		if (!isChangeStatus) {
 			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}

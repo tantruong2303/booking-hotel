@@ -86,11 +86,11 @@ public class UpdateRoomController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 100, 999);
 		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
-		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
+		Integer statusPrams = GetParam.getIntParams(request, "status", "Is Disable", 0, 1);
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
 		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
-		if (price == null || roomId == null || statePrams == null || roomTypeId == null | description == null) {
+		if (price == null || roomId == null || statusPrams == null || roomTypeId == null | description == null) {
 			return false;
 		}
 
@@ -112,7 +112,7 @@ public class UpdateRoomController extends HttpServlet {
 			return false;
 		}
 
-		Room newRoom = new Room(roomId, price, statePrams, imageUrl, description, roomType);
+		Room newRoom = new Room(roomId, price, statusPrams, imageUrl, description, roomType);
 		boolean result = roomDAO.updateRoom(newRoom);
 		if (!result) {
 			request.setAttribute("errorMessage", "Some thing went wrong");

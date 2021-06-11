@@ -35,13 +35,13 @@ public class RoomDAO {
 		boolean isSuccess = false;
 		try {
 			conn = Connector.getConnection();
-			String sql = "INSERT INTO tbl_Room (roomId,price, description, state, imageUrl, roomTypeId) VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO tbl_Room (roomId,price, description, status, imageUrl, roomTypeId) VALUES (?,?,?,?,?,?)";
 
 			preStm = conn.prepareStatement(sql);
 			preStm.setInt(1, room.getRoomId());
 			preStm.setFloat(2, room.getPrice());
 			preStm.setString(3, room.getDescription());
-			preStm.setInt(4, room.getState());
+			preStm.setInt(4, room.getStatus());
 			preStm.setString(5, room.getImageUrl());
 			preStm.setInt(6, room.getRoomType().getRoomTypeId());
 
@@ -56,14 +56,14 @@ public class RoomDAO {
 
 	public boolean updateRoom(Room room) throws Exception {
 
-		String sql = "UPDATE tbl_Room SET price = ?, description = ?, state = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";
+		String sql = "UPDATE tbl_Room SET price = ?, description = ?, status = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";
 		boolean isSuccess = false;
 		try {
 			conn = Connector.getConnection();
 			preStm = conn.prepareStatement(sql);
 			preStm.setFloat(1, room.getPrice());
 			preStm.setString(2, room.getDescription());
-			preStm.setInt(3, room.getState());
+			preStm.setInt(3, room.getStatus());
 			preStm.setString(4, room.getImageUrl());
 			preStm.setInt(5, room.getRoomType().getRoomTypeId());
 			preStm.setInt(6, room.getRoomId());
@@ -75,13 +75,13 @@ public class RoomDAO {
 		return isSuccess;
 	}
 
-	public boolean changeState(Integer roomId, Integer state) throws Exception {
+	public boolean changestatus(Integer roomId, Integer status) throws Exception {
 		conn = Connector.getConnection();
-		String sql = "UPDATE tbl_Room SET state = ? WHERE roomId = ?";
+		String sql = "UPDATE tbl_Room SET status = ? WHERE roomId = ?";
 		boolean isSuccess = false;
 		try {
 			preStm = conn.prepareStatement(sql);
-			preStm.setInt(1, state);
+			preStm.setInt(1, status);
 			preStm.setInt(2, roomId);
 
 			preStm.executeUpdate();
@@ -98,7 +98,7 @@ public class RoomDAO {
 		try {
 			conn = Connector.getConnection();
 
-			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE roomId = ? ";
+			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE roomId = ? ";
 
 			preStm = conn.prepareStatement(sql);
 			preStm.setInt(1, roomId);
@@ -108,13 +108,13 @@ public class RoomDAO {
 				int roomIdSql = rs.getInt("roomId");
 				float priceSql = rs.getFloat("price");
 				String imageUrl = rs.getString("imageUrl");
-				int state = rs.getInt("state");
+				int status = rs.getInt("status");
 				String descriptionSql = rs.getString("description");
 				String nameSql = rs.getString("name");
 				int roomTypeIdSql = rs.getInt("roomTypeId");
 				int numOfPeopleSql = rs.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
+				room = new Room(roomIdSql, priceSql, status, imageUrl, descriptionSql, roomType);
 
 			}
 
@@ -129,7 +129,7 @@ public class RoomDAO {
 		try {
 			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
-			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY roomId ASC ,price "
+			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY roomId ASC ,price "
 				+ order;
 
 			preStm = conn.prepareStatement(sql);
@@ -143,14 +143,14 @@ public class RoomDAO {
 				int roomIdSql = rs.getInt("roomId");
 				float priceSql = rs.getFloat("price");
 				String imageUrl = rs.getString("imageUrl");
-				int state = rs.getInt("state");
+				int status = rs.getInt("status");
 				String descriptionSql = rs.getString("description");
 
 				String nameSql = rs.getString("name");
 				int roomTypeIdSql = rs.getInt("roomTypeId");
 				int numOfPeopleSql = rs.getInt("numOfPeople");
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				Room room = new Room(roomIdSql, priceSql, state, imageUrl, descriptionSql, roomType);
+				Room room = new Room(roomIdSql, priceSql, status, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
 		} finally {
@@ -159,33 +159,33 @@ public class RoomDAO {
 		return list;
 	}
 
-	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer state) throws Exception {
+	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer status) throws Exception {
 		ArrayList<Room> list = new ArrayList<>();
 		try {
 			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
-			String sql = "SELECT roomId, price, description, state, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND state = ? ORDER BY price "
+			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND status = ? ORDER BY price "
 				+ order;
 
 			preStm = conn.prepareStatement(sql);
 			preStm.setFloat(1, numOfPeople);
 			preStm.setFloat(2, min);
 			preStm.setFloat(3, max);
-			preStm.setInt(4, state);
+			preStm.setInt(4, status);
 			rs = preStm.executeQuery();
 
 			while (rs.next()) {
 				int roomIdSql = rs.getInt("roomId");
 				float priceSql = rs.getFloat("price");
 				String imageUrl = rs.getString("imageUrl");
-				int stateSQL = rs.getInt("state");
+				int statusSQL = rs.getInt("status");
 				String descriptionSql = rs.getString("description");
 				String nameSql = rs.getString("name");
 				int roomTypeIdSql = rs.getInt("roomTypeId");
 				int numOfPeopleSql = rs.getInt("numOfPeople");
 
 				RoomType roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
-				Room room = new Room(roomIdSql, priceSql, stateSQL, imageUrl, descriptionSql, roomType);
+				Room room = new Room(roomIdSql, priceSql, statusSQL, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
 		} finally {

@@ -16,7 +16,7 @@ public class Room implements Serializable {
 	private int roomId;
 	private float price;
 	// 0 disable 1 available 2 rent
-	private int state;
+	private int status;
 	private String imageUrl;
 	private String description;
 	private RoomType roomType;
@@ -24,19 +24,19 @@ public class Room implements Serializable {
 	public Room() {
 	}
 
-	public Room(int roomId, float price, int state, String imageUrl, String description, RoomType roomType) {
+	public Room(int roomId, float price, int status, String imageUrl, String description, RoomType roomType) {
 		this.roomId = roomId;
 		this.price = price;
-		this.state = state;
+		this.status = status;
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.roomType = roomType;
 	}
 
-	public Room(float price, int state, String imageUrl, String description, RoomType roomType) {
+	public Room(float price, int status, String imageUrl, String description, RoomType roomType) {
 
 		this.price = price;
-		this.state = state;
+		this.status = status;
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.roomType = roomType;
@@ -58,12 +58,12 @@ public class Room implements Serializable {
 		this.price = price;
 	}
 
-	public int getState() {
-		return state;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setState(int state) {
-		this.state = state;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public String getImageUrl() {
@@ -92,8 +92,7 @@ public class Room implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Room{" + "roomId=" + roomId + ", price=" + price + ", state=" + state + ", imageUrl=" + imageUrl
-				+ ", description=" + description + ", roomType=" + roomType + '}';
+		return "Room{" + "roomId=" + roomId + ", price=" + price + ", status=" + status + ", imageUrl=" + imageUrl + ", description=" + description + ", roomType=" + roomType + '}';
 	}
 
 }

@@ -58,15 +58,15 @@
 								<input type="file" name="photo" class="block" id="photo"/> 
 							</div>
 							<div class="space-y-2">
-								<label class="font-medium" for="photo">State</label>
+								<label class="font-medium" for="photo">Status</label>
 								<div class="">
 									<span>
 										<label for="state1" >Disable</label>
-										<input type="radio" name="state" id="state1" value="0" ${room.getState() == 0  ? 'checked="checked"' : ''}/>
+										<input type="radio" name="status" id="state1" value="0" ${room.getState() == 0  ? 'checked="checked"' : ''}/>
 									</span>
 									<span>
 										<label for="state2" >Available</label>
-										<input type="radio" name="state" id="state2" value="1" ${room.getState() == 1  ?  'checked="checked"' : ''}/>
+										<input type="radio" name="status" id="state2" value="1" ${room.getState() == 1  ?  'checked="checked"' : ''}/>
 									</span>
 
 								</div>

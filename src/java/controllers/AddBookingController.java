@@ -127,7 +127,7 @@ public class AddBookingController extends HttpServlet {
 		}
 
 		// checking room status
-		if (room.getState() != 1) {
+		if (room.getStatus()!= 1) {
 			request.setAttribute("errorMessage", "Room is not available");
 			return false;
 		}
@@ -143,8 +143,8 @@ public class AddBookingController extends HttpServlet {
 		}
 
 		// checking update status room
-		boolean isChangeState = roomDAO.changeState(room.getRoomId(), 2);
-		if (!isChangeState) {
+		boolean isChangeStatus = roomDAO.changestatus(room.getRoomId(), 2);
+		if (!isChangeStatus) {
 			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}

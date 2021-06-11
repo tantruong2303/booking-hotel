@@ -21,9 +21,9 @@ import constant.Routers;
 import utils.FileHelper;
 import utils.GetParam;
 
-@WebServlet(name = "AddRoomController", urlPatterns = { "/AddRoomController" })
+@WebServlet(name = "AddRoomController", urlPatterns = {"/AddRoomController"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 2, maxRequestSize = 1024 * 1024
-		* 5)
+	* 5)
 public class AddRoomController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -45,14 +45,14 @@ public class AddRoomController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 
@@ -76,13 +76,13 @@ public class AddRoomController extends HttpServlet {
 		// get and validate params
 		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
 		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
-		Integer statePrams = GetParam.getIntParams(request, "state", "Is Disable", 0, 1);
+		Integer statusPrams = GetParam.getIntParams(request, "status", "Is Disable", 0, 1);
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
 		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 50);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
 
-		if (roomId == null || price == null || statePrams == null || imageUrl == null || description == null
-				|| roomTypeId == null) {
+		if (roomId == null || price == null || statusPrams == null || imageUrl == null || description == null
+			|| roomTypeId == null) {
 			return false;
 		}
 
@@ -101,7 +101,7 @@ public class AddRoomController extends HttpServlet {
 		}
 
 		// handle create new room
-		Room newRoom = new Room(roomId, price, statePrams, imageUrl, description, roomType);
+		Room newRoom = new Room(roomId, price, statusPrams, imageUrl, description, roomType);
 		boolean result = roomDAO.addRoom(newRoom);
 		if (!result) {
 			request.setAttribute("errorMessage", "Some thing went wrong, please try again");
@@ -114,14 +114,14 @@ public class AddRoomController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 

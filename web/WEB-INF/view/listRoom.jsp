@@ -95,7 +95,7 @@
 					</thead>
 					<tbody>
 						<% for (int i = 0; i < list.size(); i++) { %>
-						<tr class="<%= list.get(i).getState() == 0 ? "bg-red-200" :  list.get(i).getState() == 2 ?" bg-yellow-300": "bg-white" %>"> 
+						<tr class="<%= list.get(i).getStatus()== 0 ? "bg-red-200" :  list.get(i).getStatus() == 2 ?" bg-yellow-300": "bg-white" %>"> 
 							<td class="p-1 text-center border border-black"><%= i+1 %></td>
 							<td class="p-1 text-center border border-black"><%= list.get(i).getRoomId()%></td>
 							<td class="p-1 capitalize border border-black"><%= list.get(i).getRoomType().getName()%></td>
@@ -106,7 +106,7 @@
 								<img src="<%= list.get(i).getImageUrl()%>" alt="alt" class="w-32"/>
 							</td>
 							<td class="p-1 text-center border border-black space-y-2">
-								<% if ( list.get(i).getState() == 2)  {%>
+								<% if ( list.get(i).getStatus() == 2)  {%>
 
 								<a href="CheckoutController?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to checkout') " class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">Check Out</a>
 

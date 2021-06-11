@@ -135,7 +135,7 @@ ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute
 										<label for="state1">Disable</label>
 										<input
 										    type="radio"
-										    name="state"
+										    name="status"
 										    id="state1"
 										    value="0"
 										    checked="checked"
@@ -145,7 +145,7 @@ ArrayList<RoomType> roomTypes =(ArrayList<RoomType>) GetParam.getClientAttribute
 										<label for="state2">Available</label>
 										<input
 										    type="radio"
-										    name="state"
+										    name="status"
 										    id="state2"
 										    value="1"
 										    />
