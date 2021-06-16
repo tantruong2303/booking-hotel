@@ -7,40 +7,25 @@
 <%
 	Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
 	ArrayList<Review> reviews = (ArrayList<Review>) GetParam.getClientAttribute(request,"reviews", new ArrayList<Review>() );
-	String messageError =(String)  GetParam.getClientAttribute(request, "messageError", ""); 		
 %> 
 
 <div class="py-2 border-t-2">
-	<form class="flex items-center py-2 space-x-2" method="POST" action="AddReviewController?roomId=<%=room.getRoomId() %>">
-		<div>
-			<label class="block w-32 font-medium" for="message">My Feedback</label>
-			<textarea
-			    class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
-			    name="message"
-			    id="message"
-			    placeholder="Comment..."
-			    ></textarea>
-			<p class="col-start-2 text-red-500 "><%= messageError%></p>
+	<form class="flex flex-col py-2" method="POST" action="AddReviewController?roomId=<%=room.getRoomId() %>">
+		<jsp:include page="./textareaField.jsp">
+			<jsp:param name="label" value="Message"/>
+			<jsp:param name="field" value="message"/>
+		</jsp:include>
+		<div class="flex items-end space-x-4 w-1/2">
+			<jsp:include page="./inputField.jsp">
+				<jsp:param name="type" value="number"/>
+				<jsp:param name="label" value="Rate"/>
+				<jsp:param name="field" value="rate"/>
+				<jsp:param name="defaultValue" value="0"/>
+			</jsp:include>
+			<jsp:include page="./inputBtn.jsp">
+				<jsp:param name="label" value="Send"/>
+			</jsp:include>
 		</div>
-		<div>
-
-			<label class="block w-32 font-medium" for="message">Rate</label>
-			<input
-			    type="number"
-			    class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
-			    name="rate"
-			    max="5"
-			    min="1"
-			    value="5"
-			    id="rate"
-			    />
-		</div>
-		<button
-		    class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600"
-		    >
-			Send
-		</button>
-
 	</form>
 	<ul class="space-y-2">
 		<% for(Review review: reviews) { %>

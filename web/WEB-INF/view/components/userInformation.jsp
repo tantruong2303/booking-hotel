@@ -12,10 +12,6 @@
 	<p><%=user.getUsername()%></p>
 </div>
 <div class="grid grid-form justify-items-stretch ">
-	<p class="block font-medium">Password</p>
-	<p><%=user.getPassword()%></p>
-</div>
-<div class="grid grid-form justify-items-stretch ">
 	<p class="block font-medium">Email</p>
 	<p><%=user.getEmail()%></p>
 </div>

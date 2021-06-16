@@ -13,9 +13,6 @@
 		</jsp:include>
 	</head>
 	<body class="flex flex-col min-h-screen">
-
-
-
 		<%@include file="./includes/navbar.jspf" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-start w-4/5 p-4 mx-auto space-y-4 bg-white">
@@ -23,14 +20,14 @@
 				<form action="IndexController" method = "GET" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
 					<div class="flex space-x-2">
-						<jsp:include page="./components/formInput.jsp">
+						<jsp:include page="./components/inputField.jsp">
 							<jsp:param name="type" value="number"/>
 							<jsp:param name="label" value="Min price"/>
 							<jsp:param name="field" value="minPrice"/>
 							<jsp:param name="defaultValue" value="0"/>
 						</jsp:include>
 
-						<jsp:include page="./components/formInput.jsp">
+						<jsp:include page="./components/inputField.jsp">
 							<jsp:param name="type" value="number"/>
 							<jsp:param name="label" value="Max price"/>
 							<jsp:param name="field" value="maxPrice"/>
@@ -39,7 +36,7 @@
 					</div>
 
 					<div class="flex space-x-2">
-						<jsp:include page="./components/formInput.jsp">
+						<jsp:include page="./components/inputField.jsp">
 							<jsp:param name="type" value="number"/>
 							<jsp:param name="label" value="Number Of People"/>
 							<jsp:param name="field" value="numOfPeople"/>
@@ -48,8 +45,12 @@
 						<jsp:include page="./components/formSelectOrder.jsp"/>
 
 					</div>
+					<div class="w-1/5">
+						<jsp:include page="./components/inputBtn.jsp">
+							<jsp:param name="label" value="Search"/>
+						</jsp:include>
+					</div>
 
-					<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600">Search</button>
 				</form>
 				<jsp:include page="./components/roomCard.jsp"/>
 
