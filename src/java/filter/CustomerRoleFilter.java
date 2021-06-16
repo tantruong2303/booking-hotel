@@ -42,7 +42,7 @@ public class CustomerRoleFilter implements Filter {
 			chain.doFilter(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.sendRedirect(Routers.ERROR);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 

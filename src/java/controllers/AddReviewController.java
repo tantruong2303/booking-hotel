@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
-import javax.servlet.RequestDispatcher;
 
 import utils.GetParam;
 
@@ -57,7 +56,6 @@ public class AddReviewController extends HttpServlet {
 		Review review = new Review(message, rate, user, room);
 		boolean result = reviewDAO.addReview(review);
 		if (!result) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}
 
@@ -85,13 +83,14 @@ public class AddReviewController extends HttpServlet {
 				response.sendRedirect(Routers.VIEW_ROOM_INFO_CONTROLLER + "?roomId=" + roomId);
 				return;
 			}
-			// forward on 200
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			// forward on 400
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
+
 		} catch (Exception e) {
 			// redirect on 500
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
+			;
+
 		}
 
 	}

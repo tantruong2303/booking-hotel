@@ -41,9 +41,7 @@ public class UserDAO {
 			preStm.setString(4, user.getEmail());
 			preStm.setString(5, user.getPhone());
 			preStm.setInt(6, user.getRole());
-			preStm.executeUpdate();
-
-			isSuccess = false;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}
@@ -84,9 +82,7 @@ public class UserDAO {
 			preStm = conn.prepareStatement(sql);
 			preStm.setString(1, password);
 			preStm.setString(2, username);
-			preStm.executeUpdate();
-
-			isSuccess = true;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}
@@ -94,7 +90,7 @@ public class UserDAO {
 	}
 
 	public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone)
-		throws Exception {
+			throws Exception {
 		boolean isSuccess = false;
 
 		try {
@@ -105,9 +101,7 @@ public class UserDAO {
 			preStm.setString(2, email);
 			preStm.setString(3, phone);
 			preStm.setString(4, username);
-			preStm.executeUpdate();
-
-			isSuccess = true;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}

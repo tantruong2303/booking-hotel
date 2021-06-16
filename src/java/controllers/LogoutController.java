@@ -37,7 +37,6 @@ public class LogoutController extends HttpServlet {
 		try {
 			HttpSession session = request.getSession();
 			session.invalidate();
-		} catch (Exception e) {
 		} finally {
 			response.sendRedirect(Routers.LOGIN_CONTROLLER);
 		}

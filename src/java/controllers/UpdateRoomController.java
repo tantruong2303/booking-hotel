@@ -62,19 +62,17 @@ public class UpdateRoomController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String url = Routers.ERROR;
+
 		try {
 
 			if (this.getHandler(request, response)) {
-				url = (Routers.UPDATE_ROOM_PAGE);
-			} else {
-				url = (Routers.UPDATE_ROOM_CONTROLLER);
+
+				request.getRequestDispatcher(Routers.UPDATE_ROOM_PAGE).forward(request, response);
 			}
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 
 		} catch (Exception e) {
-
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 
 	}

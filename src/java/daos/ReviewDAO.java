@@ -44,9 +44,7 @@ public class ReviewDAO {
 			preStm.setInt(4, review.getUser().getUserId());
 			preStm.setInt(5, review.getRoom().getRoomId());
 
-			preStm.executeUpdate();
-
-			isSuccess = true;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}

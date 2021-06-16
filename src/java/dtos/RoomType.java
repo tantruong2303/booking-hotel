@@ -50,4 +50,10 @@ public class RoomType implements Serializable {
 		this.numOfPeople = numOfPeople;
 	}
 
+	@Override
+	public String toString() {
+		return "RoomType{" + "roomTypeId=" + roomTypeId + ", name=" + name + ", numOfPeople=" + numOfPeople + '}';
+	}
+
+	
 }

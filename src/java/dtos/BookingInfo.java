@@ -40,6 +40,10 @@ public class BookingInfo implements Serializable  {
 		this.total = total;
 	}
 
+	public BookingInfo() {
+	}
+	
+
 	public int getBookingInfoId() {
 		return bookingInfoId;
 	}
@@ -103,5 +107,13 @@ public class BookingInfo implements Serializable  {
 	public void setTotal(float total) {
 		this.total = total;
 	}
+
+	@Override
+	public String toString() {
+		return "BookingInfo{" + "bookingInfoId=" + bookingInfoId + ", userId=" + userId + ", roomId=" + roomId + ", startDate=" + startDate + ", endDate=" + endDate + ", numberOfDay=" + numberOfDay + ", status=" + status + ", total=" + total + '}';
+	}
+	
+	
+	
 
 }

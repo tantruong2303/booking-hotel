@@ -12,42 +12,17 @@ import javax.servlet.http.HttpSession;
 
 public class Helper {
 
-	public static void debugMode(HttpServletRequest request) {
-		String debug = request.getParameter("debug");
-
-		if (debug != null) {
-			if (debug.equals("1")) {
-				HttpSession session = request.getSession();
-				session.setAttribute("username", "admin");
-				session.setAttribute("role", 1);
-				return;
-			}
-			if (debug.equals("0")) {
-				HttpSession session = request.getSession();
-				session.setAttribute("username", "customer");
-				session.setAttribute("role", 0);
-				return;
-			}
-			if (debug.equals("3")) {
-				HttpSession session = request.getSession();
-				session.setAttribute("username", "1321");
-				session.setAttribute("role", 0);
-			}
-		}
-	}
-
 	/**
 	 * Ensure that access only to authorized users
-	 * 
-	 * @param request  servlet request
+	 *
+	 * @param request servlet request
 	 * @param response servlet response
-	 * @param minRole  minimum user's role to be passed
-	 * @param maxRole  maximum user's role to be passed
-	 * @param page     move to this page if user can not be passed
+	 * @param minRole minimum user's role to be passed
+	 * @param maxRole maximum user's role to be passed
+	 * @param page move to this page if user can not be passed
 	 */
 	public static boolean protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole,
-			int maxRole, String page) throws Exception {
-		debugMode(request);
+		int maxRole, String page) throws Exception {
 
 		if (!isLogin(request) || !correctRole(request, minRole, maxRole)) {
 			request.setAttribute("errorMessage", "Action is not allow, please login first");
@@ -61,11 +36,12 @@ public class Helper {
 
 	/**
 	 * Reformat string that is too long
-	 * 
-	 * @param str       input string
+	 *
+	 * @param str input string
 	 * @param maxLength
-	 * @return if string's length <= maxLength, return itself if string's length >
-	 *         maxLength, return string with first maxLength characters + "..."
+	 * @return if string's length <= maxLength, return itself if string's length
+	 * >
+	 * maxLength, return string with first maxLength characters + "..."
 	 */
 	public static String truncateContent(String str, int maxLength) {
 		if (str.length() > maxLength) {
@@ -76,7 +52,7 @@ public class Helper {
 
 	/**
 	 * Check that user is login or not
-	 * 
+	 *
 	 * @param request servlet request
 	 * @return true if logined false if not
 	 */
@@ -92,7 +68,7 @@ public class Helper {
 
 	/**
 	 * Check that user's role is valid or invalid
-	 * 
+	 *
 	 * @param request servlet request
 	 * @param minRole minimum user's role to be passed
 	 * @param maxRole maximum user's role to be passed
@@ -107,7 +83,7 @@ public class Helper {
 
 	/**
 	 * Hashing password
-	 * 
+	 *
 	 * @param value input password
 	 * @param key
 	 * @return hashed password
@@ -124,7 +100,7 @@ public class Helper {
 
 	/**
 	 * Decrypt hashed password
-	 * 
+	 *
 	 * @param value input password
 	 * @param key
 	 * @return original password
@@ -140,9 +116,10 @@ public class Helper {
 	}
 
 	/**
-	 * Compare password that user type in form with password that saved in database
-	 * 
-	 * @param inputPassword    password that user enter in form
+	 * Compare password that user type in form with password that saved in
+	 * database
+	 *
+	 * @param inputPassword password that user enter in form
 	 * @param databasePassword password that saved in database
 	 * @param key
 	 * @return true if correct
@@ -157,7 +134,7 @@ public class Helper {
 
 	/**
 	 * convert data in String type into Integer
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 */
@@ -174,7 +151,7 @@ public class Helper {
 
 	/**
 	 * Convert date in String type into date in Date type
-	 * 
+	 *
 	 * @param date
 	 * @return date in Date type
 	 */

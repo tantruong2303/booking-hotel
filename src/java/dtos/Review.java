@@ -6,104 +6,106 @@
 package dtos;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  *
  * @author HaiCao
  */
 public class Review implements Serializable {
-    private int reviewId;
-    private String message;
-    private int rate;
-    private String createDate;
-    private User user;
-    private Room room;
 
-    public Review(String message, int rate, User user, Room room) {
-        this.reviewId = 0;
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+	private int reviewId;
+	private String message;
+	private int rate;
+	private String createDate;
+	private User user;
+	private Room room;
 
-        this.createDate = formatter.format(calendar.getTime());
-        this.message = message;
-        this.rate = rate;
-        this.user = user;
-        this.room = room;
-    }
+	public Review(String message, int rate, User user, Room room) {
+		this.reviewId = 0;
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
 
-    public Review(String message, int rate, String fullName) {
-        this.message = message;
-        this.rate = rate;
-        this.user.setFullName(fullName);
-    }
+		this.createDate = formatter.format(calendar.getTime());
+		this.message = message;
+		this.rate = rate;
+		this.user = user;
+		this.room = room;
+	}
 
-    public Review(int reviewId, String message, int rate, String createDate, User user, Room room) {
-        this.reviewId = reviewId;
-        this.message = message;
-        this.rate = rate;
-        this.createDate = createDate;
-        this.user = user;
-        this.room = room;
-    }
+	public Review(String message, int rate, String fullName) {
+		this.message = message;
+		this.rate = rate;
+		this.user.setFullName(fullName);
+	}
 
-    public int getReviewId() {
-        return reviewId;
-    }
+	public Review(int reviewId, String message, int rate, String createDate, User user, Room room) {
+		this.reviewId = reviewId;
+		this.message = message;
+		this.rate = rate;
+		this.createDate = createDate;
+		this.user = user;
+		this.room = room;
+	}
 
-    public void setReviewId(int reviewId) {
-        this.reviewId = reviewId;
-    }
+	public Review() {
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public int getReviewId() {
+		return reviewId;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setReviewId(int reviewId) {
+		this.reviewId = reviewId;
+	}
 
-    public int getRate() {
-        return rate;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public String getCreateDate() {
-        return createDate;
-    }
+	public int getRate() {
+		return rate;
+	}
 
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
+	public void setRate(int rate) {
+		this.rate = rate;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public String getCreateDate() {
+		return createDate;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
 
-    public Room getRoom() {
-        return room;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setRoom(Room room) {
-        this.room = room;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    @Override
-    public String toString() {
-        return "Review{" + "reviewId=" + reviewId + ", message=" + message + ", rate=" + rate + ", createDate="
-                + createDate + ", user=" + user + ", room=" + room + '}';
-    }
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+	@Override
+	public String toString() {
+		return "Review{" + "reviewId=" + reviewId + ", message=" + message + ", rate=" + rate + ", createDate="
+			+ createDate + ", user=" + user + ", room=" + room + '}';
+	}
 
 }

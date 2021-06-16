@@ -141,7 +141,7 @@ public class AddBookingController extends HttpServlet {
 		}
 
 		// checking update status room
-		boolean isChangeStatus = roomDAO.changestatus(room.getRoomId(), 2);
+		boolean isChangeStatus = roomDAO.changeStatus(room.getRoomId(), 2);
 		if (!isChangeStatus) {
 			return false;
 		}

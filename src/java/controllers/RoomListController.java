@@ -59,14 +59,11 @@ public class RoomListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String url = Routers.ERROR;
 		try {
 			this.processHandler(request, response);
-			url = (Routers.LIST_ROOM_PAGE);
+			request.getRequestDispatcher(Routers.LIST_ROOM_PAGE).forward(request, response);
 		} catch (Exception e) {
-
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 

@@ -21,17 +21,17 @@ import utils.GetParam;
  *
  * @author heaty566
  */
-@WebServlet(name = "IndexController", urlPatterns = {"/IndexController"})
+@WebServlet(name = "IndexController", urlPatterns = { "/IndexController" })
 public class IndexController extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and
-	 * <code>POST</code> methods.
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -58,24 +58,22 @@ public class IndexController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String url = Routers.ERROR;
+
 		try {
 			processHandler(request, response);
-			url = (Routers.INDEX_PAGE);
-
+			request.getRequestDispatcher(Routers.INDEX_PAGE).forward(request, response);
 		} catch (Exception e) {
-
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
+			e.printStackTrace();
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 

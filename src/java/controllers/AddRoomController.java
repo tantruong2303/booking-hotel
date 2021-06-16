@@ -132,9 +132,7 @@ public class AddRoomController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
-
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 
