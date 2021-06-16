@@ -1,26 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@page import="utils.GetParam"%>
-<%@page import="utils.Validator" %>
-<% 
-	String username =(String) GetParam.getClientParams(request,"username",""); 
-	String fullName =(String) GetParam.getClientParams(request,"fullName",""); 
-	String email =(String) GetParam.getClientParams(request,"email",""); 
-	String phone =(String) GetParam.getClientParams(request,"phone","");
-	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
-	String usernameError=(String) GetParam.getClientAttribute(request,"usernameError", "" ); 
-	String passwordError=(String) GetParam.getClientAttribute(request,"passwordError", "" ); 
-	String confirmPasswordError=(String) GetParam.getClientAttribute(request,"confirmPasswordError", "" ); 
-	String fullNameError=(String) GetParam.getClientAttribute(request,"fullNameError", "" ); 
-	String emailError=(String) GetParam.getClientAttribute(request,"emailError", "" ); 
-	String phoneError=(String) GetParam.getClientAttribute(request,"phoneError", "" ); 
-	String roleError=(String) GetParam.getClientAttribute(request,"roleError", "" ); 
-%>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link href="./asset/styles.css" rel="stylesheet" />
-		<title>SanninSC | Register</title>
+		<jsp:include page="./includes/header.jsp">
+			<jsp:param name="title" value="SanninSC | Register"/>
+		</jsp:include>
 	</head>
 
 	<body class="flex flex-col min-h-screen">
@@ -37,66 +21,44 @@
 
 					<div class="space-y-2">
 						<div class="grid grid-form justify-items-stretch ">
-							<p class="col-start-2 text-red-500 ">
-								<%=errorMessage%>
-							</p>
+							<jsp:include page="./components/message.jsp"/>
 						</div>
-						<div class="grid grid-form justify-items-stretch">
-							<label
-							    class="block font-medium" for="username">Username</label>
-							<input type="text"
-							       value="<%=username%>"
-							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
-							       name="username"  id="username" />
-							<p class="col-start-2 text-red-500 ">
-								<%=usernameError%>
-							</p>
-						</div>
-						<div class="grid grid-form justify-items-stretch">
-							<label
-							    class="block font-medium" for="password">Password</label>
-							<input type="password"  class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"  name="password" id="password" />
-							<p class="col-start-2 text-red-500 ">
-								<%=passwordError%>
-							</p>
-						</div>
-						<div class="grid grid-form justify-items-stretch">
-							<label class="block font-medium" for="confirmPassword">Confirm Password</label>
-							<input type="password" class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none" name="confirmPassword" id="confirmPassword"/>
-							<p class="col-start-2 text-red-500 ">
-								<%=confirmPasswordError%>
-							</p>
-						</div>
-						<div class="grid grid-form justify-items-stretch">
-							<label class="block font-medium" for="name">Full name</label>
-							<input type="text" id="name" value="<%=fullName%>" class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"      name="fullName" />
-							<p class="col-start-2 text-red-500 capitalize">
-								<%=fullNameError%>
-							</p>
-						</div>
-						<div class="grid grid-form justify-items-stretch">
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="text"/>
+							<jsp:param name="label" value="Username"/>
+							<jsp:param name="field" value="username"/>
+						</jsp:include>
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="password"/>
+							<jsp:param name="label" value="Password"/>
+							<jsp:param name="field" value="password"/>
+						</jsp:include>
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="password"/>
+							<jsp:param name="label" value="Confirm Password"/>
+							<jsp:param name="field" value="confirmPassword"/>
+						</jsp:include>
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="text"/>
+							<jsp:param name="label" value="Full name"/>
+							<jsp:param name="field" value="fullName"/>
+						</jsp:include>
 
-							<label class="block font-medium" for="email">Email</label>
-							<input type="email" name="email" id="email"
-							       value="<%=email%>"
-							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none" />
-							<p class="col-start-2 text-red-500 capitalize">
-								<%=emailError%>
-							</p>
-						</div>
-						<div class="grid grid-form justify-items-stretch">
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="email"/>
+							<jsp:param name="label" value="Email"/>
+							<jsp:param name="field" value="email"/>
+						</jsp:include>
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="text"/>
+							<jsp:param name="label" value="Phone"/>
+							<jsp:param name="field" value="phone"/>
+						</jsp:include>
 
-							<label class="block font-medium" for="phone">Phone</label>
-							<input type="text" name="phone" id="phone"
-							       value="<%=phone%>"
-							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none" />
-							<p class="col-start-2 text-red-500 capitalize">
-								<%=phoneError%>
-							</p>
-						</div>
-						<div class="grid grid-form">
-							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Sign Up</button>
-						</div>
+
+						<jsp:include page="./components/formBtn.jsp">
+							<jsp:param name="label" value="Sign Up"/>
+						</jsp:include>
 					</div>
 				</form>
 				<%@include file="./includes/footer.jspf" %>

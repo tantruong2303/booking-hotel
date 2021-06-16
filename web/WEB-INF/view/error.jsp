@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
         <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                <link href="/BookingHotel/asset/styles.css" rel="stylesheet" />
-                <title>SanninSC | Not Found</title>
+	<jsp:include page="./includes/header.jsp">
+		<jsp:param name="title" value="Sannin SC |   Not Found"/>
+	</jsp:include>
         </head>
         <body class="flex flex-col min-h-screen">
                 <%@include file="./includes/navbar.jspf" %>

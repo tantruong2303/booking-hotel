@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dtos;
+
 import java.io.Serializable;
 
-public class BookingInfo implements Serializable  {
+public class BookingInfo implements Serializable {
 
 	private int bookingInfoId;
 	private int userId;
@@ -42,7 +42,6 @@ public class BookingInfo implements Serializable  {
 
 	public BookingInfo() {
 	}
-	
 
 	public int getBookingInfoId() {
 		return bookingInfoId;
@@ -112,8 +111,5 @@ public class BookingInfo implements Serializable  {
 	public String toString() {
 		return "BookingInfo{" + "bookingInfoId=" + bookingInfoId + ", userId=" + userId + ", roomId=" + roomId + ", startDate=" + startDate + ", endDate=" + endDate + ", numberOfDay=" + numberOfDay + ", status=" + status + ", total=" + total + '}';
 	}
-	
-	
-	
 
 }

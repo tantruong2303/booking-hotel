@@ -121,8 +121,10 @@ public class UpdateUserController extends HttpServlet {
 				return;
 
 			}
+		
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		} catch (Exception e) {
+			
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
