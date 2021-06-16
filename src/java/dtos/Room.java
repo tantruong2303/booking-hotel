@@ -90,6 +90,8 @@ public class Room implements Serializable {
 		this.roomType = roomType;
 	}
 
+	
+
 	@Override
 	public String toString() {
 		return "Room{" + "roomId=" + roomId + ", price=" + price + ", status=" + status + ", imageUrl=" + imageUrl + ", description=" + description + ", roomType=" + roomType + '}';

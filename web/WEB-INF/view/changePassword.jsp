@@ -1,17 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="utils.GetParam"%>
-<%
-	String oldPasswordError=(String) GetParam.getClientAttribute(request,"oldPasswordError", "" ); 
-	String newPasswordError=(String) GetParam.getClientAttribute(request,"newPasswordError", "" ); 
-	String errorMessage=(String) GetParam.getClientAttribute(request,"errorMessage", "" ); 
-	String confirmPasswordError=(String) GetParam.getClientAttribute(request,"confirmPasswordError", "" ); 
-%>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="./asset/styles.css" rel="stylesheet" />
-		<title>SanninSC | Change Password</title>
+		<jsp:include page="./includes/header.jsp">
+			<jsp:param name="title" value="SanninSC | Change Password"/>
+		</jsp:include>
 	</head>
 	<body  class="flex flex-col min-h-screen" >
 
@@ -26,44 +19,30 @@
 					<div class="space-y-2">
 						<div class="grid grid-form justify-items-stretch ">
 							<p class="col-start-2 text-red-500 ">
-								<%=errorMessage%>
+								<jsp:include page="./components/message.jsp"/>
 							</p>
 						</div>
-						<div class="grid grid-form justify-items-stretch">
-							<label
-							    class="block font-medium" for="oldPassword">Old Password</label>
-							<input type="password"
-							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
-							       name="oldPassword" id="oldPassword" />
-							<p class="col-start-2 text-red-500 ">
-								<%=oldPasswordError%>
-							</p>
-						</div>	
-						<div class="grid grid-form justify-items-stretch">
-							<label
-							    class="block font-medium" for="newPassword">New Password</label>
-							<input type="password"
-							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
-							       name="newPassword" id="newPassword" />
-							<p class="col-start-2 text-red-500 ">
-								<%=newPasswordError%>
-							</p>
-						</div>
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="password"/>
+							<jsp:param name="label" value="Old Password"/>
+							<jsp:param name="field" value="oldPassword"/>
+						</jsp:include>
 
-						<div class="grid grid-form justify-items-stretch">
-							<label
-							    class="block font-medium" for="confirmPassword">Confirm Password</label>
-							<input type="password"
-							       class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"
-							       name="confirmPassword" id="confirmPassword" />
-							<p class="col-start-2 text-red-500 ">
-								<%=confirmPasswordError%>
-							</p>
-						</div>
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="password"/>
+							<jsp:param name="label" value="New Password"/>
+							<jsp:param name="field" value="newPassword"/>
+						</jsp:include>
+						<jsp:include page="./components/formInput.jsp">
+							<jsp:param name="type" value="password"/>
+							<jsp:param name="label" value="Confirm Password"/>
+							<jsp:param name="field" value="confirmPassword"/>
+						</jsp:include>
 
-						<div class="grid grid-form">
-							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Update Password</button>
-						</div>
+
+						<jsp:include page="./components/formBtn.jsp">
+							<jsp:param name="label" value="Sign In"/>
+						</jsp:include>
 					</div>
 				</form>
 				<%@include file="./includes/footer.jspf" %>

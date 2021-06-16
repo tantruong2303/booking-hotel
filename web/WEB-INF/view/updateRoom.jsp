@@ -7,7 +7,7 @@
 <%@page import="utils.Validator"%>
 <%
 	String priceError =(String) GetParam.getClientAttribute(request,"priceError", "" ); 
-	String stateError =(String) GetParam.getClientAttribute(request,"stateError", "" ); 
+	String statusError =(String) GetParam.getClientAttribute(request,"statusError", "" ); 
 	String descriptionError =(String) GetParam.getClientAttribute(request,"descriptionError", "" ); 
 	String roomTypeIdError =(String) GetParam.getClientAttribute(request,"roomTypeIdError", "" ); 
 	Room  room =(Room) GetParam.getClientAttribute(request,"room", new Room() ); 
@@ -15,9 +15,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="./asset/styles.css" rel="stylesheet" />
-		<title>SanninSC | Add Room</title>
+		<jsp:include page="./includes/header.jsp">
+			<jsp:param name="title" value="SanninSC |  Update Room "/>
+		</jsp:include>
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<%@include file="./includes/navbar.jspf" %>
@@ -30,18 +30,7 @@
 							<img class="border rounded-sm border-cerise-red-500" src="<%= room.getImageUrl() %>" alt="photo" id="pre-photo"/>
 						</div>
 						<form method="POST" action="UpdateRoomController?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
-							<div class="space-y-2">
-								<label class="font-medium" for="photo">Room Type</label>
-
-								<select name="roomTypeId" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none" >
-									<c:forEach items="${roomTypes}" var="roomType">
-										<option  ${room.getRoomType().getRoomTypeId() == roomType.getRoomTypeId()  ? 'selected="selected"' : ''} value="${roomType.getRoomTypeId()}"  label="${roomType.getName()} - ${roomType.getNumOfPeople()}  people(s)">
-
-										</option>
-									</c:forEach>
-								</select>
-								<p class="text-red-500 capitalize"><%=roomTypeIdError %></p>
-							</div>
+							<jsp:include page="./components/formRoomType.jsp"/>
 							<div class="space-y-2">
 								<label class="font-medium" for="price">Price ($)</label>
 								<input value="<%= room.getPrice() %>" type="number" name="price" id="price" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none"/>
@@ -62,16 +51,16 @@
 								<div class="">
 									<span>
 										<label for="state1" >Disable</label>
-										<input type="radio" name="status" id="state1" value="0" ${room.getState() == 0  ? 'checked="checked"' : ''}/>
+										<input type="radio" name="status" id="state1" value="0" ${room.getStatus() == 0  ? 'checked="checked"' : ''}/>
 									</span>
 									<span>
 										<label for="state2" >Available</label>
-										<input type="radio" name="status" id="state2" value="1" ${room.getState() == 1  ?  'checked="checked"' : ''}/>
+										<input type="radio" name="status" id="state2" value="1" ${room.getStatus() == 1  ?  'checked="checked"' : ''}/>
 									</span>
 
 								</div>
 
-								<p class="text-red-500 capitalize"><%=stateError %></p>
+								<p class="text-red-500 capitalize"><%=statusError %></p>
 							</div>
 							<button class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" type="submit">Update Room</button>
 						</form>
@@ -82,20 +71,7 @@
 
 			</div>
 		</main>
-		<script>
-				window.onload = function (){
-					document.getElementById("photo").addEventListener("change", function (){
-						const reader = new FileReader();
-						reader.onload = function() {
-							const dataURL = reader.result;
-							const output = document.getElementById("pre-photo");
-							output.src = dataURL;
-						};
-						reader.readAsDataURL(this.files[0]);			
-					}, false);
-				};				
-								
-		</script>
+		<script src="./asset/preview.js"></script>
 
 	</body>
 </html>

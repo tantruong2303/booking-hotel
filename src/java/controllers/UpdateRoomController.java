@@ -41,7 +41,7 @@ public class UpdateRoomController extends HttpServlet {
 			request.setAttribute("messageError", "Room with the given id was not found");
 			return false;
 		}
-
+		System.out.println(room.getPrice());
 		request.setAttribute("room", room);
 		request.setAttribute("roomTypes", roomTypes);
 		return true;
@@ -64,14 +64,15 @@ public class UpdateRoomController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-
 			if (this.getHandler(request, response)) {
 
 				request.getRequestDispatcher(Routers.UPDATE_ROOM_PAGE).forward(request, response);
+				return;
 			}
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 

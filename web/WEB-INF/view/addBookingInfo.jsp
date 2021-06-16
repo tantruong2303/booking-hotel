@@ -3,16 +3,16 @@
 <%@page import="dtos.Room"%>
 <% 
 	Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
-	String errorMessage =(String) GetParam.getClientAttribute(request, "errorMessage", "");
+	
 	String startDateError =(String) GetParam.getClientAttribute(request, "startDateError", "");
 	String endDateError =(String) GetParam.getClientAttribute(request, "endDateError", "");
 %>
 <!DOCTYPE html>
 <html>
         <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                <link href="./asset/styles.css" rel="stylesheet" />
-                <title>Sannin SC | Room Information</title>
+		<jsp:include page="./includes/header.jsp">
+			<jsp:param name="title" value="Sannin SC | Room Information"/>
+		</jsp:include>
         </head>
         <body class="flex flex-col min-h-screen">
                 <%@include file="./includes/navbar.jspf" %>
@@ -31,33 +31,7 @@
 								    />
                                                         </div>
                                                         <div class="flex-1 px-2">
-                                                                <p class="text-red-500 capitalize"><%=errorMessage %></p>
-
-                                                                <div class="space-y-2 text-2xl">
-                                                                        <span class="font-medium">Room NO: </span>
-                                                                        <span class="w-full capitalize"><%=room.getRoomId()%></span>
-                                                                </div>
-                                                                <div class="space-y-2 text-2xl">
-                                                                        <span class="font-medium">Name: </span>
-                                                                        <span class="w-full capitalize"><%=room.getRoomType().getName()%></span>
-                                                                </div>
-
-                                                                <div class="space-y-2 text-2xl">
-                                                                        <span class="font-medium">Number of People: </span>
-                                                                        <span class="w-full capitalize"
-									      ><%=room.getRoomType().getNumOfPeople()%></span
-                                                                        >
-                                                                </div>
-                                                                <div class="space-y-2 text-2xl">
-                                                                        <span class="font-medium">Price: </span>
-                                                                        <span class="w-full capitalize">$<%=room.getPrice()%> / day</span>
-                                                                </div>
-                                                                <div class="space-y-2 text-2xl">
-                                                                        <span class="font-medium">Description: </span>
-                                                                        <span id="description" class="w-full capitalize"
-									      ><%=room.getDescription()%></span
-                                                                        >
-                                                                </div>
+				     <jsp:include page="./components/roomInfo.jsp"/>
                                                                 <div>
                                                                         <form method="POST" action="AddBookingController?roomId=<%=room.getRoomId() %>">
                                                                                 <div>
@@ -100,9 +74,9 @@
 												<%=endDateError%>
 											</p>
                                                                                 </div>
-                                                                                <button    class="block  col-start-2  px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm   hover:bg-gray-600 " >
-                                                                                        Booking Now
-                                                                                </button>
+										<jsp:include page="./components/btnInline.jsp">
+											<jsp:param name="label" value="Booking Now"/>
+										</jsp:include>
                                                                         </form>
                                                                 </div>
                                                         </div>
