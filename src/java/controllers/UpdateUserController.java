@@ -66,7 +66,6 @@ public class UpdateUserController extends HttpServlet {
 		try {
 
 			if (postHandler(request, response)) {
-
 				response.sendRedirect(Routers.VIEW_USER_INFO_CONTROLLER);
 				return;
 			}
@@ -75,7 +74,7 @@ public class UpdateUserController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect(Routers.ERROR);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 
@@ -115,19 +114,16 @@ public class UpdateUserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String url = Routers.ERROR;
 		try {
 
 			if (this.getHandler(request, response)) {
-				url = (Routers.UPDATE_USER_PAGE);
+				request.getRequestDispatcher(Routers.UPDATE_USER_PAGE).forward(request, response);
+				return;
 
-			} else {
-				url = (Routers.ERROR);
 			}
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 

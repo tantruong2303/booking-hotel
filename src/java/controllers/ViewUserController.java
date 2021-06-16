@@ -51,19 +51,15 @@ public class ViewUserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String url = Routers.ERROR;
+
 		try {
-
 			if (this.getHandler(request, response)) {
-				url = Routers.VIEW_USER_INFO_PAGE;
-
-			} else {
-				url = Routers.ERROR;
+				request.getRequestDispatcher(Routers.VIEW_USER_INFO_PAGE).forward(request, response);
+				return;
 			}
-
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		} catch (Exception e) {
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 

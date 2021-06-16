@@ -43,9 +43,7 @@ public class BookingInfoDAO {
 			preStm.setInt(5, bookingInfo.getNumberOfDay());
 			preStm.setInt(6, bookingInfo.getStatus());
 			preStm.setFloat(7, bookingInfo.getTotal());
-
-			preStm.executeUpdate();
-			isSuccess = true;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}
@@ -60,10 +58,7 @@ public class BookingInfoDAO {
 			preStm = conn.prepareStatement(sql);
 			preStm.setInt(1, status);
 			preStm.setInt(2, bookingInfoId);
-
-			preStm.executeUpdate();
-
-			isSuccess = true;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}
@@ -89,7 +84,7 @@ public class BookingInfoDAO {
 				Integer statusSql = rs.getInt("status");
 				Float totalSql = rs.getFloat("total");
 				BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql,
-					endDateSql, numberOfDaySql, statusSql, totalSql);
+						endDateSql, numberOfDaySql, statusSql, totalSql);
 				bookingInfos.add(bookingInfo);
 			}
 
@@ -118,8 +113,8 @@ public class BookingInfoDAO {
 				Integer numberOfDaySql = rs.getInt("numberOfDay");
 				Integer statusSql = rs.getInt("status");
 				Float totalSql = rs.getFloat("total");
-				value = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql, numberOfDaySql,
-					statusSql, totalSql);
+				value = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql,
+						numberOfDaySql, statusSql, totalSql);
 			}
 
 		} finally {

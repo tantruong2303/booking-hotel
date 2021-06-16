@@ -75,7 +75,7 @@ public class RoomDAO {
 		return isSuccess;
 	}
 
-	public boolean changestatus(Integer roomId, Integer status) throws Exception {
+	public boolean changeStatus(Integer roomId, Integer status) throws Exception {
 		conn = Connector.getConnection();
 		String sql = "UPDATE tbl_Room SET status = ? WHERE roomId = ?";
 		boolean isSuccess = false;

@@ -102,20 +102,16 @@ public class RegisterController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String url = Routers.ERROR;
 		try {
 			if (processRequest(request, response)) {
 				// forward on 200
-				url = (Routers.LOGIN_PAGE);
-
-			} else {
-				url = (Routers.REGISTER_PAGE);
+				response.sendRedirect(Routers.LOGIN_CONTROLLER);
+				return;
 			}
 
+			request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
 		} catch (Exception e) {
-
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 

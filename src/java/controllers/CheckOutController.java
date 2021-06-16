@@ -40,7 +40,7 @@ public class CheckOutController extends HttpServlet {
 			return false;
 		}
 
-		boolean isChangeStatus = roomDAO.changestatus(bookingInfo.getRoomId(), 1);
+		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
 		if (!isChangeStatus) {
 			return false;
 		}
@@ -70,11 +70,10 @@ public class CheckOutController extends HttpServlet {
 				return;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.LIST_ROOM_PAGE);
-			rd.forward(request, response);
+			request.getRequestDispatcher(Routers.LIST_ROOM_PAGE).forward(request, response);
+
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 
 	}

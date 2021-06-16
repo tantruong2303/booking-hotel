@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 public class Connector {
 
@@ -16,17 +17,13 @@ public class Connector {
 	 */
 	public static Connection getConnection() {
 		try {
-
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String url = "jdbc:sqlserver://localhost:1433;database=BookingHotel;";
-			Context env = (Context) new InitialContext().lookup("java:comp/env");
-			String username = (String) env.lookup("dbusername");
-			String password = (String) env.lookup("dbpassword");
-
-			Connection connection = DriverManager.getConnection(url, username, password);
-			System.out.println("Connect success!");
-			return connection;
-		} catch (ClassNotFoundException | SQLException | NamingException e) {
+			Context context = new InitialContext();
+			Context end = (Context) context.lookup("java:comp/env");
+			DataSource env = (DataSource) end.lookup("DBCon");
+			Connection conn = env.getConnection();
+			return conn;
+	
+		} catch (SQLException | NamingException e) {
 			e.printStackTrace();
 			return null;
 		}

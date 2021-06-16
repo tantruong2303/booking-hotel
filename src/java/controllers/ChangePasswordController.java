@@ -76,13 +76,11 @@ public class ChangePasswordController extends HttpServlet {
 				response.sendRedirect(Routers.VIEW_USER_INFO_CONTROLLER);
 				return;
 			}
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE);
-			rd.forward(request, response);
 
+			request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 
 	}
@@ -101,14 +99,6 @@ public class ChangePasswordController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String url = Routers.ERROR;
-		try {
-			url = (Routers.CHANGE_PASSWORD_PAGE);
-		} catch (Exception e) {
-
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
-		}
-
+		request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE).forward(request, response);
 	}
 }

@@ -58,7 +58,7 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-		boolean isChangeStatus = roomDAO.changestatus(bookingInfo.getRoomId(), 1);
+		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
 		if (!isChangeStatus) {
 			return false;
 		}
@@ -95,12 +95,10 @@ public class CancelBookingController extends HttpServlet {
 				return;
 			}
 
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE);
-			rd.forward(request, response);
-
+			request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE).forward(request, response);
 		} catch (Exception e) {
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
+
 		}
 	}
 
