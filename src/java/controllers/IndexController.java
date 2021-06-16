@@ -38,11 +38,16 @@ public class IndexController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 
 		Integer numOfPeople = GetParam.getIntParams(request, "numOfPeople", "Number of people", 1, 10, 1);
-		Float min = GetParam.getFloatParams(request, "minPrice", "Min price", 0, Float.MAX_VALUE, 0);
+		Float min = GetParam.getFloatParams(request, "minPrice", "Min price", 0f, Float.MAX_VALUE, 0f);
 		Float max = GetParam.getFloatParams(request, "maxPrice", "Max price", 0, Float.MAX_VALUE, Float.MAX_VALUE);
 		String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 
 		if (min == null || max == null || numOfPeople == null || priceOrder == null) {
+			return false;
+		}
+
+		if (min >= max) {
+			request.setAttribute("errorMessage", "Min Price must be greater than max price");
 			return false;
 		}
 

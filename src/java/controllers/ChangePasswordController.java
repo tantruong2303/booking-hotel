@@ -5,7 +5,6 @@ import dtos.User;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,9 +22,9 @@ public class ChangePasswordController extends HttpServlet {
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		UserDAO userDAO = new UserDAO();
 
-		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 5, 50);
-		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 5, 50);
-		String oldPassword = GetParam.getStringParam(request, "oldPassword", "Old Password", 5, 50);
+		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 5, 50, null);
+		String confirmPassword = GetParam.getStringParam(request, "confirmPassword", "Confirm Password", 5, 50, null);
+		String oldPassword = GetParam.getStringParam(request, "oldPassword", "Old Password", 5, 50, null);
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 

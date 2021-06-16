@@ -24,7 +24,7 @@ public class UpdateUserController extends HttpServlet {
 
 		UserDAO userDAO = new UserDAO();
 
-		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
+		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50, null);
 		String email = GetParam.getEmailParams(request, "email", "Email");
 		String phone = GetParam.getPhoneParams(request, "phone", "Phone");
 		HttpSession session = request.getSession();

@@ -27,7 +27,7 @@ public class UpdateRoomController extends HttpServlet {
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
-		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE, null);
 		if (roomId == null) {
 			return false;
 		}
@@ -80,11 +80,11 @@ public class UpdateRoomController extends HttpServlet {
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
-		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 100, 999);
-		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
-		Integer statusPrams = GetParam.getIntParams(request, "status", "Is Disable", 0, 1);
-		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
-		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 100, 999, null);
+		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999, null);
+		Integer statusPrams = GetParam.getIntParams(request, "status", "Is Disable", 0, 1, null);
+		String description = GetParam.getStringParam(request, "description", "Description", 1, 500, null);
+		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE, null);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
 		if (price == null || roomId == null || statusPrams == null || roomTypeId == null | description == null) {
 			return false;

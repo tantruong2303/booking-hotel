@@ -73,11 +73,11 @@ public class AddRoomController extends HttpServlet {
 		// initialized resource
 		RoomDAO roomDAO = new RoomDAO();
 		// get and validate params
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
-		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999);
-		Integer statusPrams = GetParam.getIntParams(request, "status", "Is Disable", 0, 1);
-		String description = GetParam.getStringParam(request, "description", "Description", 1, 500);
-		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 50);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999, null);
+		Float price = GetParam.getFloatParams(request, "price", "Price", 1, 999999, null);
+		Integer statusPrams = GetParam.getIntParams(request, "status", "Is Disable", 0, 1, null);
+		String description = GetParam.getStringParam(request, "description", "Description", 1, 500, null);
+		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Room type", 0, 50, null);
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
 
 		if (roomId == null || price == null || statusPrams == null || imageUrl == null || description == null

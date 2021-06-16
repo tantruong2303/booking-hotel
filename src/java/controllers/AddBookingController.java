@@ -34,7 +34,7 @@ public class AddBookingController extends HttpServlet {
 		ReviewDAO reviewDAO = new ReviewDAO();
 
 		// get and validate params
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999, null);
 		if (roomId == null) {
 			return false;
 		}
@@ -98,7 +98,7 @@ public class AddBookingController extends HttpServlet {
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 
 		// get and validate params
-		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999, null);
 		String startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
 		String endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
 		if (startDate == null || endDate == null || roomId == null) {

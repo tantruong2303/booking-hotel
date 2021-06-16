@@ -30,7 +30,7 @@ public class CancelBookingController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDao = new UserDAO();
 
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999, null);
 		if (roomId == null) {
 			return false;
 		}
