@@ -1,10 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%> <%@page import="utils.GetParam"%> <%@page import="dtos.RoomType"%>
 <%@page import="java.util.ArrayList" %>
 <%@page import="utils.Validator"%> 
-
-<%
+<% Float price =(Float) GetParam.getClientParams(request,"priceError", 0f); 
+String description=(String) GetParam.getClientParams(request,"description", "");
 String roomId=(String) GetParam.getClientParams(request,"roomId", "");
+String photoError =(String) GetParam.getClientAttribute(request,"photoError", "");
+String priceError =(String) GetParam.getClientAttribute(request,"priceError", "");
 String roomIdError =(String) GetParam.getClientAttribute(request,"roomIdError", ""); 
+String isDisableError =(String) GetParam.getClientAttribute(request,"stateError", "");
+String descriptionError =(String) GetParam.getClientAttribute(request,"descriptionError","");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -35,12 +40,71 @@ String roomIdError =(String) GetParam.getClientAttribute(request,"roomIdError", 
 						    class="flex-1 px-2"
 						    >
 							<jsp:include page="./components/message.jsp"/>
+							<jsp:include page="./components/formRoom.jsp">
+								<jsp:param name="type" value="text"/>
+								<jsp:param name="label" value="Room Id (100 - 999)"/>
+								<jsp:param name="field" value="roomId"/>
+
+							</jsp:include>
+							<jsp:include page="./components/formRoomType.jsp"/>
+
+
+							<jsp:include page="./components/formRoom.jsp">
+								<jsp:param name="type" value="number"/>
+								<jsp:param name="label" value="Price ($)"/>
+								<jsp:param name="field" value="price"/>
+								<jsp:param name="defaultValue" value="0"/>
+							</jsp:include>
+
 							<div class="space-y-2">
-								<label class="font-medium" for="roomId">Room ID</label>
-								<input   value="<%=roomId%>"    type="text"   name="roomId"    id="roomId"    class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none" />
-								<p class="text-red-500 capitalize"><%=roomIdError %></p>
+								<label class="font-medium" for="description">Description</label>
+								<textarea
+								    name="description"
+								    id="description"
+								    class="
+								    block
+								    w-full
+								    p-1
+								    border
+								    rounded-sm
+								    border-cerise-red-500
+								    focus:outline-none
+								    "
+								    ><%=description%></textarea>
+								<p class="text-red-500 capitalize"><%=descriptionError %></p>
 							</div>
-							<jsp:include page="./components/formRoom.jsp"/>
+							<div class="space-y-2">
+								<label class="font-medium" for="photo">Photo</label>
+								<input type="file" name="photo" class="block" id="photo" />
+								<p class="text-red-500 capitalize"><%=photoError %></p>
+							</div>
+
+							<div class="space-y-2">
+								<label class="font-medium" for="photo">State</label>
+								<div class="">
+									<span>
+										<label for="state1">Disable</label>
+										<input
+										    type="radio"
+										    name="status"
+										    id="state1"
+										    value="0"
+										    checked="checked"
+										    />
+									</span>
+									<span>
+										<label for="state2">Available</label>
+										<input
+										    type="radio"
+										    name="status"
+										    id="state2"
+										    value="1"
+										    />
+									</span>       
+								</div>
+
+								<p class="text-red-500 capitalize"><%=isDisableError %></p>
+							</div>
 							<jsp:include page="./components/btnInline.jsp">
 								<jsp:param name="label" value="Add New Room"/>
 							</jsp:include>

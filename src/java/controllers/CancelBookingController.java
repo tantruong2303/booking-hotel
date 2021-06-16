@@ -8,7 +8,6 @@ import dtos.User;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +19,7 @@ import constant.Routers;
 
 import utils.GetParam;
 
-@WebServlet(name = "CancelBookingController", urlPatterns = { "/CancelBookingController" })
+@WebServlet(name = "CancelBookingController", urlPatterns = {"/CancelBookingController"})
 public class CancelBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -30,12 +29,12 @@ public class CancelBookingController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDao = new UserDAO();
 
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999, null);
-		if (roomId == null) {
+		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE, null);
+		if (bookingId == null) {
 			return false;
 		}
 
-		BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByRoomId(roomId);
+		BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByBookingId(bookingId);
 		if (bookingInfo == null) {
 			request.setAttribute("roomId", "Room with the given Id was not found");
 			return false;
@@ -53,11 +52,11 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-		boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(roomId, 0);
+		boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(bookingId, 0);
 		if (!isCancelBookingInfo) {
 			return false;
 		}
-
+	
 		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
 		if (!isChangeStatus) {
 			return false;
@@ -72,14 +71,14 @@ public class CancelBookingController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		UserDAO userDao = new UserDAO();
 
 		try {
@@ -97,6 +96,7 @@ public class CancelBookingController extends HttpServlet {
 
 			request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE).forward(request, response);
 		} catch (Exception e) {
+			e.printStackTrace();
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 
 		}

@@ -51,7 +51,7 @@ public class IndexController extends HttpServlet {
 			return false;
 		}
 
-		ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, 1);
+		ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, 0);
 
 		request.setAttribute("rooms", list);
 		return true;

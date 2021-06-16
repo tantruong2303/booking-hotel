@@ -164,6 +164,11 @@ public class Helper {
 		}
 	}
 
+	public static String convertDateToString(Date date) {
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter1.format(date);
+	}
+
 	/**
 	 * Get today date in Date type
 	 */
@@ -171,7 +176,6 @@ public class Helper {
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
-
 		return convertStringToDate(formatter.format(calendar.getTime()));
 	}
 

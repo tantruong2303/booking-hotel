@@ -179,7 +179,7 @@ public class GetParam {
 	 * @param label   Label
 	 * @return Future date
 	 */
-	public static String getDateFromNowToFuture(HttpServletRequest request, String field, String label) {
+	public static Date getDateFromNowToFuture(HttpServletRequest request, String field, String label) {
 		String value = getStringParam(request, field, label, 10, 10, null);
 		if (value == null) {
 			return null;
@@ -193,7 +193,7 @@ public class GetParam {
 			return null;
 		}
 
-		return value;
+		return date;
 	}
 
 	/**

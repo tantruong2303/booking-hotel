@@ -1,4 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="utils.GetParam"%>
+<%@page import="utils.Validator"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="dtos.Room"%>
+<%
+	
+	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
+	String minPrice = (String) GetParam.getClientParams(request, "minPrice", "0");
+	String maxPrice = (String) GetParam.getClientParams(request, "maxPrice", "9999999");
+	String numOfPeople = (String) GetParam.getClientParams(request, "numOfPeople", "1");
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -45,6 +56,8 @@
 						<jsp:include page="./components/formSelectOrder.jsp"/>
 					</div>
 					<div class="flex space-x-2">
+
+
 						<div class="grid grid-form justify-items-stretch ">
 							<label for="status" class="block font-medium">State</label>
 							<select name="status" id="status" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none">
@@ -58,6 +71,7 @@
 								</option>
 							</select>
 						</div>
+
 					</div>
 
 					<button  class="px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600">Search</button>

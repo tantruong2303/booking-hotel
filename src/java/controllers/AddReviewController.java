@@ -89,7 +89,7 @@ public class AddReviewController extends HttpServlet {
 		} catch (Exception e) {
 			// redirect on 500
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
-			;
+			
 
 		}
 

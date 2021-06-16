@@ -1,8 +1,12 @@
+<%@page import="dtos.BookingInfo"%>
+<%@page import="java.util.Hashtable"%>
 <%@page import="utils.GetParam"%>
 <%@page import="dtos.Room"%>
 <%@page import="java.util.ArrayList"%>
 <%
 	ArrayList<Room> list = (ArrayList<Room>) GetParam.getClientAttribute( request,"rooms", new ArrayList<Room>());
+	Hashtable<Integer,ArrayList<BookingInfo>> bookings = (Hashtable<Integer,ArrayList<BookingInfo>>) GetParam.getClientAttribute( request,"bookings",new Hashtable<Integer,ArrayList<BookingInfo>>());
+	
 %>
 <table  class="w-full border border-black">
 	<thead>
@@ -28,16 +32,15 @@
 			<td class="p-1 text-center border border-black">$<%= list.get(i).getPrice()%></td>
 			<td class="p-1 text-center border border-black"><%= list.get(i).getRoomType().getNumOfPeople()%></td>
 			<td class="p-1 border border-black"><%= list.get(i).getDescription()%></td>
+
 			<td  class="p-1 border border-black">
 				<img src="<%= list.get(i).getImageUrl()%>" alt="alt" class="w-32"/>
 			</td>
 			<td class="p-1 text-center border border-black space-y-2">
 				<% if ( list.get(i).getStatus() == 2)  {%>
+				<a href="ViewBookingController?roomId=<%= list.get(i).getRoomId()%>"  class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">View Booking</a>
 
-				<a href="CheckoutController?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to checkout') " class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">Check Out</a>
-
-
-				<a href="CancelBookingController?roomId=<%= list.get(i).getRoomId()%>" onclick="return confirm('Are you sure to cancel') " class="inline-block p-2 font-medium text-white duration-200 bg-red-500 rounded-sm hover:bg-red-600">Cancel</a>
+			
 
 
 				<% } else { %>

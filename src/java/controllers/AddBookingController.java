@@ -16,6 +16,7 @@ import constant.Routers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,8 +25,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.Helper;
 
-@WebServlet(name = "AddBookingController", urlPatterns = { "/AddBookingController" })
+@WebServlet(name = "AddBookingController", urlPatterns = {"/AddBookingController"})
 public class AddBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -63,14 +65,14 @@ public class AddBookingController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		String url = Routers.ERROR;
 		try {
@@ -99,11 +101,12 @@ public class AddBookingController extends HttpServlet {
 
 		// get and validate params
 		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999, null);
-		String startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
-		String endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
+		Date startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
+		Date endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
 		if (startDate == null || endDate == null || roomId == null) {
 			return false;
 		}
+
 		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
 		if (numberOfDay == null || numberOfDay <= 0) {
 			request.setAttribute("errorMessage", "The time which picked is invalid");
@@ -126,9 +129,19 @@ public class AddBookingController extends HttpServlet {
 		}
 
 		// checking room status
-		if (room.getStatus() != 1) {
+		if (room.getStatus() == 0) {
 			request.setAttribute("errorMessage", "Room is not available");
 			return false;
+		}
+
+		ArrayList<BookingInfo> bookings = bookingInfoDAO.getActiveBookingWithRoomId(roomId);
+	
+		for (BookingInfo item : bookings) {
+			if (!Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), startDate, endDate)) {
+				request.setAttribute("errorMessage", "This room have a booking from " + Helper.convertDateToString(item.getStartDate()) + " to "
+					+ Helper.convertDateToString(item.getEndDate()) + ", please select other day.");
+				return false;
+			}
 		}
 
 		// handle create new booking
@@ -152,14 +165,14 @@ public class AddBookingController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 
@@ -171,7 +184,8 @@ public class AddBookingController extends HttpServlet {
 			// forward on 400
 			this.doGet(request, response);
 		} catch (Exception e) {
-			response.sendRedirect(Routers.ERROR);
+			e.printStackTrace();
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
 }

@@ -33,8 +33,8 @@
 								Room no: <%= list.get(i).getRoomId()%>
 							</h1>
 							<p>$<%= list.get(i).getTotal()%></p>
-							<p>Start Date: <%= list.get(i).getStartDate()%></p>
-							<p>End Date: <%= list.get(i).getEndDate()%></p>
+							<p>Start Date: <%= Helper.convertDateToString(list.get(i).getStartDate()) %></p>
+							<p>End Date: <%= Helper.convertDateToString(list.get(i).getEndDate())%></p>
 							<p>
 								Status: <%= list.get(i).getStatus() == 1? "Paid" :
                                                                                 list.get(i).getStatus() == -1 ? "Process" : "Cancel"%>
@@ -42,7 +42,7 @@
 						</div>
 						<% if (list.get(i).getStatus() == -1) {%>
 						<a
-						    href="CancelBookingController?roomId=<%=  list.get(i).getRoomId()%>"
+						    href="CancelBookingController?bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
 						    onclick="return confirm('Are you sure to cancel')"
 						    class="inline-block p-2 font-medium text-white bg-red-500"
 						    >Cancel</a
