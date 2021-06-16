@@ -51,7 +51,6 @@ public class ChangePasswordController extends HttpServlet {
 		newPassword = Helper.encrypt(newPassword, 28);
 		boolean result = userDAO.updateUserPasswordByUsername(existedUser.getUsername(), newPassword);
 		if (!result) {
-			request.setAttribute("errorMessage", "Internal error!");
 			return false;
 		}
 
@@ -74,7 +73,7 @@ public class ChangePasswordController extends HttpServlet {
 		try {
 
 			if (postHandler(request, response)) {
-				response.sendRedirect(Routers.VIEW_USER_INFO);
+				response.sendRedirect(Routers.VIEW_USER_INFO_CONTROLLER);
 				return;
 			}
 			RequestDispatcher rd = request.getRequestDispatcher(Routers.CHANGE_PASSWORD_PAGE);

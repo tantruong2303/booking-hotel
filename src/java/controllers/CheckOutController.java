@@ -24,7 +24,7 @@ public class CheckOutController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 
 		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999);
-		
+
 		if (roomId == null) {
 			return false;
 		}
@@ -37,13 +37,11 @@ public class CheckOutController extends HttpServlet {
 
 		boolean isUpdate = bookingInfoDAO.updateBookingInfopStatus(roomId, 1);
 		if (!isUpdate) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}
 
 		boolean isChangeStatus = roomDAO.changestatus(bookingInfo.getRoomId(), 1);
 		if (!isChangeStatus) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}
 
@@ -68,7 +66,7 @@ public class CheckOutController extends HttpServlet {
 		try {
 
 			if (this.postHandler(request, response)) {
-				response.sendRedirect(Routers.LIST_ROOM);
+				response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
 				return;
 			}
 

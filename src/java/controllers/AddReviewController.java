@@ -82,7 +82,7 @@ public class AddReviewController extends HttpServlet {
 
 			if (processRequest(request, response)) {
 				Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
-				response.sendRedirect(Routers.VIEW_ROOM_INFO + "?roomId=" + roomId);
+				response.sendRedirect(Routers.VIEW_ROOM_INFO_CONTROLLER + "?roomId=" + roomId);
 				return;
 			}
 			// forward on 200

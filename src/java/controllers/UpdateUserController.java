@@ -17,7 +17,7 @@ import constant.Routers;
 
 import utils.GetParam;
 
-@WebServlet(name = "UpdateUserController", urlPatterns = {"/UpdateUserController"})
+@WebServlet(name = "UpdateUserController", urlPatterns = { "/UpdateUserController" })
 public class UpdateUserController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -53,21 +53,21 @@ public class UpdateUserController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-			
+
 			if (postHandler(request, response)) {
 
-				response.sendRedirect(Routers.VIEW_USER_INFO);
+				response.sendRedirect(Routers.VIEW_USER_INFO_CONTROLLER);
 				return;
 			}
 
@@ -75,8 +75,7 @@ public class UpdateUserController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
+			response.sendRedirect(Routers.ERROR);
 		}
 	}
 
@@ -107,14 +106,14 @@ public class UpdateUserController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		String url = Routers.ERROR;
 		try {
@@ -126,7 +125,7 @@ public class UpdateUserController extends HttpServlet {
 				url = (Routers.ERROR);
 			}
 		} catch (Exception e) {
-
+			response.sendRedirect(Routers.ERROR);
 		} finally {
 			request.getRequestDispatcher(url).forward(request, response);
 		}

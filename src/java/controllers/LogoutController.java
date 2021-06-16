@@ -39,7 +39,7 @@ public class LogoutController extends HttpServlet {
 			session.invalidate();
 		} catch (Exception e) {
 		} finally {
-			response.sendRedirect(Routers.LOGIN);
+			response.sendRedirect(Routers.LOGIN_CONTROLLER);
 		}
 	}
 

@@ -94,23 +94,6 @@
 								<%=phoneError%>
 							</p>
 						</div>
-						<div class="grid grid-form justify-items-stretch ">
-
-							<p>Role</p>
-							<div class="space-x-2">
-								<span>
-									<label for="customer">Customer</label>
-									<input id="customer" type="radio" name="role"  value="0" checked />
-								</span>
-								<span>
-									<label  for="manager">Manager</label>
-									<input  id="manager" type="radio" name="role" value="1" />
-								</span>
-							</div>
-							<p class="col-start-2 text-red-500 capitalize">
-								<%=roleError%>
-							</p>
-						</div>
 						<div class="grid grid-form">
 							<button  class="col-start-2 px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />Sign Up</button>
 						</div>

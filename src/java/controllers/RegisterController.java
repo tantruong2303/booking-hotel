@@ -45,11 +45,10 @@ public class RegisterController extends HttpServlet {
 		String fullName = GetParam.getStringParam(request, "fullName", "FullName", 1, 50);
 		String email = GetParam.getEmailParams(request, "email", "Email");
 		String phone = GetParam.getPhoneParams(request, "phone", "Phone");
-		Integer role = GetParam.getIntParams(request, "role", "Role", 0, 1);
 
 		// get and validate params
 		if (username == null || password == null || confirmPassword == null || fullName == null || email == null
-				|| phone == null || role == null) {
+				|| phone == null) {
 			return false;
 		}
 
@@ -69,7 +68,7 @@ public class RegisterController extends HttpServlet {
 		// handle process
 		int hashingKey = Integer.parseInt(getServletContext().getInitParameter("HashingKey"));
 		password = Helper.encrypt(password, hashingKey);
-		User newUser = new User(username, password, fullName, email, phone, role);
+		User newUser = new User(username, password, fullName, email, phone, 0);
 		userDAO.addUser(newUser);
 		return true;
 	}

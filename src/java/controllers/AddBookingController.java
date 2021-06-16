@@ -80,15 +80,14 @@ public class AddBookingController extends HttpServlet {
 				url = (Routers.ADD_BOOKING_INFO_PAGE);
 
 			} else {
-				// forward on 400
+				// forward on 400g
 				url = (Routers.INDEX_PAGE);
 			}
 
 		} catch (Exception e) {
-
-		} finally {
-			request.getRequestDispatcher(url).forward(request, response);
+			response.sendRedirect(Routers.ERROR);
 		}
+		request.getRequestDispatcher(url).forward(request, response);
 
 	}
 
@@ -127,7 +126,7 @@ public class AddBookingController extends HttpServlet {
 		}
 
 		// checking room status
-		if (room.getStatus()!= 1) {
+		if (room.getStatus() != 1) {
 			request.setAttribute("errorMessage", "Room is not available");
 			return false;
 		}
@@ -138,14 +137,12 @@ public class AddBookingController extends HttpServlet {
 		boolean isAddBookingInfo = bookingInfoDAO.addBookingInfo(bookingInfo);
 		// checking update add booking
 		if (!isAddBookingInfo) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}
 
 		// checking update status room
 		boolean isChangeStatus = roomDAO.changestatus(room.getRoomId(), 2);
 		if (!isChangeStatus) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}
 
@@ -168,19 +165,13 @@ public class AddBookingController extends HttpServlet {
 
 			if (postHandler(request, response)) {
 				// forward on 200
-				response.sendRedirect(Routers.VIEW_BOOKING);
+				response.sendRedirect(Routers.VIEW_BOOKING_CONTROLLER);
 				return;
 			}
 			// forward on 400
 			this.doGet(request, response);
 		} catch (Exception e) {
-			e.printStackTrace();
-			// redirect on 500
-			RequestDispatcher rd = request.getRequestDispatcher(Routers.ERROR);
-			rd.forward(request, response);
-			
+			response.sendRedirect(Routers.ERROR);
 		}
-
 	}
-
 }
