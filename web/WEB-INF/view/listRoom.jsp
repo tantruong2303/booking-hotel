@@ -25,57 +25,59 @@
 			<div   class="flex flex-col items-center justify-start w-full p-4 mx-auto space-y-4 bg-white">
 				<form action="RoomListController" method = "GET" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">SanninSC Hotel Management</h1>
-					<p class="col-start-2 text-red-500 ">
-						<jsp:include page="./components/message.jsp"/>
-					</p>
-					<div class="flex space-x-2">
-						<jsp:include page="./components/formInput.jsp">
+
+					<jsp:include page="./components/message.jsp"/>
+
+					<div class="flex space-x-8">
+						<jsp:include page="./components/inputField.jsp">
 							<jsp:param name="type" value="number"/>
 							<jsp:param name="label" value="Min price"/>
 							<jsp:param name="field" value="minPrice"/>
 							<jsp:param name="defaultValue" value="0"/>
 						</jsp:include>
 
-						<jsp:include page="./components/formInput.jsp">
+						<jsp:include page="./components/inputField.jsp">
 							<jsp:param name="type" value="number"/>
 							<jsp:param name="label" value="Max price"/>
 							<jsp:param name="field" value="maxPrice"/>
 							<jsp:param name="defaultValue" value="9999999"/>
 						</jsp:include>
 					</div>
-
-					<div class="flex space-x-2">
-						<jsp:include page="./components/formInput.jsp">
+					<div class="flex space-x-8">
+						<jsp:include page="./components/inputField.jsp">
 							<jsp:param name="type" value="number"/>
 							<jsp:param name="label" value="Number Of People"/>
 							<jsp:param name="field" value="numOfPeople"/>
 							<jsp:param name="defaultValue" value="1"/>
 						</jsp:include>
 
-
 						<jsp:include page="./components/formSelectOrder.jsp"/>
 					</div>
-					<div class="flex space-x-2">
 
+					<div class="">
+						<label for="status" class="block font-medium">State</label>
+						<select name="status" id="status" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none">
+							<option value="0" label="Disable">
+							</option>
+							<option value="1"  label="Available">
+							</option>
+							<option value="2"  label="Rent">
+							</option>
+							<option value="3"  label="All" selected="selected" >
+							</option>
+						</select>
+					</div>
+					<div class="flex space-x-4 w-1/5"> 
+						<jsp:include page="./components/inputBtn.jsp">
+							<jsp:param name="label" value="Search"/>
+						</jsp:include>
 
-						<div class="grid grid-form justify-items-stretch ">
-							<label for="status" class="block font-medium">State</label>
-							<select name="status" id="status" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none">
-								<option value="0" label="Disable">
-								</option>
-								<option value="1"  label="Available">
-								</option>
-								<option value="2"  label="Rent">
-								</option>
-								<option value="3"  label="All" selected="selected" >
-								</option>
-							</select>
-						</div>
+						<jsp:include page="./components/btnLink.jsp">
+							<jsp:param name="label" value="Add New Room"/>
+							<jsp:param  name="action" value ="AddRoomController"/>
+						</jsp:include>
 
 					</div>
-
-					<button  class="px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600">Search</button>
-					<a href="AddRoomController" class="inline-block px-16 py-2 mt-8 font-semibold text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600">Add New Room</a>
 				</form>
 				<jsp:include page="./components/roomList.jsp"/>
 

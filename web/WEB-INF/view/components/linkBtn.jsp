@@ -1,1 +1,0 @@
-<a  href="${param.action}" class="block col-start-2 p-2 mt-8 font-semibold text-center text-white duration-300 bg-gray-800 rounded-sm hover:bg-gray-600" />${param.label}</a>

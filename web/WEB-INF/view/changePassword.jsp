@@ -11,39 +11,29 @@
 		<%@include file="./includes/navbar.jspf" %>
 		<main  class="flex flex-1 h-full bg-cerise-red-500">
 			<div  class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
-				<form action="ChangePasswordController" method="POST"   class="mt-8 space-y-8 fade-in ">
-					<div class="grid grid-form justify-items-stretch">
-						<h1 class="col-start-2 text-4xl font-semibold">Change Password</h1>
-					</div>
+				<form action="ChangePasswordController" method="POST"   class="mt-8 space-y-2 fade-in ">
+					<h1 class="col-start-2 text-4xl font-semibold">Change Password</h1>
+					<jsp:include page="./components/message.jsp"/>
+					<jsp:include page="./components/inputField.jsp">
+						<jsp:param name="type" value="password"/>
+						<jsp:param name="label" value="Old Password"/>
+						<jsp:param name="field" value="oldPassword"/>
+					</jsp:include>
 
-					<div class="space-y-2">
-						<div class="grid grid-form justify-items-stretch ">
-							<p class="col-start-2 text-red-500 ">
-								<jsp:include page="./components/message.jsp"/>
-							</p>
-						</div>
-						<jsp:include page="./components/formInput.jsp">
-							<jsp:param name="type" value="password"/>
-							<jsp:param name="label" value="Old Password"/>
-							<jsp:param name="field" value="oldPassword"/>
-						</jsp:include>
+					<jsp:include page="./components/inputField.jsp">
+						<jsp:param name="type" value="password"/>
+						<jsp:param name="label" value="New Password"/>
+						<jsp:param name="field" value="newPassword"/>
+					</jsp:include>
+					<jsp:include page="./components/inputField.jsp">
+						<jsp:param name="type" value="password"/>
+						<jsp:param name="label" value="Confirm Password"/>
+						<jsp:param name="field" value="confirmPassword"/>
+					</jsp:include>
+					<jsp:include page="./components/inputBtn.jsp">
+						<jsp:param name="label" value="Sign In"/>
+					</jsp:include>
 
-						<jsp:include page="./components/formInput.jsp">
-							<jsp:param name="type" value="password"/>
-							<jsp:param name="label" value="New Password"/>
-							<jsp:param name="field" value="newPassword"/>
-						</jsp:include>
-						<jsp:include page="./components/formInput.jsp">
-							<jsp:param name="type" value="password"/>
-							<jsp:param name="label" value="Confirm Password"/>
-							<jsp:param name="field" value="confirmPassword"/>
-						</jsp:include>
-
-
-						<jsp:include page="./components/formBtn.jsp">
-							<jsp:param name="label" value="Sign In"/>
-						</jsp:include>
-					</div>
 				</form>
 				<%@include file="./includes/footer.jspf" %>
 			</div>
