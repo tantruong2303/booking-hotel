@@ -24,7 +24,7 @@ public class RoomListController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 
 		Integer numOfPeople = GetParam.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
-		Float min = GetParam.getFloatParams(request, "minPrice", "min price", 0, Float.MAX_VALUE, 0);
+		Float min = GetParam.getFloatParams(request, "minPrice", "min price", 0f, Float.MAX_VALUE, 0f);
 		Float max = GetParam.getFloatParams(request, "maxPrice", "Max price", 0, Float.MAX_VALUE, Float.MAX_VALUE);
 		Integer state = GetParam.getIntParams(request, "state", "State", 0, 3, 3);
 		String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
@@ -32,6 +32,12 @@ public class RoomListController extends HttpServlet {
 		if (min == null || max == null || state == null || numOfPeople == null || priceOrder == null) {
 			return false;
 		}
+
+		if (min >= max) {
+			request.setAttribute("errorMessage", "Min Price must be greater than max price");
+			return false;
+		}
+
 		ArrayList<Room> list = new ArrayList<>();
 
 		if (state == 3) {

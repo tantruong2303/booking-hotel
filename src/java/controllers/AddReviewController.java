@@ -30,9 +30,9 @@ public class AddReviewController extends HttpServlet {
 		UserDAO userDAO = new UserDAO();
 
 		// get and validate params
-		String message = GetParam.getStringParam(request, "message", "message", 1, 1000);
-		Integer rate = GetParam.getIntParams(request, "rate", "rate", 1, 5);
-		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999);
+		String message = GetParam.getStringParam(request, "message", "message", 1, 1000, null);
+		Integer rate = GetParam.getIntParams(request, "rate", "rate", 1, 5, null);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999, null);
 		if (message == null || rate == null || roomId == null) {
 			return false;
 		}
@@ -79,7 +79,7 @@ public class AddReviewController extends HttpServlet {
 		try {
 
 			if (processRequest(request, response)) {
-				Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE);
+				Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 1, Integer.MAX_VALUE, null);
 				response.sendRedirect(Routers.VIEW_ROOM_INFO_CONTROLLER + "?roomId=" + roomId);
 				return;
 			}

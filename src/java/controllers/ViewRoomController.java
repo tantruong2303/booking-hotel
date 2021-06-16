@@ -26,7 +26,7 @@ public class ViewRoomController extends HttpServlet {
 		RoomDAO roomDAO = new RoomDAO();
 		ReviewDAO reviewDAO = new ReviewDAO();
 
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999, null);
 		if (roomId == null) {
 			return false;
 		}

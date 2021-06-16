@@ -10,35 +10,6 @@ import javax.servlet.http.Part;
 public class GetParam {
 
 	/**
-	 * Get string from request parameter and validate it
-	 * 
-	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
-	 * @param min     minimum length
-	 * @param max     maximum length
-	 * @return Valid string
-	 */
-	public static String getStringParam(HttpServletRequest request, String field, String label, int min, int max) {
-		String value = (String) request.getParameter(field);
-		if (value == null) {
-			request.setAttribute(field + "Error", label + " is required");
-			return null;
-		}
-		if (value.trim().length() > max) {
-			request.setAttribute(field + "Error", label + " is less than " + max + " character(s)");
-			return null;
-		}
-		if (value.trim().length() < min) {
-			request.setAttribute(field + "Error", label + " is greater than " + min + " character(s)");
-			return null;
-		}
-
-		return value;
-
-	}
-
-	/**
 	 * Get string from request parameter and validate it, if it invalid, return
 	 * default value
 	 * 
@@ -52,7 +23,13 @@ public class GetParam {
 	public static String getStringParam(HttpServletRequest request, String field, String label, int min, int max,
 			String defaultValue) {
 		String value = (String) request.getParameter(field);
-		if (value == null) {
+
+		if (value == null || value.trim().isEmpty()) {
+			if (defaultValue == null) {
+				request.setAttribute(field + "Error", label + " is required");
+				return null;
+			}
+
 			return defaultValue;
 		}
 		if (value.trim().length() > max) {
@@ -63,44 +40,7 @@ public class GetParam {
 			request.setAttribute(field + "Error", label + " is greater than " + min + " character(s)");
 			return null;
 		}
-
 		return value;
-	}
-
-	/**
-	 * Get integer from request parameter and validate it
-	 * 
-	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
-	 * @param min     minimum number
-	 * @param max     maximum number
-	 * @return Valid integer
-	 */
-	public static Integer getIntParams(HttpServletRequest request, String field, String label, int min, int max) {
-
-		String value = (String) request.getParameter(field);
-		Integer realValue;
-		if (value == null) {
-			request.setAttribute(field + "Error", label + " is required");
-			return null;
-		}
-		try {
-			realValue = Integer.parseInt(value);
-		} catch (Exception e) {
-			request.setAttribute(field + "Error", label + " must be a number");
-			return null;
-		}
-		if (realValue > max) {
-			request.setAttribute(field + "Error", label + " is less than " + max);
-			return null;
-		}
-		if (realValue < min) {
-			request.setAttribute(field + "Error", label + " is greater than " + min);
-			return null;
-		}
-
-		return realValue;
 	}
 
 	/**
@@ -115,52 +55,22 @@ public class GetParam {
 	 * @return Valid integer
 	 */
 	public static Integer getIntParams(HttpServletRequest request, String field, String label, int min, int max,
-			int defaultValue) {
+			Integer defaultValue) {
 
 		String value = (String) request.getParameter(field);
 		Integer realValue;
-		if (value == null) {
+
+		if (value == null || value.isEmpty()) {
+			if (defaultValue == null) {
+				request.setAttribute(field + "Error", label + " is required");
+				return null;
+			}
 			return defaultValue;
 		}
 		try {
 			realValue = Integer.parseInt(value);
-		} catch (Exception e) {
-			request.setAttribute(field + "Error", label + " must be a number");
-			return null;
-		}
-		if (realValue > max) {
-			request.setAttribute(field + "Error", label + " is less than " + max);
-			return null;
-		}
-		if (realValue < min) {
-			request.setAttribute(field + "Error", label + " is greater than " + min);
-			return null;
-		}
-
-		return realValue;
-	}
-
-	/**
-	 * Get float from request parameter and validate it
-	 * 
-	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
-	 * @param min     minimum number
-	 * @param max     maximum number
-	 * @return Valid float
-	 */
-	public static Float getFloatParams(HttpServletRequest request, String field, String label, float min, float max) {
-		String value = (String) request.getParameter(field);
-		Float realValue;
-		if (value == null) {
-			request.setAttribute(field + "Error", label + " is required");
-			return null;
-		}
-		try {
-			realValue = Float.parseFloat(value);
-		} catch (Exception e) {
-			request.setAttribute(field + "Error", label + " must be a number");
+		} catch (NumberFormatException e) {
+			request.setAttribute(field + "Error", label + " must be a number and less than " + Integer.MAX_VALUE);
 			return null;
 		}
 		if (realValue > max) {
@@ -187,16 +97,23 @@ public class GetParam {
 	 * @return Valid float
 	 */
 	public static Float getFloatParams(HttpServletRequest request, String field, String label, float min, float max,
-			float defaultValue) {
+			Float defaultValue) {
+
 		String value = (String) request.getParameter(field);
 		Float realValue;
-		if (value == null) {
+		if (value == null || value.isEmpty()) {
+			if (defaultValue == null) {
+				request.setAttribute(field + "Error", label + " is required");
+				return null;
+			}
 			return defaultValue;
 		}
+
 		try {
 			realValue = Float.parseFloat(value);
-		} catch (Exception e) {
-			request.setAttribute(field + "Error", label + " must be a number");
+		} catch (NumberFormatException e) {
+
+			request.setAttribute(field + "Error", label + " must be a number and less than " + Float.MAX_VALUE);
 			return null;
 		}
 		if (realValue > max) {
@@ -209,7 +126,6 @@ public class GetParam {
 		}
 
 		return realValue;
-
 	}
 
 	/**
@@ -221,7 +137,7 @@ public class GetParam {
 	 * @return Valid phone number
 	 */
 	public static String getPhoneParams(HttpServletRequest request, String field, String label) {
-		String value = getStringParam(request, field, label, 10, 11);
+		String value = getStringParam(request, field, label, 10, 11, null);
 		if (value == null) {
 			return null;
 		}
@@ -243,7 +159,7 @@ public class GetParam {
 	 * @return Valid email
 	 */
 	public static String getEmailParams(HttpServletRequest request, String field, String label) {
-		String value = getStringParam(request, field, label, 11, 50);
+		String value = getStringParam(request, field, label, 11, 50, null);
 		if (value == null) {
 			return null;
 		}
@@ -264,7 +180,7 @@ public class GetParam {
 	 * @return Future date
 	 */
 	public static String getDateFromNowToFuture(HttpServletRequest request, String field, String label) {
-		String value = getStringParam(request, field, label, 10, 10);
+		String value = getStringParam(request, field, label, 10, 10, null);
 		if (value == null) {
 			return null;
 		}
