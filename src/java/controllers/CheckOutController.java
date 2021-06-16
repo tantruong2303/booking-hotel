@@ -29,7 +29,7 @@ public class CheckOutController extends HttpServlet {
 			return false;
 		}
 
-		BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByRoomId(roomId);
+		BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByBookingId(roomId);
 		if (bookingInfo == null) {
 			request.setAttribute("errorMessage", "Booking information with the given Id was not found");
 			return false;

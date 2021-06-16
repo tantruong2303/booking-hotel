@@ -3,7 +3,8 @@
 <%@page import="dtos.Room"%>
 <% 
 	Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());
-	
+	String startDate =(String) GetParam.getClientParams(request, "startDate", "");
+	String endDate =(String) GetParam.getClientParams(request, "endDate", "");
 	String startDateError =(String) GetParam.getClientAttribute(request, "startDateError", "");
 	String endDateError =(String) GetParam.getClientAttribute(request, "endDateError", "");
 %>
@@ -23,53 +24,20 @@
                                                 <h1 class="text-4xl font-semibold text-center">Booking Information</h1>
                                                 <div class="flex">
                                                         <div class="flex-1">
-                                                                <img
-								    class="border rounded-sm border-cerise-red-500 max-h-96"
-								    src="<%= room.getImageUrl()%>"
-								    alt="photo"
-								    id="pre-photo"
-								    />
+                                                                <img class="border rounded-sm border-cerise-red-500 max-h-96" src="<%= room.getImageUrl()%>" alt="photo" id="pre-photo" />
                                                         </div>
                                                         <div class="flex-1 px-2">
-				     <jsp:include page="./components/roomInfo.jsp"/>
+								<jsp:include page="./components/roomInfo.jsp"/>
                                                                 <div>
                                                                         <form method="POST" action="AddBookingController?roomId=<%=room.getRoomId() %>">
                                                                                 <div>
-                                                                                        <label for="startDate" class="block font-medium"
-											       >Start Date</label
-                                                                                        >
-                                                                                        <input
-											    id="startDate"
-											    type="date"
-											    class="
-											    p-1
-											    border
-											    rounded-sm
-											    border-cerise-red-500
-											    focus:outline-none
-											    "
-											    name="startDate"
-											    />
-											<p class="col-start-2 text-red-500 ">
-												<%=startDateError%>
-											</p>		
+											<label for="startDate" class="block font-medium">Start Date</label>
+											<input id="startDate" type="date" class=" p-1   border rounded-sm border-cerise-red-500 focus:outline-none " name="startDate"  value="<%=startDate%>" />
+											<p class="col-start-2 text-red-500 "><%=startDateError%></p>		
                                                                                 </div>
                                                                                 <div>
-                                                                                        <label for="endDate" class="block font-medium"
-											       >End Date</label
-                                                                                        >
-                                                                                        <input
-											    id="endDate"
-											    type="date"
-											    class="
-											    p-1
-											    border
-											    rounded-sm
-											    border-cerise-red-500
-											    focus:outline-none
-											    "
-											    name="endDate"
-											    />
+                                                                                        <label for="endDate" class="block font-medium" >End Date</label >
+                                                                                        <input id="endDate"  type="date" class="p-1 border rounded-sm border-cerise-red-500 focus:outline-none"   name="endDate"    value="<%=endDate%>"    />
 											<p class="col-start-2 text-red-500 ">
 												<%=endDateError%>
 											</p>

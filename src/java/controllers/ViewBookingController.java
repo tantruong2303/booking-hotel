@@ -33,6 +33,7 @@ public class ViewBookingController extends HttpServlet {
 		}
 
 		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingWithUserId(user.getUserId());
+	
 		if (bookingInfos == null) {
 			request.setAttribute("errorMessage", "Booking Info with the given id was not found");
 			return false;
@@ -66,6 +67,7 @@ public class ViewBookingController extends HttpServlet {
 			request.getRequestDispatcher(Routers.LIST_ROOM_CONTROLLER).forward(request, response);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}

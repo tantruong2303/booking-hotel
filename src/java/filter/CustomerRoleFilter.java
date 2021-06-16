@@ -22,13 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 import utils.Helper;
 
 //Router mapping
-@WebFilter(filterName = "CustomerRoleFilter", urlPatterns = { "/" + Routers.ADD_BOOKING_INFO_CONTROLLER,
-		"/" + Routers.ADD_REVIEW_CONTROLLER, "/" + Routers.VIEW_BOOKING_CONTROLLER, })
+@WebFilter(filterName = "CustomerRoleFilter", urlPatterns = {"/" + Routers.ADD_BOOKING_INFO_CONTROLLER,
+	"/" + Routers.ADD_REVIEW_CONTROLLER,})
 public class CustomerRoleFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+		throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 

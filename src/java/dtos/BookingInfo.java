@@ -6,20 +6,21 @@
 package dtos;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class BookingInfo implements Serializable {
+public class BookingInfo  {
 
 	private int bookingInfoId;
 	private int userId;
 	private int roomId;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private int numberOfDay;
 	// -1 PROCESS 0 FAILED 1 CONFIRM
 	private int status;
 	private float total;
 
-	public BookingInfo(int userId, int roomId, String startDate, String endDate, int numberOfDay, int status, float total) {
+	public BookingInfo(int userId, int roomId, Date startDate, Date endDate, int numberOfDay, int status, float total) {
 		this.userId = userId;
 		this.roomId = roomId;
 		this.startDate = startDate;
@@ -29,7 +30,8 @@ public class BookingInfo implements Serializable {
 		this.total = total;
 	}
 
-	public BookingInfo(int bookingInfoId, int userId, int roomId, String startDate, String endDate, int numberOfDay, int status, float total) {
+	public BookingInfo(int bookingInfoId, int userId, int roomId, Date startDate, Date endDate, int numberOfDay,
+			int status, float total) {
 		this.bookingInfoId = bookingInfoId;
 		this.userId = userId;
 		this.roomId = roomId;
@@ -67,22 +69,6 @@ public class BookingInfo implements Serializable {
 		this.roomId = roomId;
 	}
 
-	public String getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-
 	public int getNumberOfDay() {
 		return numberOfDay;
 	}
@@ -107,9 +93,28 @@ public class BookingInfo implements Serializable {
 		this.total = total;
 	}
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	
 	@Override
 	public String toString() {
-		return "BookingInfo{" + "bookingInfoId=" + bookingInfoId + ", userId=" + userId + ", roomId=" + roomId + ", startDate=" + startDate + ", endDate=" + endDate + ", numberOfDay=" + numberOfDay + ", status=" + status + ", total=" + total + '}';
+		return "BookingInfo{" + "bookingInfoId=" + bookingInfoId + ", userId=" + userId + ", roomId=" + roomId
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", numberOfDay=" + numberOfDay + ", status="
+				+ status + ", total=" + total + '}';
 	}
 
 }

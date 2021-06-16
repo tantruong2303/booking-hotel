@@ -3,6 +3,7 @@
 <%@page import="utils.GetParam"%> 
 <%
 	Room room =(Room) GetParam.getClientAttribute(request,"room", new Room());	
+
 %> 
 <!DOCTYPE html>
 <html>

@@ -42,8 +42,8 @@ CREATE TABLE tbl_BookingInfo
 	bookingInfoId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
 	userId int FOREIGN KEY REFERENCES tbl_User(userId),
 	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId),
-	startDate varchar(20),
-	endDate varchar(20),
+	startDate Date,
+	endDate Date,
 	numberOfDay int,
 	status int,
 	total float

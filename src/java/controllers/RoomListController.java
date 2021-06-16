@@ -13,15 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import constant.Routers;
+import daos.BookingInfoDAO;
+import dtos.BookingInfo;
+import java.util.Hashtable;
 
 import utils.GetParam;
 
-@WebServlet(name = "RoomListController", urlPatterns = { "/RoomListController" })
+@WebServlet(name = "RoomListController", urlPatterns = {"/RoomListController"})
 public class RoomListController extends HttpServlet {
 
 	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
+		BookingInfoDAO bookingDAO = new BookingInfoDAO();
 
 		Integer numOfPeople = GetParam.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
 		Float min = GetParam.getFloatParams(request, "minPrice", "min price", 0f, Float.MAX_VALUE, 0f);
@@ -45,7 +49,12 @@ public class RoomListController extends HttpServlet {
 		} else {
 			list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, status);
 		}
-
+		Hashtable<Integer, ArrayList<BookingInfo>> bookings = new Hashtable<Integer, ArrayList<BookingInfo>>();
+		for (Room room : list) {
+			ArrayList<BookingInfo> activeBooking = bookingDAO.getActiveBookingWithRoomId(room.getRoomId());
+			bookings.put(room.getRoomId(), activeBooking);
+		}
+		request.setAttribute("bookings", bookings);
 		request.setAttribute("rooms", list);
 		return true;
 
@@ -56,14 +65,14 @@ public class RoomListController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			this.processHandler(request, response);
