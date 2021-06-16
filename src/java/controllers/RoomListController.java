@@ -6,7 +6,6 @@ import dtos.Room;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +16,7 @@ import constant.Routers;
 
 import utils.GetParam;
 
-@WebServlet(name = "RoomListController", urlPatterns = {"/RoomListController"})
+@WebServlet(name = "RoomListController", urlPatterns = { "/RoomListController" })
 public class RoomListController extends HttpServlet {
 
 	protected boolean processHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -51,14 +50,14 @@ public class RoomListController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		String url = Routers.ERROR;
 		try {

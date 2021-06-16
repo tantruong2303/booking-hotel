@@ -62,7 +62,7 @@ public class ViewBookingController extends HttpServlet {
 			if (this.getHandler(request, response)) {
 				url = (Routers.VIEW_BOOKING_PAGE);
 			} else {
-				url = (Routers.LIST_ROOM);
+				url = (Routers.LIST_ROOM_CONTROLLER);
 			}
 
 		} catch (Exception e) {

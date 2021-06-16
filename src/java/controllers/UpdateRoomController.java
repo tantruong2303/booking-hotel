@@ -21,8 +21,7 @@ import utils.FileHelper;
 import utils.GetParam;
 
 @WebServlet(name = "UpdateRoomController", urlPatterns = { "/UpdateRoomController" })
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 2, maxRequestSize = 1024 * 1024
-		* 5)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 2, maxRequestSize = 1024 * 1024 * 5)
 public class UpdateRoomController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -34,7 +33,6 @@ public class UpdateRoomController extends HttpServlet {
 		}
 		ArrayList<RoomType> roomTypes = roomDAO.getRoomTypes();
 		if (roomTypes == null) {
-			request.setAttribute("messageError", "Some thing went wrong");
 			return false;
 		}
 
@@ -70,7 +68,7 @@ public class UpdateRoomController extends HttpServlet {
 			if (this.getHandler(request, response)) {
 				url = (Routers.UPDATE_ROOM_PAGE);
 			} else {
-				url = (Routers.UPDATE_ROOM);
+				url = (Routers.UPDATE_ROOM_CONTROLLER);
 			}
 
 		} catch (Exception e) {
@@ -137,7 +135,7 @@ public class UpdateRoomController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (this.postHandler(request, response)) {
-				response.sendRedirect(Routers.LIST_ROOM);
+				response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
 				return;
 			}
 

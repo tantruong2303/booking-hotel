@@ -55,13 +55,11 @@ public class CancelBookingController extends HttpServlet {
 
 		boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(roomId, 0);
 		if (!isCancelBookingInfo) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}
 
 		boolean isChangeStatus = roomDAO.changestatus(bookingInfo.getRoomId(), 1);
 		if (!isChangeStatus) {
-			request.setAttribute("errorMessage", "Some thing went wrong");
 			return false;
 		}
 
@@ -90,10 +88,10 @@ public class CancelBookingController extends HttpServlet {
 				HttpSession session = request.getSession(false);
 				User user = userDao.getOneUserByUsername((String) session.getAttribute("username"));
 				if (user.getRole() == 1) {
-					response.sendRedirect(Routers.LIST_ROOM);
+					response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
 					return;
 				}
-				response.sendRedirect(Routers.VIEW_BOOKING);
+				response.sendRedirect(Routers.VIEW_BOOKING_CONTROLLER);
 				return;
 			}
 

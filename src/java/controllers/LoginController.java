@@ -90,11 +90,12 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+
 		try {
 			if (processRequest(request, response)) {
 
 				// forward on 200
-				response.sendRedirect(Routers.INDEX);
+				response.sendRedirect(Routers.INDEX_CONTROLLER);
 				return;
 			}
 			// forward on 400

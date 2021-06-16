@@ -19,21 +19,21 @@ public class Routers {
 	public final static String VIEW_BOOKING_PAGE = "/WEB-INF/view/viewBooking.jsp";
 
 	// router mapping
-	public final static String VIEW_BOOKING = "ViewBookingController";
-	public final static String VIEW_ROOM_INFO = "ViewRoomController";
-	public final static String ADD_BOOKING_INFO = "AddBookingController";
-	public final static String ADD_REVIEW = "AddReviewController";
-	public final static String ADD_ROOM = "AddRoomController";
-	public final static String CHECK_OUT="CheckoutController";
-	public final static String CANCEL_BOOKING_INFO = "CancelBookingController";
-	public final static String CHANGE_PASSWORD = "ChangePasswordController";
-	public final static String INDEX = "IndexController";
-	public final static String LOGIN = "LoginController";
-	public final static String LOGOUT = "LogoutController";
-	public final static String REGISTER = "RegisterController";
-	public final static String LIST_ROOM = "RoomListController";
-	public final static String UPDATE_ROOM = "UpdateRoomController";
-	public final static String UPDATE_USER_INFO = "UpdateUserController";
-	public final static String VIEW_USER_INFO = "ViewUserController";
+	public final static String VIEW_BOOKING_CONTROLLER = "ViewBookingController";
+	public final static String VIEW_ROOM_INFO_CONTROLLER = "ViewRoomController";
+	public final static String ADD_BOOKING_INFO_CONTROLLER = "AddBookingController";
+	public final static String ADD_REVIEW_CONTROLLER = "AddReviewController";
+	public final static String ADD_ROOM_CONTROLLER = "AddRoomController";
+	public final static String CHECK_OUT_CONTROLLER = "CheckoutController";
+	public final static String CANCEL_BOOKING_INFO_CONTROLLER = "CancelBookingController";
+	public final static String CHANGE_PASSWORD_CONTROLLER = "ChangePasswordController";
+	public final static String INDEX_CONTROLLER = "IndexController";
+	public final static String LOGIN_CONTROLLER = "LoginController";
+	public final static String LOGOUT_CONTROLLER = "LogoutController";
+	public final static String REGISTER_CONTROLLER = "RegisterController";
+	public final static String LIST_ROOM_CONTROLLER = "RoomListController";
+	public final static String UPDATE_ROOM_CONTROLLER = "UpdateRoomController";
+	public final static String UPDATE_USER_INFO_CONTROLLER = "UpdateUserController";
+	public final static String VIEW_USER_INFO_CONTROLLER = "ViewUserController";
 	public final static String ERROR = "/WEB-INF/view/error.jsp";
 }
