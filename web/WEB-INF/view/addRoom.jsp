@@ -20,7 +20,6 @@
 								<jsp:param name="type" value="text"/>
 								<jsp:param name="label" value="Room Id (100 - 999)"/>
 								<jsp:param name="field" value="roomId"/>
-
 							</jsp:include>
 							<jsp:include page="./components/formRoomType.jsp"/>
 							<jsp:include page="./components/inputField.jsp">
@@ -31,8 +30,8 @@
 							</jsp:include>
 
 							<jsp:include page="./components/textareaField.jsp">
-								<jsp:param name="label" value="Message"/>
-								<jsp:param name="field" value="message"/>
+								<jsp:param name="label" value="Description"/>
+								<jsp:param name="field" value="description"/>
 							</jsp:include>		
 							<jsp:include page="./components/inputImage.jsp">
 								<jsp:param name="field" value="photo"/>
