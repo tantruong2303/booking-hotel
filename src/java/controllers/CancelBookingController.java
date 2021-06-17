@@ -36,7 +36,7 @@ public class CancelBookingController extends HttpServlet {
 
 		BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByBookingId(bookingId);
 		if (bookingInfo == null) {
-			request.setAttribute("roomId", "Room with the given Id was not found");
+			request.setAttribute("bookingInfoIdError", "Room with the given Id was not found");
 			return false;
 		}
 
@@ -52,11 +52,11 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-		boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(bookingId, 0);
+		boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(bookingId, 0, 0f, 0);
 		if (!isCancelBookingInfo) {
 			return false;
 		}
-	
+
 		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
 		if (!isChangeStatus) {
 			return false;
@@ -82,18 +82,23 @@ public class CancelBookingController extends HttpServlet {
 		UserDAO userDao = new UserDAO();
 
 		try {
-
+			HttpSession session = request.getSession(false);
+			User user = userDao.getOneUserByUsername((String) session.getAttribute("username"));
 			if (this.getHandler(request, response)) {
-				HttpSession session = request.getSession(false);
-				User user = userDao.getOneUserByUsername((String) session.getAttribute("username"));
+
 				if (user.getRole() == 1) {
-					response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
+					Integer roomId = GetParam.getIntParams(request, "roomId", "", 0, Integer.MAX_VALUE, 1);
+					response.sendRedirect(Routers.VIEW_BOOKING_MANAGER_CONTROLLER + "?roomId=" + roomId);
 					return;
 				}
 				response.sendRedirect(Routers.VIEW_BOOKING_CONTROLLER);
 				return;
 			}
 
+			if (user.getRole() == 1) {
+				response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
+				return;
+			}
 			request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE).forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();

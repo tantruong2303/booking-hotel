@@ -17,10 +17,12 @@
 			<div class="flex flex-col items-center w-4/5 p-4 mx-auto space-y-10 bg-white">
 				<h1 class="text-4xl font-semibold text-center">Booking Information</h1>
 				<div class="flex space-x-4">
-					<div>
-						
+					<div class="w-full">
+						<jsp:include page="./components/imageShow.jsp">
+							<jsp:param name="defaultValue" value="<%=room.getImageUrl()%>"/>
+						</jsp:include>
 					</div>
-					<div>
+					<div class="w-full">
 						<jsp:include page="./components/roomInfo.jsp"/>
 						<form method="POST" action="AddBookingController?roomId=<%=room.getRoomId() %>" class="space-y-4">
 							<jsp:include page="./components/inputTime.jsp">

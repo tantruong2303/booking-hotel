@@ -47,7 +47,7 @@ public class RoomListController extends HttpServlet {
 		if (status == 2) {
 			list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
 		} else {
-			list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, status);
+			list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, status, true);
 		}
 		Hashtable<Integer, ArrayList<BookingInfo>> bookings = new Hashtable<Integer, ArrayList<BookingInfo>>();
 		for (Room room : list) {

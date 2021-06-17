@@ -1,6 +1,7 @@
 package constant;
 
 public class Routers {
+
 	// jsp file mapping
 	public final static String ADD_BOOKING_INFO_PAGE = "/WEB-INF/view/addBookingInfo.jsp";
 	public final static String ADD_ROOM_PAGE = "/WEB-INF/view/addRoom.jsp";
@@ -17,9 +18,11 @@ public class Routers {
 	public final static String VIEW_USER_INFO_PAGE = "/WEB-INF/view/viewUserInfo.jsp";
 	public final static String VIEW_ROOM_INFO_PAGE = "/WEB-INF/view/viewRoomInfo.jsp";
 	public final static String VIEW_BOOKING_PAGE = "/WEB-INF/view/viewBooking.jsp";
+	public final static String VIEW_BOOKING_MANAGER_PAGE = "/WEB-INF/view/viewBookingManager.jsp";
 
 	// router mapping
 	public final static String VIEW_BOOKING_CONTROLLER = "ViewBookingController";
+	public final static String VIEW_BOOKING_MANAGER_CONTROLLER = "ViewBookingManagerController";
 	public final static String VIEW_ROOM_INFO_CONTROLLER = "ViewRoomController";
 	public final static String ADD_BOOKING_INFO_CONTROLLER = "AddBookingController";
 	public final static String ADD_REVIEW_CONTROLLER = "AddReviewController";
