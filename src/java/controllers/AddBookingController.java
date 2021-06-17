@@ -178,7 +178,7 @@ public class AddBookingController extends HttpServlet {
 
 			if (postHandler(request, response)) {
 				// forward on 200
-				response.sendRedirect(Routers.VIEW_BOOKING_CONTROLLER);
+				response.sendRedirect(Routers.INDEX_CONTROLLER);
 				return;
 			}
 			// forward on 400

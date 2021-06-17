@@ -23,7 +23,7 @@ import utils.Helper;
 
 //Router mapping
 @WebFilter(filterName = "CustomerRoleFilter", urlPatterns = {"/" + Routers.ADD_BOOKING_INFO_CONTROLLER,
-	"/" + Routers.ADD_REVIEW_CONTROLLER,})
+	"/" + Routers.ADD_REVIEW_CONTROLLER, "/" + Routers.VIEW_BOOKING_CONTROLLER})
 public class CustomerRoleFilter implements Filter {
 
 	@Override
