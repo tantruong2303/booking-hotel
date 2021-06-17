@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import constant.Routers;
 
 import utils.GetParam;
+import utils.Helper;
 
 @WebServlet(name = "CancelBookingController", urlPatterns = {"/CancelBookingController"})
 public class CancelBookingController extends HttpServlet {
@@ -49,6 +50,11 @@ public class CancelBookingController extends HttpServlet {
 
 		if (user.getRole() != 1 && bookingInfo.getUserId() != (user.getUserId())) {
 			request.setAttribute("errorMessage", "Action is not allow");
+			return false;
+		}
+		
+		if (Helper.getToDayTime().after(bookingInfo.getStartDate()) || Helper.getToDayTime().equals(bookingInfo.getStartDate())){
+			request.setAttribute("errorMessage", "This room can not cancel in this time");
 			return false;
 		}
 
@@ -99,7 +105,7 @@ public class CancelBookingController extends HttpServlet {
 				response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
 				return;
 			}
-			request.getRequestDispatcher(Routers.CANCEL_BOOKING_INFO_PAGE).forward(request, response);
+			request.getRequestDispatcher(Routers.VIEW_BOOKING_CONTROLLER).forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);

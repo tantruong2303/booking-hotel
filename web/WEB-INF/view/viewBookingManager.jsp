@@ -9,7 +9,6 @@
 <% 
 	ArrayList< BookingInfo> list = (ArrayList<BookingInfo>) GetParam.getClientAttribute(request,"bookingInfos", new ArrayList<Room>());
 	String value =(String) GetParam.getClientParams(request,"roomId",""); 
-System.out.println(value);
 %>
 <!DOCTYPE html>
 <html>
@@ -61,7 +60,7 @@ System.out.println(value);
 							<h1 class="text-xl font-semibold capitalize">
 								Room no: <%= list.get(i).getRoomId()%>
 							</h1>
-							<p>BookingId: <%= list.get(i).getBookingInfoId()%></p>
+							<p>Booking ID: <%= list.get(i).getBookingInfoId()%></p>
 							<p>Total: $<%= list.get(i).getTotal()%></p>
 							<p>Duration Time: <%= list.get(i).getNumberOfDay()%></p>
 							<p>Start Date: <%= Helper.convertDateToString(list.get(i).getStartDate()) %></p>
