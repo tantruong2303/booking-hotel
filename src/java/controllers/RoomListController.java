@@ -30,7 +30,7 @@ public class RoomListController extends HttpServlet {
 		Integer numOfPeople = GetParam.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
 		Float min = GetParam.getFloatParams(request, "minPrice", "min price", 0f, Float.MAX_VALUE, 0f);
 		Float max = GetParam.getFloatParams(request, "maxPrice", "Max price", 0, Float.MAX_VALUE, Float.MAX_VALUE);
-		Integer status = GetParam.getIntParams(request, "status", "Status", 0, 3, 3);
+		Integer status = GetParam.getIntParams(request, "status", "Status", 0, 2, 2);
 		String priceOrder = GetParam.getStringParam(request, "priceOrder", "price", 1, 4, "ASC");
 
 		if (min == null || max == null || status == null || numOfPeople == null || priceOrder == null) {
@@ -44,7 +44,7 @@ public class RoomListController extends HttpServlet {
 
 		ArrayList<Room> list = new ArrayList<>();
 
-		if (status == 3) {
+		if (status == 2) {
 			list = roomDAO.getRooms(numOfPeople, min, max, priceOrder);
 		} else {
 			list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, status);

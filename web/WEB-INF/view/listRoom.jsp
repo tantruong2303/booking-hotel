@@ -3,13 +3,7 @@
 <%@page import="utils.Validator"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dtos.Room"%>
-<%
-	
-	String errorMessage =(String) GetParam.getClientAttribute(request,"errorMessage", "" );	
-	String minPrice = (String) GetParam.getClientParams(request, "minPrice", "0");
-	String maxPrice = (String) GetParam.getClientParams(request, "maxPrice", "9999999");
-	String numOfPeople = (String) GetParam.getClientParams(request, "numOfPeople", "1");
-%>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -53,20 +47,15 @@
 
 						<jsp:include page="./components/formSelectOrder.jsp"/>
 					</div>
-
-					<div class="">
-						<label for="status" class="block font-medium">State</label>
-						<select name="status" id="status" class="block w-full p-1 border rounded-sm border-cerise-red-500 focus:outline-none">
-							<option value="0" label="Disable">
-							</option>
-							<option value="1"  label="Available">
-							</option>
-							<option value="2"  label="Rent">
-							</option>
-							<option value="3"  label="All" selected="selected" >
-							</option>
-						</select>
+					<div class=" flex space-x-8">
+						<jsp:include page="./components/inputSelectStatus.jsp">
+							<jsp:param name="label" value="Status"/>
+							<jsp:param name="field" value="status"/>
+							<jsp:param name="defaultValue" value="2"/>
+						</jsp:include>
+						<div class="w-full"></div>
 					</div>
+					
 					<div class="flex space-x-4 w-1/5"> 
 						<jsp:include page="./components/inputBtn.jsp">
 							<jsp:param name="label" value="Search"/>

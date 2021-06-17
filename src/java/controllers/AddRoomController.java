@@ -88,6 +88,7 @@ public class AddRoomController extends HttpServlet {
 		// get room type
 		RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
 		if (roomType == null) {
+
 			request.setAttribute("roomTypeIdError", "Room type with the given ID was not found");
 			return false;
 		}
@@ -103,10 +104,10 @@ public class AddRoomController extends HttpServlet {
 		Room newRoom = new Room(roomId, price, statusPrams, imageUrl, description, roomType);
 		boolean result = roomDAO.addRoom(newRoom);
 		if (!result) {
-			
+
 			return false;
 		}
-		
+
 		return true;
 	}
 

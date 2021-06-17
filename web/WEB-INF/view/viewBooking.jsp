@@ -32,7 +32,8 @@
 							<h1 class="text-xl font-semibold capitalize">
 								Room no: <%= list.get(i).getRoomId()%>
 							</h1>
-							<p>$<%= list.get(i).getTotal()%></p>
+							<p>BookingId: <%= list.get(i).getBookingInfoId()%></p>
+							<p>Total: $<%= list.get(i).getTotal()%></p>
 							<p>Start Date: <%= Helper.convertDateToString(list.get(i).getStartDate()) %></p>
 							<p>End Date: <%= Helper.convertDateToString(list.get(i).getEndDate())%></p>
 							<p>

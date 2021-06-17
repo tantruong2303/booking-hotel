@@ -23,8 +23,8 @@
 							<jsp:param name="defaultValue" value="<%= room.getImageUrl() %>"/>
 						</jsp:include>
 						<form method="POST" action="UpdateRoomController?roomId=<%= room.getRoomId() %>"  enctype="multipart/form-data"   class="flex-1 px-2">
+							<jsp:include page="./components/message.jsp"/>
 							<jsp:include page="./components/formRoomType.jsp"/>
-
 							<jsp:include page="./components/inputField.jsp">
 								<jsp:param name="type" value="number"/>
 								<jsp:param name="label" value="Price ($)"/>
@@ -32,8 +32,8 @@
 								<jsp:param name="defaultValue" value="<%= room.getPrice() %>"/>
 							</jsp:include>
 							<jsp:include page="./components/textareaField.jsp">
-								<jsp:param name="label" value="Message"/>
-								<jsp:param name="field" value="message"/>
+								<jsp:param name="label" value="Description"/>
+								<jsp:param name="field" value="description"/>
 								<jsp:param name="defaultValue" value="<%=room.getDescription() %>"/>
 							</jsp:include>		
 
