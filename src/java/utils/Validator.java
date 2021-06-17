@@ -64,6 +64,9 @@ public class Validator {
 	}
 
 	public static boolean checkDateInRange(Date dateStartCheck, Date dateEndCheck, Date dateStartInput, Date dateEndInput) {
+		if (dateStartCheck.equals(dateStartInput) || dateEndCheck.equals(dateEndInput)) {
+			return false;
+		}
 
 		if (dateStartCheck.after(dateStartInput) && dateStartCheck.before(dateEndInput)) {
 			return false;
@@ -77,7 +80,7 @@ public class Validator {
 		if (dateEndInput.after(dateStartCheck) && dateEndInput.before(dateEndCheck)) {
 			return false;
 		}
-		
+
 		return true;
 	}
 

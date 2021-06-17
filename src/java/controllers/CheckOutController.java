@@ -37,6 +37,11 @@ public class CheckOutController extends HttpServlet {
 			return false;
 		}
 
+		if (Helper.getToDayTime().before(bookingInfo.getStartDate())) {
+			request.setAttribute("errorMessage", "This room can not checkout in this time");
+			return false;
+		}
+
 		boolean isUpdate;
 		if (action == 0) {
 			isUpdate = bookingInfoDAO.updateBookingInfopStatus(bookingId, 1, bookingInfo.getTotal(), bookingInfo.getBookingInfoId());
@@ -45,7 +50,7 @@ public class CheckOutController extends HttpServlet {
 
 			Integer numberOfDate = Validator.computeNumberOfDay(request, bookingInfo.getStartDate(), currentDate);
 			if (numberOfDate == null || numberOfDate < 0) {
-				numberOfDate = 0;
+				numberOfDate = 1;
 			}
 			Float total = numberOfDate * (bookingInfo.getTotal() / bookingInfo.getNumberOfDay());
 			isUpdate = bookingInfoDAO.updateBookingInfopStatus(bookingId, 1, total, numberOfDate);
