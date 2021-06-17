@@ -54,14 +54,16 @@ public class BookingInfoDAO {
 		return isSuccess;
 	}
 
-	public boolean updateBookingInfopStatus(Integer bookingInfoId, Integer status) throws Exception {
+	public boolean updateBookingInfopStatus(Integer bookingInfoId, Integer status, Float total, Integer numberOfDate) throws Exception {
 		boolean isSuccess = false;
 		try {
 			conn = Connector.getConnection();
-			String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE bookingInfoId = ? and status = -1";
+			String sql = "UPDATE tbl_BookingInfo SET status = ?, total = ?, numberOfDay = ? WHERE bookingInfoId = ? and status = -1";
 			preStm = conn.prepareStatement(sql);
 			preStm.setInt(1, status);
-			preStm.setInt(2, bookingInfoId);
+			preStm.setFloat(2, total);
+			preStm.setInt(3, numberOfDate);
+			preStm.setInt(4, bookingInfoId);
 			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
@@ -69,13 +71,16 @@ public class BookingInfoDAO {
 		return isSuccess;
 	}
 
-	public ArrayList<BookingInfo> getBookingWithUserId(Integer userId) throws Exception {
+	public ArrayList<BookingInfo> getBookingWithRoomId(Integer roomId, Date startDate, Date endDate, Integer status) throws Exception {
 		ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
 		try {
+			String statusQuery = status == 2 ? "and status <> 0" : "and status = " + status;
 			conn = Connector.getConnection();
-			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ? ORDER BY bookingInfoId DESC";
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE roomId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY bookingInfoId DESC";
 			preStm = conn.prepareStatement(sql);
-			preStm.setInt(1, userId);
+			preStm.setInt(1, roomId);
+			preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
+			preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(endDate)));
 			rs = preStm.executeQuery();
 
 			while (rs.next()) {
@@ -91,7 +96,42 @@ public class BookingInfoDAO {
 				Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
 
 				BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, formatStartDate,
-						formatEndDate, numberOfDaySql, statusSql, totalSql);
+					formatEndDate, numberOfDaySql, statusSql, totalSql);
+				bookingInfos.add(bookingInfo);
+			}
+
+		} finally {
+			this.closeConnection();
+		}
+		return bookingInfos;
+	}
+
+	public ArrayList<BookingInfo> getBookingWithUserId(Integer userId, Date startDate, Date endDate, Integer status) throws Exception {
+		ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
+		try {
+			String statusQuery = status == 2 ? "and status <> 0" : "and status = " + status;
+			conn = Connector.getConnection();
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY bookingInfoId DESC";
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, userId);
+			preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
+			preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(endDate)));
+			rs = preStm.executeQuery();
+
+			while (rs.next()) {
+				Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
+				Integer userIdSql = rs.getInt("userId");
+				Integer roomIdSql = rs.getInt("roomId");
+				Date startDateSql = rs.getDate("startDate");
+				Date endDateSql = rs.getDate("endDate");
+				Integer numberOfDaySql = rs.getInt("numberOfDay");
+				Integer statusSql = rs.getInt("status");
+				Float totalSql = rs.getFloat("total");
+				Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
+				Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
+
+				BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, formatStartDate,
+					formatEndDate, numberOfDaySql, statusSql, totalSql);
 				bookingInfos.add(bookingInfo);
 			}
 
@@ -123,7 +163,7 @@ public class BookingInfoDAO {
 				Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
 
 				BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, formatStartDate,
-						formatEndDate, numberOfDaySql, statusSql, totalSql);
+					formatEndDate, numberOfDaySql, statusSql, totalSql);
 				bookingInfos.add(bookingInfo);
 			}
 
@@ -154,7 +194,7 @@ public class BookingInfoDAO {
 				Integer statusSql = rs.getInt("status");
 				Float totalSql = rs.getFloat("total");
 				value = new BookingInfo(bookingInfoIdSql, userIdSql, roomIdSql, startDateSql, endDateSql,
-						numberOfDaySql, statusSql, totalSql);
+					numberOfDaySql, statusSql, totalSql);
 			}
 
 		} finally {

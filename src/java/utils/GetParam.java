@@ -10,18 +10,18 @@ import javax.servlet.http.Part;
 public class GetParam {
 
 	/**
-	 * Get string from request parameter and validate it, if it invalid, return
-	 * default value
-	 * 
+	 * Get string from request parameter and validate it, if it invalid,
+	 * return default value
+	 *
 	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
-	 * @param min     minimum length
-	 * @param max     maximum length
+	 * @param field request parameter name
+	 * @param label Label
+	 * @param min minimum length
+	 * @param max maximum length
 	 * @return Valid string
 	 */
 	public static String getStringParam(HttpServletRequest request, String field, String label, int min, int max,
-			String defaultValue) {
+		String defaultValue) {
 		String value = (String) request.getParameter(field);
 
 		if (value == null || value.trim().isEmpty()) {
@@ -44,18 +44,18 @@ public class GetParam {
 	}
 
 	/**
-	 * Get integer from request parameter and validate it, if it invalid, return
-	 * default value
-	 * 
+	 * Get integer from request parameter and validate it, if it invalid,
+	 * return default value
+	 *
 	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
-	 * @param min     minimum number
-	 * @param max     maximum number
+	 * @param field request parameter name
+	 * @param label Label
+	 * @param min minimum number
+	 * @param max maximum number
 	 * @return Valid integer
 	 */
 	public static Integer getIntParams(HttpServletRequest request, String field, String label, int min, int max,
-			Integer defaultValue) {
+		Integer defaultValue) {
 
 		String value = (String) request.getParameter(field);
 		Integer realValue;
@@ -86,18 +86,18 @@ public class GetParam {
 	}
 
 	/**
-	 * Get float from request parameter and validate it, if it invalid, return
-	 * default value
-	 * 
+	 * Get float from request parameter and validate it, if it invalid,
+	 * return default value
+	 *
 	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
-	 * @param min     minimum number
-	 * @param max     maximum number
+	 * @param field request parameter name
+	 * @param label Label
+	 * @param min minimum number
+	 * @param max maximum number
 	 * @return Valid float
 	 */
 	public static Float getFloatParams(HttpServletRequest request, String field, String label, float min, float max,
-			Float defaultValue) {
+		Float defaultValue) {
 
 		String value = (String) request.getParameter(field);
 		Float realValue;
@@ -130,10 +130,10 @@ public class GetParam {
 
 	/**
 	 * Get phone number from request parameter and validate it
-	 * 
+	 *
 	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
+	 * @param field request parameter name
+	 * @param label Label
 	 * @return Valid phone number
 	 */
 	public static String getPhoneParams(HttpServletRequest request, String field, String label) {
@@ -152,10 +152,10 @@ public class GetParam {
 
 	/**
 	 * Get email from request parameter and validate it
-	 * 
+	 *
 	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
+	 * @param field request parameter name
+	 * @param label Label
 	 * @return Valid email
 	 */
 	public static String getEmailParams(HttpServletRequest request, String field, String label) {
@@ -171,12 +171,28 @@ public class GetParam {
 		return value;
 	}
 
+	public static Date getDateParams(HttpServletRequest request, String field, String label, String defaultValue) {
+		String value = getStringParam(request, field, label, 10, 10, null);
+
+		if (value == null) {
+			if (defaultValue == null) {
+				return null;
+			}
+			request.setAttribute(field + "Error", "");
+			value = defaultValue;
+		}
+
+		Date date = Helper.convertStringToDate(value);
+
+		return date;
+	}
+
 	/**
 	 * Get date from request parameter and make sure it in the future
-	 * 
+	 *
 	 * @param request servlet request
-	 * @param field   request parameter name
-	 * @param label   Label
+	 * @param field request parameter name
+	 * @param label Label
 	 * @return Future date
 	 */
 	public static Date getDateFromNowToFuture(HttpServletRequest request, String field, String label) {
@@ -198,9 +214,9 @@ public class GetParam {
 
 	/**
 	 * Get attribute, if it null, return default value
-	 * 
-	 * @param request      servlet request
-	 * @param field        request parameter name
+	 *
+	 * @param request servlet request
+	 * @param field request parameter name
 	 * @param defaultValue default value
 	 * @return valid value
 	 */
@@ -224,16 +240,16 @@ public class GetParam {
 
 	/**
 	 * Get file from request
-	 * 
-	 * @param request   servlet request
-	 * @param field     request parameter name
-	 * @param label     Label
-	 * @param maxSize   maximum file size
+	 *
+	 * @param request servlet request
+	 * @param field request parameter name
+	 * @param label Label
+	 * @param maxSize maximum file size
 	 * @param extension extension of file
 	 * @return
 	 */
 	public static String getFileParam(HttpServletRequest request, String field, String label, long maxSize,
-			String[] extension) {
+		String[] extension) {
 		try {
 			Part filePart = request.getPart(field);
 			if (filePart == null) {

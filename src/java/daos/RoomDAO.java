@@ -127,7 +127,7 @@ public class RoomDAO {
 			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY roomId ASC ,price "
-					+ order;
+				+ order;
 
 			preStm = conn.prepareStatement(sql);
 			preStm.setFloat(1, numOfPeople);
@@ -156,14 +156,15 @@ public class RoomDAO {
 		return list;
 	}
 
-	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer status)
-			throws Exception {
+	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer status, boolean isSame)
+		throws Exception {
 		ArrayList<Room> list = new ArrayList<>();
+		String isSameQuery = isSame ? " = " : " <> ";
 		try {
 			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
-			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND status = ? ORDER BY price "
-					+ order;
+			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND status " + isSameQuery + " ? ORDER BY price "
+				+ order;
 
 			preStm = conn.prepareStatement(sql);
 			preStm.setFloat(1, numOfPeople);

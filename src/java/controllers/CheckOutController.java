@@ -7,6 +7,7 @@ import daos.RoomDAO;
 import dtos.BookingInfo;
 
 import java.io.IOException;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,38 +15,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import utils.GetParam;
+import utils.Helper;
+import utils.Validator;
 
-@WebServlet(name = "CheckoutController", urlPatterns = { "/CheckoutController" })
+@WebServlet(name = "CheckoutController", urlPatterns = {"/CheckoutController"})
 public class CheckOutController extends HttpServlet {
 
 	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
-		RoomDAO roomDAO = new RoomDAO();
 
-		Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999, null);
+		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE, null);
+		Integer action = GetParam.getIntParams(request, "action", "Action", 0, 1, 0);
 
-		if (roomId == null) {
+		if (bookingId == null || action == null) {
 			return false;
 		}
 
-		BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByBookingId(roomId);
+		BookingInfo bookingInfo = bookingInfoDAO.getBookingInfoByBookingId(bookingId);
 		if (bookingInfo == null) {
 			request.setAttribute("errorMessage", "Booking information with the given Id was not found");
 			return false;
 		}
 
-		boolean isUpdate = bookingInfoDAO.updateBookingInfopStatus(roomId, 1);
-		if (!isUpdate) {
-			return false;
+		boolean isUpdate;
+		if (action == 0) {
+			isUpdate = bookingInfoDAO.updateBookingInfopStatus(bookingId, 1, bookingInfo.getTotal(), bookingInfo.getBookingInfoId());
+		} else {
+			Date currentDate = Helper.getToDayTime();
+
+			Integer numberOfDate = Validator.computeNumberOfDay(request, bookingInfo.getStartDate(), currentDate);
+			if (numberOfDate == null || numberOfDate < 0) {
+				numberOfDate = 0;
+			}
+			Float total = numberOfDate * (bookingInfo.getTotal() / bookingInfo.getNumberOfDay());
+			isUpdate = bookingInfoDAO.updateBookingInfopStatus(bookingId, 1, total, numberOfDate);
 		}
 
-		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
-		if (!isChangeStatus) {
-			return false;
-		}
-
-		return true;
-
+		return isUpdate;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
@@ -53,25 +59,27 @@ public class CheckOutController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 
 			if (this.postHandler(request, response)) {
-				response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
+				Integer roomId = GetParam.getIntParams(request, "roomId", "Booking Info ID", 100, 999, null);
+				response.sendRedirect(Routers.VIEW_BOOKING_MANAGER_CONTROLLER + "?roomId=" + roomId);
 				return;
 			}
 
-			request.getRequestDispatcher(Routers.LIST_ROOM_PAGE).forward(request, response);
+			request.getRequestDispatcher(Routers.VIEW_BOOKING_MANAGER_CONTROLLER).forward(request, response);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 

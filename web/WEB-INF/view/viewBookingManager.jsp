@@ -8,6 +8,8 @@
 <%@page import="java.util.ArrayList"%>
 <% 
 	ArrayList< BookingInfo> list = (ArrayList<BookingInfo>) GetParam.getClientAttribute(request,"bookingInfos", new ArrayList<Room>());
+	String value =(String) GetParam.getClientParams(request,"roomId",""); 
+System.out.println(value);
 %>
 <!DOCTYPE html>
 <html>
@@ -20,11 +22,10 @@
 		<%@include file="./includes/navbar.jspf" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div class="flex flex-col items-center justify-start w-4/5 p-4 mx-auto space-y-4 bg-white">
-				<form class="w-full">
+				<form action="ViewBookingManagerController?roomId=<%=value%>" method="POST" class="w-full">
 					<h1 class="text-4xl font-semibold">Booking List</h1>
 					<jsp:include page="./components/message.jsp"/>
 					<div class="space-y-4">
-
 						<div class="flex space-x-4">
 							<jsp:include page="./components/inputTime.jsp">
 								<jsp:param name="label" value="Start Date"/>
@@ -60,7 +61,7 @@
 							<h1 class="text-xl font-semibold capitalize">
 								Room no: <%= list.get(i).getRoomId()%>
 							</h1>
-							<p>Booking ID: <%= list.get(i).getBookingInfoId()%></p>
+							<p>BookingId: <%= list.get(i).getBookingInfoId()%></p>
 							<p>Total: $<%= list.get(i).getTotal()%></p>
 							<p>Duration Time: <%= list.get(i).getNumberOfDay()%></p>
 							<p>Start Date: <%= Helper.convertDateToString(list.get(i).getStartDate()) %></p>
@@ -72,12 +73,25 @@
 						</div>
 						<% if (list.get(i).getStatus() == -1) {%>
 						<a
-						    href="CancelBookingController?bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
+						    href="CancelBookingController?roomId=<%=  list.get(i).getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
 						    onclick="return confirm('Are you sure to cancel')"
-						    class="inline-block p-2 font-medium text-white bg-red-500"
+						    class="inline-block p-2 duration-300 font-medium text-white bg-red-500 hover:bg-red-600"
 						    >Cancel</a
 						>
+						<a
+						    href="CheckoutController?action=0&roomId=<%=  list.get(i).getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
+						    onclick="return confirm('Are you sure to Checkout')"
+						    class="inline-block p-2 font-medium duration-300 text-white bg-blue-500 hover:bg-blue-600"
+						    >Checkout (Full Date)</a
+						>
+						<a
+						    href="CheckoutController?action=1&roomId=<%=  list.get(i).getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
+						    onclick="return confirm('Are you sure to Checkout')"
+						    class="inline-block p-2 font-medium duration-300 text-white bg-blue-600 hover:bg-blue-700"
+						    >Checkout (Without Date Left)</a
+						>
 						<% }%>
+						
 					</div>
 					<% }%>
 				</div>

@@ -37,17 +37,17 @@
 				<img src="<%= list.get(i).getImageUrl()%>" alt="alt" class="w-32"/>
 			</td>
 			<td class="p-1 text-center border border-black space-y-2">
-				<% if ( list.get(i).getStatus() == 2)  {%>
-				<a href="ViewBookingController?roomId=<%= list.get(i).getRoomId()%>"  class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">View Booking</a>
 
-			
+				<a href="ViewBookingManagerController?roomId=<%= list.get(i).getRoomId()%>"  class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">View Booking</a>
 
 
-				<% } else { %>
+
+
+
 
 				<a href="UpdateRoomController?roomId=<%= list.get(i).getRoomId()%>" class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">Update</a>
 			</td>
-			<% } %>
+
 		</tr>
 		<% }%>
 	</tbody>
