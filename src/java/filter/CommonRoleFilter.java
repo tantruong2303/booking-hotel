@@ -24,7 +24,7 @@ import utils.Helper;
 //Router mapping
 @WebFilter(filterName = "CommonRoleFilter", urlPatterns = {"/" + Routers.VIEW_USER_INFO_CONTROLLER,
 	"/" + Routers.UPDATE_USER_INFO_CONTROLLER, "/" + Routers.CHANGE_PASSWORD_CONTROLLER,
-	"/" + Routers.VIEW_ROOM_INFO_CONTROLLER, "/" + Routers.CANCEL_BOOKING_INFO_CONTROLLER, "/" + Routers.VIEW_BOOKING_CONTROLLER})
+	"/" + Routers.VIEW_ROOM_INFO_CONTROLLER, "/" + Routers.CANCEL_BOOKING_INFO_CONTROLLER,})
 public class CommonRoleFilter implements Filter {
 
 	@Override
