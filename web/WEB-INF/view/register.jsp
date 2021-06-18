@@ -14,7 +14,7 @@
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div
 			    class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
-				<form action="RegisterController" method="POST"   class="space-y-2 fade-in w-64 ">
+				<form action="RegisterController" method="POST"   class="space-y-2 fade-in  w-72">
 					<div class="grid grid-form justify-items-stretch">
 						<h1 class="col-start-2 text-4xl font-semibold">Register User</h1>
 					</div>

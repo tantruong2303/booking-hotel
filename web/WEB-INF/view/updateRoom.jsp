@@ -40,11 +40,11 @@
 							<jsp:include page="./components/inputImage.jsp">
 								<jsp:param name="field" value="photo"/>
 							</jsp:include>	
-                                                        
+
 							<jsp:include page="./components/inputRoomStatus.jsp">
-                                                                <jsp:param name="defaultValue" value="<%=Integer.toString(room.getStatus()) %>"/>
-                                                        </jsp:include>	
-                                                        
+								<jsp:param name="defaultValue" value="<%=Integer.toString(room.getStatus()) %>"/>
+							</jsp:include>	
+
 							<jsp:include page="./components/inputBtn.jsp"  >
 								<jsp:param  name="label" value="Update Room"/>
 							</jsp:include>  

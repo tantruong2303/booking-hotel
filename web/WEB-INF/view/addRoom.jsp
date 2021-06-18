@@ -37,7 +37,9 @@
 								<jsp:param name="field" value="photo"/>
 							</jsp:include>		
 
-							<jsp:include page="./components/inputRoomStatus.jsp"/>
+							<jsp:include page="./components/inputRoomStatus.jsp">
+								<jsp:param name="defaultValue" value="1"/>
+							</jsp:include>	
 							<jsp:include page="./components/inputBtn.jsp">
 								<jsp:param name="label" value="Add New Room"/>
 							</jsp:include>
