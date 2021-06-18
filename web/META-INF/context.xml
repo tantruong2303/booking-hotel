@@ -7,6 +7,6 @@
         username="sa"
         password="1234567Aa"
         driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-        url="jdbc:sqlserver://165.22.254.43:1533;database=BookingHotel;" 
+        url="jdbc:sqlserver://159.89.194.139:1533;database=BookingHotel;" 
     />
 </Context>

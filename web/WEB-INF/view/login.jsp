@@ -12,7 +12,7 @@
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto pt-8  bg-white">
 				<form action="LoginController" method="POST"  class=" space-y-2 fade-in flex flex-col items-center w-72">
-					<h1 class=" text-4xl font-semibold">Lo2gin</h1>
+					<h1 class=" text-4xl font-semibold">Login</h1>
 					<jsp:include page="./components/message.jsp"/>
 
 					<jsp:include page="./components/inputField.jsp">
