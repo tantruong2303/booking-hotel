@@ -10,14 +10,14 @@ services:
                         - my_network
                 ports:
                         - 1000:8080
-        db:
-                image: mcr.microsoft.com/mssql/server:2019-latest
-                environment:
-                        - ACCEPT_EULA=Y
-                        - SA_PASSWORD=1234567Aa
-                volumes:
-                        - ./data:/data
-                ports:
-                        - 1533:1433
-                networks:
-                        - my_network
+        # db:
+        #         image: mcr.microsoft.com/mssql/server:2019-latest
+        #         environment:
+        #                 - ACCEPT_EULA=Y
+        #                 - SA_PASSWORD=1234567Aa
+        #         volumes:
+        #                 - ./data:/data
+        #         ports:
+        #                 - 1533:1433
+        #         networks:
+        #                 - my_network

@@ -1,4 +1,4 @@
-FROM tomcat:8.5.66-jdk8-adoptopenjdk-hotspot
+FROM tomcat:8.5.68-jdk8-adoptopenjdk-openj9
 
 LABEL maintainer="heaty566@gmail.com"
 
