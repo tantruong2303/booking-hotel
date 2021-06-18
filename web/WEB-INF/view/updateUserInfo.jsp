@@ -1,4 +1,9 @@
+<%@page import="utils.GetParam"%>
+<%@page import="dtos.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+User  user =(User) GetParam.getClientAttribute(request,"user", new User() ); 
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -18,17 +23,20 @@
 						<jsp:param name="type" value="text"/>
 						<jsp:param name="label" value="Full name"/>
 						<jsp:param name="field" value="fullName"/>
+						<jsp:param name="defaultValue" value="<%=user.getFullName() %>"/>
 					</jsp:include>
 
 					<jsp:include page="./components/inputField.jsp">
 						<jsp:param name="type" value="email"/>
 						<jsp:param name="label" value="Email"/>
 						<jsp:param name="field" value="email"/>
+						<jsp:param name="defaultValue" value="<%=user.getEmail()%>"/>
 					</jsp:include>
 					<jsp:include page="./components/inputField.jsp">
 						<jsp:param name="type" value="text"/>
 						<jsp:param name="label" value="Phone"/>
 						<jsp:param name="field" value="phone"/>
+						<jsp:param name="defaultValue" value="<%=user.getPhone()%>"/>
 					</jsp:include>
 
 					<jsp:include page="./components/inputBtn.jsp">
