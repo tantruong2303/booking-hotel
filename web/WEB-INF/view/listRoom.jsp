@@ -17,7 +17,7 @@
 		<%@include file="./includes/navbar.jspf" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div   class="flex flex-col items-center justify-start w-full p-4 mx-auto space-y-4 bg-white">
-				<form action="RoomListController" method = "GET" class="w-full space-y-2">
+                                <form action="RoomListController" method = "GET" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">SanninSC Hotel Management</h1>
 
 					<jsp:include page="./components/message.jsp"/>

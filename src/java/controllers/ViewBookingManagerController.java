@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import utils.GetParam;
+import utils.Validator;
 
 @WebServlet(name = "ViewBookingManagerController", urlPatterns = {"/ViewBookingManagerController"})
 public class ViewBookingManagerController extends HttpServlet {
@@ -35,6 +36,12 @@ public class ViewBookingManagerController extends HttpServlet {
 			if (roomId == null) {
 				request.setAttribute("errorMessage", "Room with the given ID was not found");
 			}
+			return false;
+		}
+		
+		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
+		if (numberOfDay == null || numberOfDay < 0) {
+			request.setAttribute("errorMessage", "Start date have to be before end date");
 			return false;
 		}
 

@@ -18,7 +18,7 @@ public class Validator {
 		String pattern = "^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\\b";
 		boolean isMatched = Pattern.matches(pattern, value);
 		if (!isMatched) {
-			return "is not correct format (03, 05, 07, 08, 09, 012, 016, 018, 019)";
+			return " is not correct format (03, 05, 07, 08, 09, 012, 016, 018, 019)";
 		}
 
 		return "";
@@ -35,7 +35,7 @@ public class Validator {
 
 		boolean isMatched = regex.matcher(value).matches();
 		if (!isMatched) {
-			return "is not correct format. Please enter a valid email";
+			return " is not correct format. Please enter a valid email";
 		}
 
 		return "";

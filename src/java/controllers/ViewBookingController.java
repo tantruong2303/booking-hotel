@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import utils.GetParam;
+import utils.Validator;
 
 @WebServlet(name = "ViewBookingController", urlPatterns = {"/ViewBookingController"})
 public class ViewBookingController extends HttpServlet {
@@ -28,6 +29,12 @@ public class ViewBookingController extends HttpServlet {
 		
 		Integer status = GetParam.getIntParams(request, "status", "Status", 0, 2, 2);
 		if (status == null || startDate == null || endDate == null) {
+			return false;
+		}
+		
+		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
+		if (numberOfDay == null || numberOfDay < 0) {
+			request.setAttribute("errorMessage", "Start date have to be before end date");
 			return false;
 		}
 
