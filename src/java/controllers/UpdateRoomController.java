@@ -39,7 +39,7 @@ public class UpdateRoomController extends HttpServlet {
 
 		Room room = roomDAO.getRoomById(roomId);
 		if (room == null) {
-			request.setAttribute("messageError", "Room with the given id was not found");
+			request.setAttribute("errorMessage", "Room with the given id was not found");
 			return false;
 		}
 
