@@ -7,4 +7,3 @@ nbbuild/
 nbdist/
 .nb-gradle/
 .vscode/
-/dist/
