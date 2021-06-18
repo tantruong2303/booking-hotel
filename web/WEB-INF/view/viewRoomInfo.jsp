@@ -17,8 +17,9 @@
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div class="flex flex-col items-center justify-between w-4/5 p-4 mx-auto space-y-10 bg-white">
 				<div class="space-y-4">
+					<h1 class="text-4xl font-semibold text-center">Room Information</h1>
 					<div class="space-y-2">
-						<h1 class="text-4xl font-semibold text-center">Room Information</h1>
+						
 						<div class="flex">
 							<div class="flex-1">
 								<img
