@@ -108,6 +108,7 @@ public class AddBookingController extends HttpServlet {
 		}
 
 		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
+		
 		if (numberOfDay == null || numberOfDay <= 0) {
 			request.setAttribute("errorMessage", "The time which picked is invalid");
 			return false;

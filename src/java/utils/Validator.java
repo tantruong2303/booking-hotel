@@ -57,7 +57,7 @@ public class Validator {
 				return null;
 			} else {
 				long diff = endDate.getTime() - startDate.getTime();
-				return (int) (diff / (1000 * 60 * 60 * 24));
+				return (int) ((diff / (1000 * 60 * 60 * 24)) + 1);
 			}
 		}
 		return null;

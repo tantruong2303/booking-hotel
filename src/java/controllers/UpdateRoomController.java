@@ -91,6 +91,7 @@ public class UpdateRoomController extends HttpServlet {
 		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
 
 		if (price == null || roomId == null || statusPrams == null || roomTypeId == null | description == null) {
+			request.setAttribute("photoError", null);
 			return false;
 		}
 

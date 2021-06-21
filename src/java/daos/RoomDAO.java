@@ -165,7 +165,7 @@ public class RoomDAO {
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND status " + isSameQuery + " ? ORDER BY price "
 				+ order;
-
+			
 			preStm = conn.prepareStatement(sql);
 			preStm.setFloat(1, numOfPeople);
 			preStm.setFloat(2, min);

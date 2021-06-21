@@ -55,8 +55,8 @@
 						</jsp:include>
 						<div class="w-full"></div>
 					</div>
-					
-					<div class="flex space-x-4 w-1/5"> 
+
+					<div class="flex space-x-4 w-2/5"> 
 						<jsp:include page="./components/inputBtn.jsp">
 							<jsp:param name="label" value="Search"/>
 						</jsp:include>
@@ -65,6 +65,8 @@
 							<jsp:param name="label" value="Add New Room"/>
 							<jsp:param  name="action" value ="AddRoomController"/>
 						</jsp:include>
+						<a href="ViewBookingManagerController"  class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">View Booking</a>
+
 
 					</div>
 				</form>
