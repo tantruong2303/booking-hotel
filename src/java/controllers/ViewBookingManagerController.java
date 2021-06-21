@@ -18,7 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import utils.GetParam;
 import utils.Validator;
 
@@ -26,40 +25,29 @@ import utils.Validator;
 public class ViewBookingManagerController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		RoomDAO roomDAO = new RoomDAO();
 		Date startDate = GetParam.getDateParams(request, "startDate", "Start Date", "2019-01-01");
 		Date endDate = GetParam.getDateParams(request, "endDate", "End Date", "2025-01-01");
-		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 100, 999, null);
-		Integer status = GetParam.getIntParams(request, "status", "Status", 0, 2, 2);
-		if (status == null || startDate == null || endDate == null || roomId == null) {
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999, -99);
+		Integer status = GetParam.getIntParams(request, "status", "Status", -1, 2, 2);
 
-			if (roomId == null) {
-				request.setAttribute("errorMessage", "Room with the given ID was not found");
-			}
+		
+		if (status == null || startDate == null || endDate == null || roomId == null) {
 			return false;
 		}
-		
+
 		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
 		if (numberOfDay == null || numberOfDay < 0) {
 			request.setAttribute("errorMessage", "Start date have to be before end date");
 			return false;
 		}
 
-		Room room = roomDAO.getRoomById(roomId);
-		if (room == null) {
-			request.setAttribute("errorMessage", "Room with the given ID was not found");
-			return false;
-		}
+		String roomIdSearch = roomId == -99 ? "" : roomId.toString();
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
-		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingWithRoomId(roomId, startDate, endDate, status);
-
-		if (bookingInfos == null) {
-			request.setAttribute("errorMessage", "Booking Info with the given id was not found");
-			return false;
-		}
-
+		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingForManager(roomIdSearch, startDate, endDate, status);
+		ArrayList<BookingInfo> total = bookingInfoDAO.getBookingForManager(roomIdSearch, startDate, endDate, 2);
 		request.setAttribute("bookingInfos", bookingInfos);
+		request.setAttribute("total", total);
 		return true;
 	}
 

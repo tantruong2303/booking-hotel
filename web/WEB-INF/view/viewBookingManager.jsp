@@ -6,9 +6,27 @@
 <%@page import="utils.Validator"%>
 <%@page import="dtos.Room"%>
 <%@page import="java.util.ArrayList"%>
+
 <% 
 	ArrayList< BookingInfo> list = (ArrayList<BookingInfo>) GetParam.getClientAttribute(request,"bookingInfos", new ArrayList<Room>());
-	String value =(String) GetParam.getClientParams(request,"roomId",""); 
+	ArrayList< BookingInfo> total = (ArrayList<BookingInfo>) GetParam.getClientAttribute(request,"total", new ArrayList<Room>());
+	int paid = 0;
+	int cancel = 0;
+	int process = 0;
+	float totalProcess = 0;
+	float totalBooking = 0;
+	for (BookingInfo bookingInfo : total) {
+		if(bookingInfo.getStatus() == -1){
+			totalProcess += bookingInfo.getTotal();
+			process +=1;
+		} else if (bookingInfo.getStatus() == 1){
+			paid +=1;
+		} else {
+			cancel +=1;
+		}
+		totalBooking += bookingInfo.getTotal();
+	}
+
 %>
 <!DOCTYPE html>
 <html>
@@ -21,10 +39,27 @@
 		<%@include file="./includes/navbar.jspf" %>
 		<main class="flex flex-1 h-full bg-cerise-red-500">
 			<div class="flex flex-col items-center justify-start w-4/5 p-4 mx-auto space-y-4 bg-white">
-				<form action="ViewBookingManagerController?roomId=<%=value%>" method="POST" class="w-full">
+				<form action="ViewBookingManagerController" method="POST" class="w-full">
 					<h1 class="text-4xl font-semibold">Booking List</h1>
+
 					<jsp:include page="./components/message.jsp"/>
+					
+
 					<div class="space-y-4">
+						<div class="flex space-x-4">
+							<jsp:include page="./components/inputField.jsp">
+								<jsp:param name="type" value="text"/>
+								<jsp:param name="label" value="Room Id (100 - 999)"/>
+								<jsp:param name="field" value="roomId"/>
+							</jsp:include>
+							<jsp:include page="./components/inputSelectBooking.jsp">
+								<jsp:param name="label" value="Status"/>
+								<jsp:param name="field" value="status"/>
+								<jsp:param name="defaultValue" value="2"/>
+							</jsp:include>	
+
+
+						</div>
 						<div class="flex space-x-4">
 							<jsp:include page="./components/inputTime.jsp">
 								<jsp:param name="label" value="Start Date"/>
@@ -37,11 +72,7 @@
 								<jsp:param name="defaultValue" value="2025-01-01"/>
 							</jsp:include>
 						</div>
-						<jsp:include page="./components/inputSelectStatus.jsp">
-							<jsp:param name="label" value="Status"/>
-							<jsp:param name="field" value="status"/>
-							<jsp:param name="defaultValue" value="2"/>
-						</jsp:include>	
+
 
 
 						<jsp:include page="./components/inputBtn.jsp">
@@ -51,6 +82,12 @@
 
 
 				</form>
+					<div class="flex justify-between w-full text-xl font-bold" >
+						<h1 class="">Total Booking: <%= total.size()%>($<%= totalBooking %>)</h1>
+						<h1 class="text-green-700">Total Paid: <%= paid%>($<%= totalBooking -totalProcess %>)</h1>
+						<h1 class="text-yellow-500">Total Process: <%= process%>($<%= totalProcess %>)</h1>
+						<h1 class="text-red-500">Total Cancel: <%= cancel%>($0)</h1>
+					</div>
 				<div class="w-full space-y-2">
 					<% for (int i = 0; i < list.size(); i++) { %>
 					<div
@@ -90,7 +127,7 @@
 						    >Checkout (Without Date Left)</a
 						>
 						<% }%>
-						
+
 					</div>
 					<% }%>
 				</div>

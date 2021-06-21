@@ -71,14 +71,14 @@ public class BookingInfoDAO {
 		return isSuccess;
 	}
 
-	public ArrayList<BookingInfo> getBookingWithRoomId(Integer roomId, Date startDate, Date endDate, Integer status) throws Exception {
+	public ArrayList<BookingInfo> getBookingForManager(String roomId, Date startDate, Date endDate, Integer status) throws Exception {
 		ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
 		try {
-			String statusQuery = status == 2 ? "and status <> 0" : "and status = " + status;
+			String statusQuery = status == 2 ? "" : "and status = " + status;
 			conn = Connector.getConnection();
-			String sql = "SELECT * FROM tbl_BookingInfo WHERE roomId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY bookingInfoId DESC";
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE CAST( roomId as varchar ) like ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY status ASC";
 			preStm = conn.prepareStatement(sql);
-			preStm.setInt(1, roomId);
+			preStm.setString(1,"%"+ roomId+"%");
 			preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
 			preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(endDate)));
 			rs = preStm.executeQuery();

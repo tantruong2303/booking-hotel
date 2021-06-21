@@ -65,8 +65,11 @@
 							<jsp:param name="label" value="Add New Room"/>
 							<jsp:param  name="action" value ="AddRoomController"/>
 						</jsp:include>
-						<a href="ViewBookingManagerController"  class="inline-block p-2 font-medium text-white duration-200 bg-blue-500 rounded-sm hover:bg-blue-600">View Booking</a>
-
+						<jsp:include page="./components/btnLink.jsp">
+							<jsp:param name="label" value="View Booking"/>
+							<jsp:param  name="action" value ="ViewBookingManagerController"/>
+						</jsp:include>
+						
 
 					</div>
 				</form>
