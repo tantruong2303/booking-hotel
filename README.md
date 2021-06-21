@@ -42,8 +42,13 @@ Creating a hotel website for SinninSC hotel allows user and manager to create th
 ## Project Picture
 
 ### Database Diagram
+#### Entity Diagram
 
-![Database Page](data/database.png)
+![Database Page](data/entity-diagram.png)
+
+#### Relational Diagram
+
+![Database Page](data/relation-diagram.png)
 
 ### Home Page
 
