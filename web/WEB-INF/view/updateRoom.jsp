@@ -35,12 +35,10 @@
 								<jsp:param name="label" value="Description"/>
 								<jsp:param name="field" value="description"/>
 								<jsp:param name="defaultValue" value="<%=room.getDescription() %>"/>
-							</jsp:include>		
-
+							</jsp:include>	
 							<jsp:include page="./components/inputImage.jsp">
 								<jsp:param name="field" value="photo"/>
 							</jsp:include>	
-
 							<jsp:include page="./components/inputRoomStatus.jsp">
 								<jsp:param name="defaultValue" value="<%=Integer.toString(room.getStatus()) %>"/>
 							</jsp:include>	
