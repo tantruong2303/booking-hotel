@@ -88,8 +88,10 @@ public class UpdateRoomController extends HttpServlet {
 		Integer statusPrams = GetParam.getIntParams(request, "status", "Is Disable", 0, 1, null);
 		String description = GetParam.getStringParam(request, "description", "Description", 1, 500, null);
 		Integer roomTypeId = GetParam.getIntParams(request, "roomTypeId", "Is Disable", 0, Integer.MAX_VALUE, null);
+		String imageUrl = GetParam.getFileParam(request, "photo", "Photo", 2000000, FileHelper.imageExtension);
 
 		if (price == null || roomId == null || statusPrams == null || roomTypeId == null | description == null) {
+                        request.setAttribute("photoError", null);
 			return false;
 		}
 
@@ -106,9 +108,9 @@ public class UpdateRoomController extends HttpServlet {
 			return false;
 		}
 
-		
-		String imageUrl = room.getImageUrl();
-		
+		if (imageUrl == null) {
+			imageUrl = room.getImageUrl();
+		}
 
 		RoomType roomType = roomDAO.getRoomTypeById(roomTypeId);
 
