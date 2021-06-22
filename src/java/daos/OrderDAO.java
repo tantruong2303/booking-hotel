@@ -83,4 +83,32 @@ public class OrderDAO {
         }
         return order;
     }
+
+    public ArrayList<Order> getAllOrders() throws Exception {
+        ArrayList<Order> orderList = new ArrayList<>();
+        try {
+            conn = Connector.getConnection();
+            UserDAO userDAO = new UserDAO();
+
+            String sql = "SELECT orderId, userId, createDate FROM tbl_Order";
+            preStm = conn.prepareStatement(sql);
+            rs = preStm.executeQuery();
+
+            while (rs.next()) {
+                int orderId = rs.getInt("orderId");
+                int userId = rs.getInt("userId");
+                Date createDate = rs.getDate("createDate");
+
+                User user = userDAO.getOneUserByUserId(userId);
+                if (user != null) {
+                    Order order = new Order(orderId, user, createDate);
+                    orderList.add(order);
+                }
+
+            }
+        } finally {
+            this.closeConnection();
+        }
+        return orderList;
+    }
 }

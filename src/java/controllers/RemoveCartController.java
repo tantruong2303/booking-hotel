@@ -8,7 +8,6 @@ package controllers;
 import constant.Routers;
 import dtos.BookingInfo;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,10 +41,20 @@ public class RemoveCartController extends HttpServlet {
         if (bookingInfoIds == null) {
             return false;
         }
-        System.out.println("ahihiahiahi");
+        
+        if (bookingInfoIds.length == 0) {
+            request.setAttribute("errorMessage", "Booking Information need to remove is empty!");
+            return false;
+        }
+
         HttpSession session = request.getSession(false);
         HashMap<String, BookingInfo> bookingInfoList = (HashMap<String, BookingInfo>) session.getAttribute("bookingInfoList");
         if (bookingInfoList == null) {
+            request.setAttribute("errorMessage", "Booking cart is empty!");
+            return false;
+        }
+        
+        if (bookingInfoList.isEmpty()) {
             request.setAttribute("errorMessage", "Booking cart is empty!");
             return false;
         }

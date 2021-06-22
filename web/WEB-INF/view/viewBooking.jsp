@@ -58,9 +58,11 @@
 					    >
 						<div>
 							<h1 class="text-xl font-semibold capitalize">
-								Room no: <%= list.get(i).getRoomId()%>
+								Room no: <%= list.get(i).getRoom().getRoomId() %>
 							</h1>
 							<p>Booking ID: <%= list.get(i).getBookingInfoId()%></p>
+                                                        <p>Order ID: <%= list.get(i).getOrder().getOrderId() %></p>
+                                                        <p>Room Price: $<%= list.get(i).getRoomPrice()%></p>
 							<p>Total: $<%= list.get(i).getTotal()%></p>
 							<p>Duration Time: <%= list.get(i).getNumberOfDay()%></p>
 							<p>Start Date: <%= Helper.convertDateToString(list.get(i).getStartDate()) %></p>

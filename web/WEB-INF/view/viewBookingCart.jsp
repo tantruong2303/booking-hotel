@@ -32,6 +32,7 @@
                 %>
 
                 <tr>
+                    <td>Booking Information ID</td>
                     <td>Room ID</td>
                     <td>Start Date</td>
                     <td>End Date</td>
@@ -49,6 +50,7 @@
 
 
                 <tr>
+                    <td><%= bookingInfo.getBookingInfoId()%></td>
                     <td><%= bookingInfo.getRoom().getRoomId()%></td>
                     <td><%= bookingInfo.getStartDate()%></td>
                     <td><%= bookingInfo.getEndDate()%></td>
@@ -61,7 +63,7 @@
 
                 <tr>
                     <td><h3>Total: <%= total%></h3></td>
-                    <td><a onclick="return confirmation()" href=""><h2>Buy</h2></a></td>
+                    <td><a onclick="return confirmation()" href="<%= Routers.ADD_ORDER_CONTROLLER %>"><h2>Buy</h2></a></td>
                     <td></td>
                     <td></td>
                     <td></td>

@@ -1,8 +1,11 @@
 package utils;
 
+import daos.OrderDAO;
+import dtos.Order;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -178,5 +181,18 @@ public class Helper {
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		return convertStringToDate(formatter.format(calendar.getTime()));
 	}
+        
+        public static Date getCurrentDate() {
+                Date date = new Date(System.currentTimeMillis());
+                return date;
+        }
+        
+        public static Integer generateOrderId() throws Exception {
+                OrderDAO orderDAO = new OrderDAO();
+
+                ArrayList<Order> list = orderDAO.getAllOrders();
+
+                return (list.size() + 1);
+        }
 
 }

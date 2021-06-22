@@ -129,7 +129,7 @@ public class BookingInfoDAO {
             OrderDAO orderDAO = new OrderDAO();
             RoomDAO roomDAO = new RoomDAO();
 
-            String sql = "SELECT * FROM tbl_BookingInfo WHERE userId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY bookingInfoId DESC";
+            String sql = "SELECT bookingInfoId, tbl_BookingInfo.orderId, roomId, startDate, endDate, numberOfDay, status, roomPrice, total FROM tbl_Order JOIN tbl_BookingInfo ON tbl_Order.orderId = tbl_BookingInfo.orderId WHERE userId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY bookingInfoId DESC";
             preStm = conn.prepareStatement(sql);
             preStm.setInt(1, userId);
             preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
