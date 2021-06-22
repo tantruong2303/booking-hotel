@@ -292,4 +292,19 @@ public class GetParam {
 		}
 
 	}
+        
+        public static Integer[] getIntegerArrayParams(HttpServletRequest request, String field, String label) {
+        String[] inputs = request.getParameterValues(field);
+        if (inputs == null) {
+            request.setAttribute(field + "Error", label + " is required");
+            return null;
+        }
+        
+        Integer[] values = new Integer[inputs.length];
+        for (int i = 0; i < inputs.length; i++) {
+            values[i] = Integer.parseInt(inputs[i]);
+        }
+        return values;
+    }
+
 }

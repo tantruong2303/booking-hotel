@@ -1,3 +1,4 @@
+<%@page import="constant.Routers"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%> 
 <%@page import="utils.GetParam"%>
 <%@page import="dtos.Room"%>
@@ -24,7 +25,7 @@
 					</div>
 					<div class="w-full">
 						<jsp:include page="./components/roomInfo.jsp"/>
-						<form method="POST" action="AddBookingController?roomId=<%=room.getRoomId() %>" class="space-y-4">
+                                                <form method="POST" action="<%= Routers.ADD_TO_CART_CONTROLLER %>?roomId=<%=room.getRoomId() %>" class="space-y-4">
 							<jsp:include page="./components/inputTime.jsp">
 								<jsp:param name="label" value="Start Date"/>
 								<jsp:param name="field" value="startDate"/>
@@ -34,7 +35,7 @@
 								<jsp:param name="field" value="endDate"/>
 							</jsp:include>
 							<jsp:include page="./components/inputBtn.jsp">
-								<jsp:param name="label" value="Booking Now"/>
+								<jsp:param name="label" value="Add To Cart"/>
 							</jsp:include>
 						</form>
 					</div>

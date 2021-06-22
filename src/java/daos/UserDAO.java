@@ -73,6 +73,31 @@ public class UserDAO {
 		}
 		return user;
 	}
+        
+        public User getOneUserByUserId(Integer userId) throws Exception {
+		User user = null;
+
+		try {
+			conn = Connector.getConnection();
+			String sql = "SELECT * FROM tbl_User WHERE userId=?";
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, userId);
+			rs = preStm.executeQuery();
+
+			if (rs.next()) {
+				String usernameSql = rs.getString("username");
+				String passwordSql = rs.getString("password");
+				String fullNameSql = rs.getString("fullName");
+				String emailSql = rs.getString("email");
+				String phoneSql = rs.getString("phone");
+				int roleSql = rs.getInt("role");
+				user = new User(userId, usernameSql, passwordSql, fullNameSql, emailSql, phoneSql, roleSql);
+			}
+		} finally {
+			this.closeConnection();
+		}
+		return user;
+	}
 
 	public boolean updateUserPasswordByUsername(String username, String password) throws Exception {
 		boolean isSuccess = false;

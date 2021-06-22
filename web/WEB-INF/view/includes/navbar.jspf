@@ -1,4 +1,5 @@
 <%-- any content can be specified here e.g.: --%>
+<%@page import="constant.Routers"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@page import="utils.Helper"%>
 <div class="z-50 flex items-stretch justify-between h-16 px-16 bg-white shadow-md">
@@ -21,6 +22,10 @@
                 <%} %> <% if (Helper.correctRole(request, 0,0)){ %>
                 <li>
                         <a href="ViewBookingController" class="duration-200 hover:text-cerise-red">View Booking</a>
+                </li>
+                
+                <li>
+                    <a href="<%= Routers.VIEW_BOOKING_CART_CONTROLLER %> " class="duration-200 hover:text-cerise-red">View Booking Cart</a>
                 </li>
 
                 <%} %>

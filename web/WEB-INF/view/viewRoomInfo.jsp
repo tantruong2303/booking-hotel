@@ -32,8 +32,8 @@
 							<div class="flex-1 px-2">
 								<jsp:include page="./components/roomInfo.jsp"/>
 								<jsp:include page="./components/btnLink.jsp">
-									<jsp:param name="label" value="Booking Now"/>
-									<jsp:param name="action" value="AddBookingController?roomId=${room.getRoomId()}"/>
+									<jsp:param name="label" value="Add To Cart"/>
+									<jsp:param name="action" value="AddToCartController?roomId=${room.getRoomId()}"/>
 								</jsp:include>
 							</div>
 						</div>

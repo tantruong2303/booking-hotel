@@ -62,19 +62,31 @@ VALUES (100, 100, N'Free wifi, bedroom, food, drink', 1, N'images\photo1.jpg', 1
 	   (109, 180, N'Free wifi, bedroom, food, drink', 1, N'images\photo10.jpg', 1);
 
 /*---------------------------------------------------------------------------*/
+
+CREATE TABLE tbl_Order
+(
+    orderId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+    userId int FOREIGN KEY REFERENCES tbl_User(userId) ON DELETE CASCADE,
+    createDate DATE,
+)
+GO
+
+/*---------------------------------------------------------------------------*/
+
 CREATE TABLE tbl_BookingInfo
 (
 	bookingInfoId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
-	userId int FOREIGN KEY REFERENCES tbl_User(userId),
-	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId),
+	orderId int FOREIGN KEY REFERENCES tbl_Order(orderId) ON DELETE CASCADE,
+	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId) ON DELETE CASCADE,
 	startDate Date,
 	endDate Date,
 	numberOfDay int,
 	status int,
+	roomPrice float,
 	total float
 );
 GO
-
+/*
 INSERt INTO tbl_BookingInfo(userId, roomId, startDate, endDate, numberOfDay, status, total)
 VALUES (1, 100, N'2021-04-20', N'2021-04-28', 8, 1, 800),
 	   (1, 101, N'2021-03-21', N'2021-03-25', 4, 1, 600),
@@ -83,6 +95,9 @@ VALUES (1, 100, N'2021-04-20', N'2021-04-28', 8, 1, 800),
 	   (1, 105, N'2021-06-01', N'2021-06-07', 7, 0, 0),
 	   (2, 102, N'2021-04-20', N'2021-04-22', 2, 1, 320);
 GO
+*/
+
+
 
 /*---------------------------------------------------------------------------*/
 CREATE TABLE tbl_Review

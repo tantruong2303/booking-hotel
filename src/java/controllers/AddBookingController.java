@@ -79,7 +79,7 @@ public class AddBookingController extends HttpServlet {
 
 			if (this.getHandler(request, response)) {
 				// forward on 200
-				url = (Routers.ADD_BOOKING_INFO_PAGE);
+//				url = (Routers.ADD_BOOKING_INFO_PAGE);
 
 			} else {
 				// forward on 400g
@@ -146,13 +146,13 @@ public class AddBookingController extends HttpServlet {
 		}
 
 		// handle create new booking
-		Float total = numberOfDay * room.getPrice();
-		BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay, -1, total);
-		boolean isAddBookingInfo = bookingInfoDAO.addBookingInfo(bookingInfo);
-		// checking update add booking
-		if (!isAddBookingInfo) {
-			return false;
-		}
+//		Float total = numberOfDay * room.getPrice();
+//		BookingInfo bookingInfo = new BookingInfo(user.getUserId(), roomId, startDate, endDate, numberOfDay, -1, total);
+//		boolean isAddBookingInfo = bookingInfoDAO.addBookingInfo(bookingInfo);
+//		// checking update add booking
+//		if (!isAddBookingInfo) {
+//			return false;
+//		}
 
 		// checking update status room
 		boolean isChangeStatus = roomDAO.changeStatus(room.getRoomId(), 1);

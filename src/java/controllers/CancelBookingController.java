@@ -48,10 +48,10 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-		if (user.getRole() != 1 && bookingInfo.getUserId() != (user.getUserId())) {
-			request.setAttribute("errorMessage", "Action is not allow");
-			return false;
-		}
+//		if (user.getRole() != 1 && bookingInfo.getUserId() != (user.getUserId())) {
+//			request.setAttribute("errorMessage", "Action is not allow");
+//			return false;
+//		}
 		
 		if (Helper.getToDayTime().after(bookingInfo.getStartDate()) || Helper.getToDayTime().equals(bookingInfo.getStartDate())){
 			request.setAttribute("errorMessage", "This room can not cancel in this time");
@@ -63,10 +63,10 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
-		if (!isChangeStatus) {
-			return false;
-		}
+//		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
+//		if (!isChangeStatus) {
+//			return false;
+//		}
 
 		return true;
 
