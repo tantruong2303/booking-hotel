@@ -32,7 +32,11 @@ CREATE TABLE tbl_RoomType
 go
 
 INSERT INTO tbl_RoomType(name, numOfPeople)
-VALUES(N'queen room', 2),
+VALUES
+	(N'double room', 4),
+	(N'twin room', 2),
+	(N'single room', 1),
+	(N'queen room', 2),
 	  (N'king room', 3),
 	  (N'luxury room', 2);
 GO

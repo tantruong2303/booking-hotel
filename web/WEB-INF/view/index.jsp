@@ -19,9 +19,11 @@
 
 				<form action="IndexController" method = "GET" class="w-full space-y-2">
 					<h1 class="text-4xl font-semibold">Welcome to SanninSC Hotel</h1>
-                                        
-                                        <jsp:include page="./components/message.jsp"/>
-                                        
+
+					<jsp:include page="./components/message.jsp"/>
+
+
+
 					<div class="flex space-x-2">
 						<jsp:include page="./components/inputField.jsp">
 							<jsp:param name="type" value="number"/>

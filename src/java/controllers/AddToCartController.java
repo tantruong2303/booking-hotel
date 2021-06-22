@@ -205,7 +205,7 @@ public class AddToCartController extends HttpServlet {
 
             if (postHandler(request, response)) {
                 // forward on 200
-                response.sendRedirect(Routers.INDEX_CONTROLLER);
+                response.sendRedirect(Routers.INDEX_CONTROLLER+"?message=A room has been added to your cart");
                 return;
             }
             // forward on 400

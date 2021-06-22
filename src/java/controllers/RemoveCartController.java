@@ -24,78 +24,79 @@ import utils.GetParam;
 @WebServlet(name = "RemoveCartController", urlPatterns = {"/RemoveCartController"})
 public class RemoveCartController extends HttpServlet {
 
-   /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @return 
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+	/**
+	 * Processes requests for both HTTP <code>GET</code> and
+	 * <code>POST</code> methods.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @return
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
+		throws Exception {
 
-        Integer[] bookingInfoIds = GetParam.getIntegerArrayParams(request, "bookingInfoId", "Booking Info ID");
-        if (bookingInfoIds == null) {
-            return false;
-        }
-        
-        if (bookingInfoIds.length == 0) {
-            request.setAttribute("errorMessage", "Booking Information need to remove is empty!");
-            return false;
-        }
+		Integer[] bookingInfoIds = GetParam.getIntegerArrayParams(request, "bookingInfoId", "Booking Info ID");
+		if (bookingInfoIds == null) {
+			return false;
+		}
 
-        HttpSession session = request.getSession(false);
-        HashMap<String, BookingInfo> bookingInfoList = (HashMap<String, BookingInfo>) session.getAttribute("bookingInfoList");
-        if (bookingInfoList == null) {
-            request.setAttribute("errorMessage", "Booking cart is empty!");
-            return false;
-        }
-        
-        if (bookingInfoList.isEmpty()) {
-            request.setAttribute("errorMessage", "Booking cart is empty!");
-            return false;
-        }
+		if (bookingInfoIds.length == 0) {
+			request.setAttribute("errorMessage", "Booking Information need to remove is empty!");
+			return false;
+		}
 
-        for (Integer bookingInfoId : bookingInfoIds) {
-         
-            if (!bookingInfoList.containsKey(bookingInfoId)) {
-                request.setAttribute("errorMessage", "Booking Information is not in your booking cart!");
-                return false;
-            }
-            
-            bookingInfoList.remove(bookingInfoId);
-        }
+		HttpSession session = request.getSession(false);
+		HashMap<String, BookingInfo> bookingInfoList = (HashMap<String, BookingInfo>) session.getAttribute("bookingInfoList");
+		if (bookingInfoList == null) {
+			request.setAttribute("errorMessage", "Booking cart is empty!");
+			return false;
+		}
 
-        session.setAttribute("bookingInfoList", bookingInfoList);
-        request.setAttribute("message", "Remove items success!");
+		if (bookingInfoList.isEmpty()) {
+			request.setAttribute("errorMessage", "Booking cart is empty!");
+			return false;
+		}
 
-        return true;
+		for (Integer bookingInfoId : bookingInfoIds) {
 
-    }
+			if (!bookingInfoList.containsKey(bookingInfoId)) {
+				request.setAttribute("errorMessage", "Booking Information is not in your booking cart!");
+				return false;
+			}
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-            request.getRequestDispatcher(Routers.VIEW_BOOKING_CART_PAGE).forward(request, response);
+			bookingInfoList.remove(bookingInfoId);
+		}
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.getRequestDispatcher(Routers.ERROR).forward(request, response);
-        }
+		session.setAttribute("bookingInfoList", bookingInfoList);
+		request.setAttribute("message", "Remove items success!");
 
-    }
+		return true;
+
+	}
+
+	/**
+	 * Handles the HTTP <code>GET</code> method.
+	 *
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException if a servlet-specific error occurs
+	 * @throws IOException if an I/O error occurs
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+		try {
+			processRequest(request, response);
+
+			request.getRequestDispatcher(Routers.VIEW_BOOKING_CART_PAGE+"?message=Delete room successfully").forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
+		}
+
+	}
 
 }
