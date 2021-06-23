@@ -24,23 +24,25 @@ import utils.Validator;
 public class ViewBookingController extends HttpServlet {
 
 	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Date startDate = GetParam.getDateParams(request, "startDate", "Start Date","2019-01-01");
-		Date endDate = GetParam.getDateParams(request, "endDate", "End Date","2025-01-01");
-		
-		Integer status = GetParam.getIntParams(request, "status", "Status", 0, 2, 2);
-		if (status == null || startDate == null || endDate == null) {
+		Date startDate = GetParam.getDateParams(request, "startDate", "Start Date", "2019-01-01");
+		Date endDate = GetParam.getDateParams(request, "endDate", "End Date", "2025-01-01");
+		Integer status = GetParam.getIntParams(request, "status", "Status", -1, 2, 2);
+		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999, -99);
+		if (status == null || startDate == null || endDate == null || roomId == null) {
 			return false;
 		}
-		
+
 		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
 		if (numberOfDay == null || numberOfDay < 0) {
 			request.setAttribute("errorMessage", "Start date have to be before end date");
 			return false;
 		}
 
+		String roomIdSearch = roomId == -99 ? "" : roomId.toString();
+
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 		UserDAO userDAO = new UserDAO();
-
+		
 		HttpSession session = request.getSession(false);
 		User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 		if (user == null) {
@@ -48,7 +50,7 @@ public class ViewBookingController extends HttpServlet {
 			return false;
 		}
 
-		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingWithUserId(user.getUserId(), startDate, endDate, status);
+		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingWithUserId(user.getUserId(), startDate, endDate, roomIdSearch, status);
 
 		if (bookingInfos == null) {
 			request.setAttribute("errorMessage", "Booking Info with the given id was not found");

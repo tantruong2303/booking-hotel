@@ -38,7 +38,7 @@ public class CheckOutController extends HttpServlet {
 		}
 
 		if (Helper.getToDayTime().before(bookingInfo.getStartDate())) {
-			request.setAttribute("errorMessage", "This room can not checkout in this time");
+			request.setAttribute("errorMessage", "This room can not checkout before " + Helper.convertDateToString(bookingInfo.getStartDate()));
 			return false;
 		}
 

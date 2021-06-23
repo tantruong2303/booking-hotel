@@ -24,7 +24,20 @@
 					<h1 class="text-4xl font-semibold">Booking List</h1>
 					<jsp:include page="./components/message.jsp"/>
 					<div class="space-y-4">
+						<div class="flex space-x-4">
+							<jsp:include page="./components/inputField.jsp">
+								<jsp:param name="type" value="text"/>
+								<jsp:param name="label" value="Room Id (100 - 999)"/>
+								<jsp:param name="field" value="roomId"/>
+							</jsp:include>
+							<jsp:include page="./components/inputSelectBooking.jsp">
+								<jsp:param name="label" value="Status"/>
+								<jsp:param name="field" value="status"/>
+								<jsp:param name="defaultValue" value="2"/>
+							</jsp:include>	
 
+
+						</div>
 						<div class="flex space-x-4">
 							<jsp:include page="./components/inputTime.jsp">
 								<jsp:param name="label" value="Start Date"/>
@@ -37,11 +50,7 @@
 								<jsp:param name="defaultValue" value="2025-01-01"/>
 							</jsp:include>
 						</div>
-						<jsp:include page="./components/inputSelectStatus.jsp">
-							<jsp:param name="label" value="Status"/>
-							<jsp:param name="field" value="status"/>
-							<jsp:param name="defaultValue" value="2"/>
-						</jsp:include>	
+
 
 
 						<jsp:include page="./components/inputBtn.jsp">

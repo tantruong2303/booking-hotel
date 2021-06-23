@@ -2,11 +2,6 @@
 <%@page import="dtos.BookingInfo"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="utils.GetParam"%>
-<%
-		    String errorMessage = (String) GetParam.getClientAttribute(request, "errorMessage", "");
-		    String bookingInfoIdError = (String) GetParam.getClientAttribute(request, "bookingInfoIdError", "");
-		    String message = (String) GetParam.getClientAttribute(request, "message", "");
-%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -18,7 +13,7 @@
 
 
 		<%@include file="./includes/navbar.jspf" %>
-		<div class="pt-4 space-y-4">
+		<div class="pt-4 px-2 space-y-4">
 
 
 			<h1 class="pl-2 text-2xl font-semibold">Shopping Cart</h1>

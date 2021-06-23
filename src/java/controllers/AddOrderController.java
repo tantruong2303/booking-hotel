@@ -110,8 +110,6 @@ public class AddOrderController extends HttpServlet {
 		}
 
 		session.removeAttribute("bookingInfoList");
-
-		request.setAttribute("message", "Buy success!");
 		return true;
 	}
 

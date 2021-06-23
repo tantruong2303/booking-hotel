@@ -27,7 +27,6 @@ public class CancelBookingController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
-		RoomDAO roomDAO = new RoomDAO();
 		UserDAO userDao = new UserDAO();
 
 		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE, null);
@@ -48,25 +47,22 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-//		if (user.getRole() != 1 && bookingInfo.getUserId() != (user.getUserId())) {
-//			request.setAttribute("errorMessage", "Action is not allow");
-//			return false;
-//		}
-		
-		if (Helper.getToDayTime().after(bookingInfo.getStartDate()) || Helper.getToDayTime().equals(bookingInfo.getStartDate())){
-			request.setAttribute("errorMessage", "This room can not cancel in this time");
+		if (user.getRole() != 1 && user.getUserId() != (user.getUserId())) {
+			request.setAttribute("errorMessage", "Action is not allow");
+			return false;
+		}
+
+		if (Helper.getToDayTime().after(bookingInfo.getStartDate()) || Helper.getToDayTime().equals(bookingInfo.getStartDate())) {
+			
+			request.setAttribute("errorMessage", "This room can not cancel after " + Helper.convertDateToString(bookingInfo.getStartDate()));
 			return false;
 		}
 
 		boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(bookingId, 0, 0f, 0);
 		if (!isCancelBookingInfo) {
+			
 			return false;
 		}
-
-//		boolean isChangeStatus = roomDAO.changeStatus(bookingInfo.getRoomId(), 1);
-//		if (!isChangeStatus) {
-//			return false;
-//		}
 
 		return true;
 
@@ -102,9 +98,10 @@ public class CancelBookingController extends HttpServlet {
 			}
 
 			if (user.getRole() == 1) {
-				response.sendRedirect(Routers.LIST_ROOM_CONTROLLER);
+				request.getRequestDispatcher(Routers.VIEW_BOOKING_MANAGER_CONTROLLER).forward(request, response);
 				return;
 			}
+
 			request.getRequestDispatcher(Routers.VIEW_BOOKING_CONTROLLER).forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();

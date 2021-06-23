@@ -10,6 +10,7 @@
 <% 
 	ArrayList< BookingInfo> list = (ArrayList<BookingInfo>) GetParam.getClientAttribute(request,"bookingInfos", new ArrayList<Room>());
 	ArrayList< BookingInfo> total = (ArrayList<BookingInfo>) GetParam.getClientAttribute(request,"total", new ArrayList<Room>());
+
 	int paid = 0;
 	int cancel = 0;
 	int process = 0;
@@ -26,6 +27,7 @@
 		}
 		totalBooking += bookingInfo.getTotal();
 	}
+	
 
 %>
 <!DOCTYPE html>
@@ -95,7 +97,7 @@
 					    >
 						<div>
 							<h1 class="text-xl font-semibold capitalize">
-								Room no: <%= list.get(i).getRoomId()%>
+								Room no: <%= list.get(i).getRoom().getRoomId()%>
 							</h1>
 							<p>Booking ID: <%= list.get(i).getBookingInfoId()%></p>
 							<p>Total: $<%= list.get(i).getTotal()%></p>
@@ -109,19 +111,19 @@
 						</div>
 						<% if (list.get(i).getStatus() == -1) {%>
 						<a
-						    href="CancelBookingController?roomId=<%=  list.get(i).getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
+						    href="CancelBookingController?roomId=<%=  list.get(i).getRoom().getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
 						    onclick="return confirm('Are you sure to cancel')"
 						    class="inline-block p-2 duration-300 font-medium text-white bg-red-500 hover:bg-red-600"
 						    >Cancel</a
 						>
 						<a
-						    href="CheckoutController?action=0&roomId=<%=  list.get(i).getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
+						    href="CheckoutController?action=0&roomId=<%=  list.get(i).getRoom().getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
 						    onclick="return confirm('Are you sure to Checkout')"
 						    class="inline-block p-2 font-medium duration-300 text-white bg-blue-500 hover:bg-blue-600"
 						    >Checkout (Full Date)</a
 						>
 						<a
-						    href="CheckoutController?action=1&roomId=<%=  list.get(i).getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
+						    href="CheckoutController?action=1&roomId=<%=  list.get(i).getRoom().getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
 						    onclick="return confirm('Are you sure to Checkout')"
 						    class="inline-block p-2 font-medium duration-300 text-white bg-blue-600 hover:bg-blue-700"
 						    >Checkout (Without Date Left)</a
