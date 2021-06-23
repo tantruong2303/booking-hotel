@@ -1,27 +1,29 @@
-[![SinninSC Logo](data/logo.png)](http://www.mercifashion.site/BookingHotel)
+[![SinninSC Logo](data/logo.png)](http://mychess.website/BookingHotel)
 
-# Booking Hotel - Servlet + JSP
+# Booking Hotel - Servlet + JSP + Tailwind
 
 ## Case Study
 
-Creating a hotel website for SinninSC hotel allows user and manager to create their account and do action with their role.
+A large hotel chain in the US, the SanninSC Hotels Group. The group consists of ten hotels, organized in one place. Each hotel has between 40 and 100 bedrooms (can extend), which are categorized as double (D), twin(T), single(S), queen(Q), king(K),or luxury(L). Double and twin rooms may be let as singles. There are no online systems. A new group managing director has recently been appointed. One of the director's major objectives is to increase profit. The director has therefore appointed a firm of consultants to investigate and define the IT requirements of the company.
 
 ## Feature by role
 
-- ### Common Role Action
+- ### Both Role Action
      - Login, register new account and logout
      - Change password
      - Update user information
-- ### User Role Action
-     - Create new booking
-     - Create feedback for a room
+- ### Customer Role Action
+     - Add new booking to cart
+     - Booking or cancel in cart
      - Cancel Booking
      - Review booking
+     - Checking booking information
 - ### Admin Role Action
      - Create new room
      - Update information for a room
-     - Checkout or cancel booking
+     - Checkout (2 options ) or cancel booking
      - Manage all room
+     - Manage all booking
 
 ## Technology
 
@@ -32,6 +34,9 @@ Creating a hotel website for SinninSC hotel allows user and manager to create th
 - Backend
      - Servlet - Server Core
      - SQL Server 2019 - Database
+- Deployment
+     - Docker - Container Management
+     - Github Action - CI/CD
 
 ## Team Member
 
@@ -42,6 +47,7 @@ Creating a hotel website for SinninSC hotel allows user and manager to create th
 ## Project Picture
 
 ### Database Diagram
+
 #### Entity Diagram
 
 ![Database Page](data/entity-diagram.png)
