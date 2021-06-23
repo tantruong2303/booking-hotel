@@ -126,7 +126,7 @@
 						    href="CheckoutController?action=1&roomId=<%=  list.get(i).getRoom().getRoomId() %>&bookingInfoId=<%=  list.get(i).getBookingInfoId()%>"
 						    onclick="return confirm('Are you sure to Checkout')"
 						    class="inline-block p-2 font-medium duration-300 text-white bg-blue-600 hover:bg-blue-700"
-						    >Checkout (Without Date Left)</a
+						    >Checkout (Start date to current date)</a
 						>
 						<% }%>
 
