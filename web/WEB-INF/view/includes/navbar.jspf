@@ -1,7 +1,16 @@
 <%-- any content can be specified here e.g.: --%>
+<%@page import="java.util.HashMap"%>
+<%@page import="dtos.BookingInfo"%>
 <%@page import="constant.Routers"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@page import="utils.Helper"%>
+<% 
+	HashMap<Integer, BookingInfo> cartCounter = (HashMap<Integer, BookingInfo>) session.getAttribute("bookingInfoList");
+	if (cartCounter == null) {
+		cartCounter = new HashMap<>();
+	}
+					
+%>
 <div class="z-50 flex items-stretch justify-between h-16 px-16 bg-white shadow-md">
         <a class="p-2" href="IndexController">
                 <img src="./asset/image/logo.svg" alt="GonninSC" class="h-full" />
@@ -23,9 +32,10 @@
                 <li>
                         <a href="ViewBookingController" class="duration-200 hover:text-cerise-red">View Booking</a>
                 </li>
-                
-                <li>
-                    <a href="<%= Routers.VIEW_BOOKING_CART_CONTROLLER %> " class="duration-200 hover:text-cerise-red">View Booking Cart</a>
+
+                <li class="relative">
+			<a href="ViewBookingCartController" class="duration-200 hover:text-cerise-red">View Booking Cart</a>
+			<span class="bg-cerise-red-500 p-1 rounded-full text-white text-sm w-6 h-6 block flex justify-center items-center absolute -top-3 -right-4  bg-opacity-80"> <%=cartCounter.size() %> </span>
                 </li>
 
                 <%} %>

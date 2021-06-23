@@ -67,9 +67,9 @@
 					    >
 						<div>
 							<h1 class="text-xl font-semibold capitalize">
-								Room no: <%= list.get(i).getRoom().getRoomId() %>
+							Booking ID: <%= list.get(i).getBookingInfoId()%>
 							</h1>
-							<p>Booking ID: <%= list.get(i).getBookingInfoId()%></p>
+							<p>Room no: <%= list.get(i).getRoom().getRoomId() %> </p>
                                                         <p>Order ID: <%= list.get(i).getOrder().getOrderId() %></p>
                                                         <p>Room Price: $<%= list.get(i).getRoomPrice()%></p>
 							<p>Total: $<%= list.get(i).getTotal()%></p>
