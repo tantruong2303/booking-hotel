@@ -129,7 +129,7 @@ public class BookingInfoDAO {
 			OrderDAO orderDAO = new OrderDAO();
 			RoomDAO roomDAO = new RoomDAO();
 
-			String sql = "SELECT bookingInfoId, tbl_BookingInfo.orderId, roomId, startDate, endDate, numberOfDay, status, roomPrice, total FROM tbl_Order JOIN tbl_BookingInfo ON tbl_Order.orderId = tbl_BookingInfo.orderId WHERE CAST( roomId as varchar ) like ? and userId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY status ASC";
+			String sql = "SELECT bookingInfoId, tbl_BookingInfo.orderId, roomId, startDate, endDate, numberOfDay, status, roomPrice, tbl_BookingInfo.total FROM tbl_Order JOIN tbl_BookingInfo ON tbl_Order.orderId = tbl_BookingInfo.orderId WHERE CAST( roomId as varchar ) like ? and userId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY status ASC";
 			preStm = conn.prepareStatement(sql);
 			preStm.setString(1, "%" + roomId + "%");
 			preStm.setInt(2, userId);

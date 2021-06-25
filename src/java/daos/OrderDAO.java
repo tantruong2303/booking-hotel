@@ -44,10 +44,11 @@ public class OrderDAO {
         boolean isSuccess = false;
         try {
             conn = Connector.getConnection();
-            String sql = "INSERT INTO tbl_Order (userId, createDate) VALUES (?,?)";
+            String sql = "INSERT INTO tbl_Order (userId, createDate, total) VALUES (?,?,?)";
             preStm = conn.prepareStatement(sql);
             preStm.setInt(1, order.getUser().getUserId());
             preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(order.getCreateDate())));
+            preStm.setFloat(3, order.getTotal());
 
             isSuccess = preStm.executeUpdate() > 0;
         } finally {
@@ -62,7 +63,7 @@ public class OrderDAO {
             conn = Connector.getConnection();
             UserDAO userDAO = new UserDAO();
 
-            String sql = "SELECT userId, createDate FROM tbl_Order WHERE orderId = ?";
+            String sql = "SELECT userId, createDate, total FROM tbl_Order WHERE orderId = ?";
             preStm = conn.prepareStatement(sql);
             preStm.setInt(1, orderId);
             rs = preStm.executeQuery();
@@ -70,11 +71,12 @@ public class OrderDAO {
             while (rs.next()) {
                 int userId = rs.getInt("userId");
                 Date createDate = rs.getDate("createDate");
+                float total = rs.getFloat("total");
                 Date formatCreateDate = Helper.convertStringToDate(createDate.toString());
 
                 User user = userDAO.getOneUserByUserId(userId);
                 if (user != null) {
-                    order = new Order(orderId, user, createDate);
+                    order = new Order(orderId, user, createDate, total);
                 }
 
             }
@@ -90,18 +92,19 @@ public class OrderDAO {
             conn = Connector.getConnection();
             UserDAO userDAO = new UserDAO();
 
-            String sql = "SELECT orderId, userId, createDate FROM tbl_Order";
+            String sql = "SELECT orderId, userId, createDate, total FROM tbl_Order";
             preStm = conn.prepareStatement(sql);
             rs = preStm.executeQuery();
 
             while (rs.next()) {
                 int orderId = rs.getInt("orderId");
                 int userId = rs.getInt("userId");
+                float total = rs.getFloat("total");
                 Date createDate = rs.getDate("createDate");
 
                 User user = userDAO.getOneUserByUserId(userId);
                 if (user != null) {
-                    Order order = new Order(orderId, user, createDate);
+                    Order order = new Order(orderId, user, createDate, total);
                     orderList.add(order);
                 }
 
@@ -110,5 +113,23 @@ public class OrderDAO {
             this.closeConnection();
         }
         return orderList;
+    }
+
+    public boolean updateOrder(Order order) throws Exception {
+        boolean isSuccess = false;
+        try {
+            conn = Connector.getConnection();
+            String query = "UPDATE tbl_Order SET userId = ?, createDate = ?, total = ? WHERE orderId = ?";
+            preStm = conn.prepareStatement(query);
+            preStm.setInt(4, order.getOrderId());
+            preStm.setInt(1, order.getUser().getUserId());
+             preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(order.getCreateDate())));
+            preStm.setFloat(3, order.getTotal());
+
+            isSuccess = preStm.executeUpdate() > 0;
+        } finally {
+            this.closeConnection();
+        }
+        return isSuccess;
     }
 }
