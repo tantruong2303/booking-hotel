@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author HaiCao
  */
-public class Room implements Serializable {
+public class Room {
 
 	private int roomId;
 	private float price;
@@ -90,11 +90,10 @@ public class Room implements Serializable {
 		this.roomType = roomType;
 	}
 
-	
-
 	@Override
 	public String toString() {
-		return "Room{" + "roomId=" + roomId + ", price=" + price + ", status=" + status + ", imageUrl=" + imageUrl + ", description=" + description + ", roomType=" + roomType + '}';
+		return "Room{" + "roomId=" + roomId + ", price=" + price + ", status=" + status + ", imageUrl=" + imageUrl
+				+ ", description=" + description + ", roomType=" + roomType + '}';
 	}
 
 }

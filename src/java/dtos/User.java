@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Lenovo
  */
-public class User implements Serializable {
+public class User {
     private int userId;
     private String username;
     private String password;

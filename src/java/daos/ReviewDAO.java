@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import utils.Connector;
+import utils.Helper;
 
 public class ReviewDAO {
 
@@ -40,7 +41,7 @@ public class ReviewDAO {
 			preStm = conn.prepareStatement(sql);
 			preStm.setString(1, review.getMessage());
 			preStm.setInt(2, review.getRate());
-			preStm.setString(3, review.getCreateDate());
+			preStm.setDate(3,  java.sql.Date.valueOf(Helper.convertDateToString(review.getCreateDate())));
 			preStm.setInt(4, review.getUser().getUserId());
 			preStm.setInt(5, review.getRoom().getRoomId());
 

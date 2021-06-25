@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author heaty566
  */
-public class RoomType implements Serializable {
+public class RoomType {
 
 	int roomTypeId;
 	String name;
@@ -55,5 +55,4 @@ public class RoomType implements Serializable {
 		return "RoomType{" + "roomTypeId=" + roomTypeId + ", name=" + name + ", numOfPeople=" + numOfPeople + '}';
 	}
 
-	
 }

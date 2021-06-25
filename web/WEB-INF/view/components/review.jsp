@@ -1,3 +1,4 @@
+<%@page import="utils.Helper"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -35,11 +36,15 @@
 				<p>
 					<%= review.getMessage() %>
 				</p>
-				<div class="flex justify-end space-x-1 font-semibold text-right">
-					<img src="./asset/image/star.svg" alt="star"/>
-					<p>
-						<%= review.getRate()%> 
-					</p>
+				<div class="flex space-x-1 font-semibold justify-between">
+					<p><%= Helper.convertDateToString(review.getCreateDate())%></p>
+					<div class="flex">
+						<img src="./asset/image/star.svg" alt="star"/>
+						<p>
+							<%= review.getRate()%> 
+						</p>
+					</div>
+
 
 				</div>
 			</div>

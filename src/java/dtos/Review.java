@@ -9,27 +9,24 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
  * @author HaiCao
  */
-public class Review implements Serializable {
+public class Review {
 
 	private int reviewId;
 	private String message;
 	private int rate;
-	private String createDate;
+	private Date createDate;
 	private User user;
 	private Room room;
 
 	public Review(String message, int rate, User user, Room room) {
 		this.reviewId = 0;
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(System.currentTimeMillis());
-
-		this.createDate = formatter.format(calendar.getTime());
+		this.createDate = new Date();
 		this.message = message;
 		this.rate = rate;
 		this.user = user;
@@ -42,7 +39,7 @@ public class Review implements Serializable {
 		this.user.setFullName(fullName);
 	}
 
-	public Review(int reviewId, String message, int rate, String createDate, User user, Room room) {
+	public Review(int reviewId, String message, int rate, Date createDate, User user, Room room) {
 		this.reviewId = reviewId;
 		this.message = message;
 		this.rate = rate;
@@ -78,11 +75,11 @@ public class Review implements Serializable {
 		this.rate = rate;
 	}
 
-	public String getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(String createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 
