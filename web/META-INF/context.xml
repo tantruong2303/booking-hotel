@@ -5,8 +5,8 @@
         auth="Container"
         type="javax.sql.DataSource"
         username="sa"
-        password="1234567Aa"
+        password="123"
         driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-        url="jdbc:sqlserver://159.89.194.139:1533;database=BookingHotel;" 
+        url="jdbc:sqlserver://localhost:1433;database=BookingHotel;" 
     />
 </Context>

@@ -15,17 +15,27 @@ public class Order {
     private int orderId;
     private User user;
     private Date createDate;
+    private float total;
 
-    public Order(int orderId, User user, Date createDate) {
+    public Order(int orderId, User user, Date createDate, float total) {
         this.orderId = orderId;
         this.user = user;
         this.createDate = createDate;
+        this.total = total;
     }
 
-    public Order(User user, Date createDate) {
+    public Order(User user, Date createDate, float total) {
         this.user = user;
         this.createDate = createDate;
-        this.orderId = 0;
+        this.total = total;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
     }
 
     public int getOrderId() {

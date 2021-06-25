@@ -62,8 +62,9 @@ public class AddOrderController extends HttpServlet {
 		String username = (String) session.getAttribute("username");
 		User user = userDAO.getOneUserByUsername(username);
 		Date createDate = Helper.getCurrentDate();
+                Float total = 0F;
 
-		Order order = new Order(orderId, user, createDate);
+		Order order = new Order(orderId, user, createDate, total);
 		if (!orderDAO.addOrder(order)) {
 			request.setAttribute("errorMessage", "Some thing went wrong!");
 			return false;
@@ -104,12 +105,20 @@ public class AddOrderController extends HttpServlet {
 				request.setAttribute("errorMessage", "Some thing went wrong!");
 				return false;
 			}
-
+                        
+                        total += bookingInfo.getTotal();
+                        
 			bookingListClone.remove(bookingInfoIdCart);
 			session.setAttribute("bookingInfoList", bookingListClone);
 		}
-
-		session.removeAttribute("bookingInfoList");
+                
+                order.setTotal(total);
+                if(!orderDAO.updateOrder(order)) {
+                    request.setAttribute("errorMessage", "Something went wrong!");
+                    return false;
+                }
+                
+		session.removeAttribute("bookingInfoList"); 
 		return true;
 	}
 

@@ -72,6 +72,7 @@ CREATE TABLE tbl_Order
     orderId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
     userId int FOREIGN KEY REFERENCES tbl_User(userId) ON DELETE CASCADE,
     createDate DATE,
+	total float,
 )
 GO
 
