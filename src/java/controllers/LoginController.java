@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
 	 * @throws ServletException if a servlet-specific error occurs
 	 * @throws IOException      if an I/O error occurs
 	 */
-	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// initialize resource
 		UserDAO userDAO = new UserDAO();
@@ -106,15 +106,5 @@ public class LoginController extends HttpServlet {
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}
-
-	/**
-	 * Returns a short description of the servlet.
-	 *
-	 * @return a String containing servlet description
-	 */
-	@Override
-	public String getServletInfo() {
-		return "Short description";
-	}// </editor-fold>
 
 }

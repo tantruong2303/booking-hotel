@@ -3,7 +3,6 @@ package controllers;
 import constant.Routers;
 
 import daos.BookingInfoDAO;
-import daos.RoomDAO;
 import dtos.BookingInfo;
 
 import java.io.IOException;
@@ -18,13 +17,14 @@ import utils.GetParam;
 import utils.Helper;
 import utils.Validator;
 
-@WebServlet(name = "CheckoutController", urlPatterns = {"/CheckoutController"})
+@WebServlet(name = "CheckoutController", urlPatterns = { "/CheckoutController" })
 public class CheckOutController extends HttpServlet {
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 
-		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE, null);
+		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE,
+				null);
 		Integer action = GetParam.getIntParams(request, "action", "Action", 0, 1, 0);
 
 		if (bookingId == null || action == null) {
@@ -38,13 +38,15 @@ public class CheckOutController extends HttpServlet {
 		}
 
 		if (Helper.getToDayTime().before(bookingInfo.getStartDate())) {
-			request.setAttribute("errorMessage", "This room can not checkout before " + Helper.convertDateToString(bookingInfo.getStartDate()));
+			request.setAttribute("errorMessage",
+					"This room can not checkout before " + Helper.convertDateToString(bookingInfo.getStartDate()));
 			return false;
 		}
 
 		boolean isUpdate;
 		if (action == 0) {
-			isUpdate = bookingInfoDAO.updateBookingInfopStatus(bookingId, 1, bookingInfo.getTotal(), bookingInfo.getBookingInfoId());
+			isUpdate = bookingInfoDAO.updateBookingInfopStatus(bookingId, 1, bookingInfo.getTotal(),
+					bookingInfo.getBookingInfoId());
 		} else {
 			Date currentDate = Helper.getToDayTime();
 
@@ -64,14 +66,14 @@ public class CheckOutController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 

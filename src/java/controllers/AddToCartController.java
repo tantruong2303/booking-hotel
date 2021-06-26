@@ -33,10 +33,10 @@ import utils.Validator;
  *
  * @author Lenovo
  */
-@WebServlet(name = "AddToCartController", urlPatterns = {"/AddToCartController"})
+@WebServlet(name = "AddToCartController", urlPatterns = { "/AddToCartController" })
 public class AddToCartController extends HttpServlet {
 
-    protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // initialized resource
         RoomDAO roomDAO = new RoomDAO();
         ReviewDAO reviewDAO = new ReviewDAO();
@@ -71,10 +71,10 @@ public class AddToCartController extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -100,16 +100,14 @@ public class AddToCartController extends HttpServlet {
     }
 
     /**
-     * Processes requests for both HTTP <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>POST</code> methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
-    protected boolean postHandler(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+    private boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // initialized resource
         RoomDAO roomDAO = new RoomDAO();
@@ -127,7 +125,7 @@ public class AddToCartController extends HttpServlet {
         Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
 
         if (numberOfDay == null || numberOfDay <= 0) {
-            request.setAttribute("errorMessage", "The time which picked is invalid");
+            request.setAttribute("errorMessage", "The end date must be greater than or equal start date");
             return false;
         }
 
@@ -156,8 +154,9 @@ public class AddToCartController extends HttpServlet {
 
         for (BookingInfo item : bookings) {
             if (!Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), startDate, endDate)) {
-                request.setAttribute("errorMessage", "This room have a booking from " + Helper.convertDateToString(item.getStartDate()) + " to "
-                        + Helper.convertDateToString(item.getEndDate()) + ", please select other day.");
+                request.setAttribute("errorMessage",
+                        "This room have a booking from " + Helper.convertDateToString(item.getStartDate()) + " to "
+                                + Helper.convertDateToString(item.getEndDate()) + ", please select other day.");
                 return false;
             }
         }
@@ -170,18 +169,21 @@ public class AddToCartController extends HttpServlet {
             return false;
         }
 
-        HashMap<Integer, BookingInfo> bookingInfoList = (HashMap<Integer, BookingInfo>) session.getAttribute("bookingInfoList");
+        HashMap<Integer, BookingInfo> bookingInfoList = (HashMap<Integer, BookingInfo>) session
+                .getAttribute("bookingInfoList");
         HashMap<Integer, BookingInfo> updateBookingInfoList;
         if (bookingInfoList == null) {
             updateBookingInfoList = new HashMap<>();
 
-            BookingInfo bookingInfo = new BookingInfo(1, room, startDate, endDate, numberOfDay, -1, room.getPrice(), total);
+            BookingInfo bookingInfo = new BookingInfo(1, room, startDate, endDate, numberOfDay, -1, room.getPrice(),
+                    total);
 
             updateBookingInfoList.put(bookingInfo.getBookingInfoId(), bookingInfo);
 
         } else {
             updateBookingInfoList = bookingInfoList;
-            BookingInfo bookingInfo = new BookingInfo(updateBookingInfoList.size() + 1, room, startDate, endDate, numberOfDay, -1, room.getPrice(), total);
+            BookingInfo bookingInfo = new BookingInfo(updateBookingInfoList.size() + 1, room, startDate, endDate,
+                    numberOfDay, -1, room.getPrice(), total);
             updateBookingInfoList.put(bookingInfo.getBookingInfoId(), bookingInfo);
         }
 
@@ -192,10 +194,10 @@ public class AddToCartController extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -205,7 +207,7 @@ public class AddToCartController extends HttpServlet {
 
             if (postHandler(request, response)) {
                 // forward on 200
-                response.sendRedirect(Routers.INDEX_CONTROLLER+"?message=A room has been added to your cart");
+                response.sendRedirect(Routers.INDEX_CONTROLLER + "?message=A room has been added to your cart");
                 return;
             }
             // forward on 400

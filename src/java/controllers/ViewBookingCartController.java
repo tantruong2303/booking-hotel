@@ -7,18 +7,17 @@ package controllers;
 
 import constant.Routers;
 import java.io.IOException;
-import java.io.PrintWriter;import javax.servlet.ServletException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  *
  * @author Lenovo
  */
-@WebServlet(name = "ViewBookingCartController", urlPatterns = {"/ViewBookingCartController"})
+@WebServlet(name = "ViewBookingCartController", urlPatterns = { "/ViewBookingCartController" })
 public class ViewBookingCartController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
@@ -26,10 +25,10 @@ public class ViewBookingCartController extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -17,7 +17,7 @@ import constant.Routers;
 @WebServlet(name = "ViewUserController", urlPatterns = { "/ViewUserController" })
 public class ViewUserController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		UserDAO userDAO = new UserDAO();
 

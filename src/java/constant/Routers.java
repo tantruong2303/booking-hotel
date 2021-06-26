@@ -18,11 +18,11 @@ public class Routers {
 	public final static String VIEW_USER_INFO_PAGE = "/WEB-INF/view/viewUserInfo.jsp";
 	public final static String VIEW_ROOM_INFO_PAGE = "/WEB-INF/view/viewRoomInfo.jsp";
 	public final static String VIEW_BOOKING_CART_PAGE = "/WEB-INF/view/viewBookingCart.jsp";
-        public final static String VIEW_BOOKING_PAGE = "/WEB-INF/view/viewBooking.jsp";
+	public final static String VIEW_BOOKING_PAGE = "/WEB-INF/view/viewBooking.jsp";
 	public final static String VIEW_BOOKING_MANAGER_PAGE = "/WEB-INF/view/viewBookingManager.jsp";
 
 	// router mapping
-        public final static String VIEW_BOOKING_CART_CONTROLLER = "ViewBookingCartController";
+	public final static String VIEW_BOOKING_CART_CONTROLLER = "ViewBookingCartController";
 	public final static String VIEW_BOOKING_CONTROLLER = "ViewBookingController";
 	public final static String VIEW_BOOKING_MANAGER_CONTROLLER = "ViewBookingManagerController";
 	public final static String VIEW_ROOM_INFO_CONTROLLER = "ViewRoomController";
@@ -39,8 +39,8 @@ public class Routers {
 	public final static String UPDATE_ROOM_CONTROLLER = "UpdateRoomController";
 	public final static String UPDATE_USER_INFO_CONTROLLER = "UpdateUserController";
 	public final static String VIEW_USER_INFO_CONTROLLER = "ViewUserController";
-        public final static String ADD_TO_CART_CONTROLLER = "AddToCartController";
-        public final static String ADD_ORDER_CONTROLLER = "AddOrderController";
-        public final static String REMOVE_CART_CONTROLLER = "RemoveCartController";
+	public final static String ADD_TO_CART_CONTROLLER = "AddToCartController";
+	public final static String ADD_ORDER_CONTROLLER = "AddOrderController";
+	public final static String REMOVE_CART_CONTROLLER = "RemoveCartController";
 	public final static String ERROR = "/WEB-INF/view/error.jsp";
 }

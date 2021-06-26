@@ -7,20 +7,21 @@ package dtos;
 
 import java.util.Date;
 
-public class BookingInfo  {
+public class BookingInfo {
 
-	private int bookingInfoId;
-	private Order order;
-	private Room room;
-	private Date startDate;
-	private Date endDate;
-	private int numberOfDay;
-	// -1 PROCESS 0 FAILED 1 CONFIRM
-	private int status;
-        private float roomPrice;
-	private float total;
+    private int bookingInfoId;
+    private Order order;
+    private Room room;
+    private Date startDate;
+    private Date endDate;
+    private int numberOfDay;
+    // -1 PROCESS 0 FAILED 1 CONFIRM
+    private int status;
+    private float roomPrice;
+    private float total;
 
-    public BookingInfo(int bookingInfoId, Order order, Room room, Date startDate, Date endDate, int numberOfDay, int status, float roomPrice, float total) {
+    public BookingInfo(int bookingInfoId, Order order, Room room, Date startDate, Date endDate, int numberOfDay,
+            int status, float roomPrice, float total) {
         this.bookingInfoId = bookingInfoId;
         this.order = order;
         this.room = room;
@@ -32,7 +33,8 @@ public class BookingInfo  {
         this.total = total;
     }
 
-    public BookingInfo(Order order, Room room, Date startDate, Date endDate, int numberOfDay, int status, float roomPrice, float total) {
+    public BookingInfo(Order order, Room room, Date startDate, Date endDate, int numberOfDay, int status,
+            float roomPrice, float total) {
         this.order = order;
         this.room = room;
         this.startDate = startDate;
@@ -44,7 +46,8 @@ public class BookingInfo  {
         this.bookingInfoId = 0;
     }
 
-    public BookingInfo(int bookingInfoId, Room room, Date startDate, Date endDate, int numberOfDay, int status, float roomPrice, float total) {
+    public BookingInfo(int bookingInfoId, Room room, Date startDate, Date endDate, int numberOfDay, int status,
+            float roomPrice, float total) {
         this.bookingInfoId = bookingInfoId;
         this.room = room;
         this.startDate = startDate;
@@ -129,8 +132,9 @@ public class BookingInfo  {
 
     @Override
     public String toString() {
-        return "BookingInfo{" + "bookingInfoId=" + bookingInfoId + ", order=" + order + ", room=" + room + ", startDate=" + startDate + ", endDate=" + endDate + ", numberOfDay=" + numberOfDay + ", status=" + status + ", roomPrice=" + roomPrice + ", total=" + total + '}';
+        return "BookingInfo{" + "bookingInfoId=" + bookingInfoId + ", order=" + order + ", room=" + room
+                + ", startDate=" + startDate + ", endDate=" + endDate + ", numberOfDay=" + numberOfDay + ", status="
+                + status + ", roomPrice=" + roomPrice + ", total=" + total + '}';
     }
 
-    
 }

@@ -20,7 +20,7 @@ import utils.GetParam;
 @WebServlet(name = "UpdateUserController", urlPatterns = { "/UpdateUserController" })
 public class UpdateUserController extends HttpServlet {
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		UserDAO userDAO = new UserDAO();
 
@@ -78,7 +78,7 @@ public class UpdateUserController extends HttpServlet {
 		}
 	}
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		UserDAO userDAO = new UserDAO();
 
@@ -121,10 +121,10 @@ public class UpdateUserController extends HttpServlet {
 				return;
 
 			}
-		
+
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		} catch (Exception e) {
-			
+
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
 	}

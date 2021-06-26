@@ -20,16 +20,17 @@ import constant.Routers;
 import utils.GetParam;
 import utils.Helper;
 
-@WebServlet(name = "CancelBookingController", urlPatterns = {"/CancelBookingController"})
+@WebServlet(name = "CancelBookingController", urlPatterns = { "/CancelBookingController" })
 public class CancelBookingController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=UTF-8");
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 		UserDAO userDao = new UserDAO();
 
-		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE, null);
+		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE,
+				null);
 		if (bookingId == null) {
 			return false;
 		}
@@ -52,15 +53,17 @@ public class CancelBookingController extends HttpServlet {
 			return false;
 		}
 
-		if (Helper.getToDayTime().after(bookingInfo.getStartDate()) || Helper.getToDayTime().equals(bookingInfo.getStartDate())) {
-			
-			request.setAttribute("errorMessage", "This room can not cancel after " + Helper.convertDateToString(bookingInfo.getStartDate()));
+		if (Helper.getToDayTime().after(bookingInfo.getStartDate())
+				|| Helper.getToDayTime().equals(bookingInfo.getStartDate())) {
+
+			request.setAttribute("errorMessage",
+					"This room can not cancel after " + Helper.convertDateToString(bookingInfo.getStartDate()));
 			return false;
 		}
 
 		boolean isCancelBookingInfo = bookingInfoDAO.updateBookingInfopStatus(bookingId, 0, 0f, 0);
 		if (!isCancelBookingInfo) {
-			
+
 			return false;
 		}
 
@@ -73,14 +76,14 @@ public class CancelBookingController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		UserDAO userDao = new UserDAO();
 
 		try {

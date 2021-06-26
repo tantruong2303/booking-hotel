@@ -15,7 +15,6 @@ import dtos.Order;
 import dtos.Room;
 import dtos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,27 +31,27 @@ import utils.Validator;
  *
  * @author Lenovo
  */
-@WebServlet(name = "AddOrderController", urlPatterns = {"/AddOrderController"})
+@WebServlet(name = "AddOrderController", urlPatterns = { "/AddOrderController" })
 public class AddOrderController extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and
-	 * <code>POST</code> methods.
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
-	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
+	private boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		OrderDAO orderDAO = new OrderDAO();
 		UserDAO userDAO = new UserDAO();
 		RoomDAO roomDAO = new RoomDAO();
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 
 		HttpSession session = request.getSession(false);
-		HashMap<Integer, BookingInfo> bookingInfoList = (HashMap<Integer, BookingInfo>) session.getAttribute("bookingInfoList");
+		HashMap<Integer, BookingInfo> bookingInfoList = (HashMap<Integer, BookingInfo>) session
+				.getAttribute("bookingInfoList");
 		if (bookingInfoList == null) {
 			request.setAttribute("errorMessage", "Booking cart is empty!");
 			return false;
@@ -62,7 +61,7 @@ public class AddOrderController extends HttpServlet {
 		String username = (String) session.getAttribute("username");
 		User user = userDAO.getOneUserByUsername(username);
 		Date createDate = Helper.getCurrentDate();
-                Float total = 0F;
+		Float total = 0F;
 
 		Order order = new Order(orderId, user, createDate, total);
 		if (!orderDAO.addOrder(order)) {
@@ -86,59 +85,69 @@ public class AddOrderController extends HttpServlet {
 			}
 
 			if (room.getPrice() != bookingInfoCart.getRoomPrice()) {
-				request.setAttribute("errorMessage", "Booking price is not correct! Please remove Booking infor with ID: " + bookingInfoCart.getBookingInfoId());
+				request.setAttribute("errorMessage",
+						"Booking price is not correct! Please remove Booking infor with ID: "
+								+ bookingInfoCart.getBookingInfoId());
 				return false;
 			}
 
 			ArrayList<BookingInfo> bookings = bookingInfoDAO.getActiveBookingWithRoomId(room.getRoomId());
 
 			for (BookingInfo item : bookings) {
-				if (!Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), bookingInfoCart.getStartDate(), bookingInfoCart.getEndDate())) {
-					request.setAttribute("errorMessage", "The room with ID " + item.getRoom().getRoomId() + " have a booking from " + Helper.convertDateToString(item.getStartDate()) + " to "
-						+ Helper.convertDateToString(item.getEndDate()) + ", please select other day.");
+				if (!Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), bookingInfoCart.getStartDate(),
+						bookingInfoCart.getEndDate())) {
+					request.setAttribute("errorMessage",
+							"The room with ID " + item.getRoom().getRoomId() + " have a booking from "
+									+ Helper.convertDateToString(item.getStartDate()) + " to "
+									+ Helper.convertDateToString(item.getEndDate()) + ", please select other day.");
 					return false;
 				}
 			}
 
-			BookingInfo bookingInfo = new BookingInfo(order, room, bookingInfoCart.getStartDate(), bookingInfoCart.getEndDate(), bookingInfoCart.getNumberOfDay(), -1, bookingInfoCart.getRoomPrice(), bookingInfoCart.getTotal());
+			BookingInfo bookingInfo = new BookingInfo(order, room, bookingInfoCart.getStartDate(),
+					bookingInfoCart.getEndDate(), bookingInfoCart.getNumberOfDay(), -1, bookingInfoCart.getRoomPrice(),
+					bookingInfoCart.getTotal());
 			if (!bookingInfoDAO.addBookingInfo(bookingInfo)) {
 				request.setAttribute("errorMessage", "Some thing went wrong!");
 				return false;
 			}
-                        
-                        total += bookingInfo.getTotal();
-                        
+
+			total += bookingInfo.getTotal();
+
 			bookingListClone.remove(bookingInfoIdCart);
 			session.setAttribute("bookingInfoList", bookingListClone);
 		}
-                
-                order.setTotal(total);
-                if(!orderDAO.updateOrder(order)) {
-                    request.setAttribute("errorMessage", "Something went wrong!");
-                    return false;
-                }
-                
-		session.removeAttribute("bookingInfoList"); 
+
+		order.setTotal(total);
+		if (!orderDAO.updateOrder(order)) {
+			request.setAttribute("errorMessage", "Something went wrong!");
+			return false;
+		}
+
+		session.removeAttribute("bookingInfoList");
 		return true;
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		try {
 			if (processRequest(request, response)) {
-				response.sendRedirect(Routers.VIEW_BOOKING_CONTROLLER + "?message=Thank you for your booking, we hope would meet you soon.");
+				response.sendRedirect(Routers.VIEW_BOOKING_CONTROLLER
+						+ "?message=Thank you for your booking, we hope would meet you soon.");
 				return;
-			};
+			}
+			;
 
 			request.getRequestDispatcher(Routers.VIEW_BOOKING_CART_CONTROLLER).forward(request, response);
 

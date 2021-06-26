@@ -1,7 +1,7 @@
-CREATE DATABASE BookingHotel;
+CREATE DATABASE PRJ301_SE08D_BookingHotel;
 go
 
-USE BookingHotel;
+USE PRJ301_SE08D_BookingHotel;
 go
 
 CREATE TABLE tbl_User
@@ -34,6 +34,8 @@ go
 INSERT INTO tbl_RoomType(name, numOfPeople)
 VALUES
 	(N'double room', 4),
+	(N'double room', 1),
+	(N'twin room', 1),
 	(N'twin room', 2),
 	(N'single room', 1),
 	(N'queen room', 2),
@@ -91,20 +93,7 @@ CREATE TABLE tbl_BookingInfo
 	total float
 );
 GO
-/*
-INSERt INTO tbl_BookingInfo(userId, roomId, startDate, endDate, numberOfDay, status, total)
-VALUES (1, 100, N'2021-04-20', N'2021-04-28', 8, 1, 800),
-	   (1, 101, N'2021-03-21', N'2021-03-25', 4, 1, 600),
-	   (2, 108, N'2021-08-20', N'2021-08-22', 2, -1, 400),
-	   (1, 107, N'2021-05-10', N'2021-05-16', 6, 0, 0),
-	   (1, 105, N'2021-06-01', N'2021-06-07', 7, 0, 0),
-	   (2, 102, N'2021-04-20', N'2021-04-22', 2, 1, 320);
-GO
-*/
 
-
-
-/*---------------------------------------------------------------------------*/
 CREATE TABLE tbl_Review
 (
 	reviewId INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,

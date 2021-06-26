@@ -1,5 +1,4 @@
 window.onload = function () {
-        Chart.plugins.register(ChartDataLabels);
         document.getElementById("photo").addEventListener(
                 "change",
                 function () {

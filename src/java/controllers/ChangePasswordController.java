@@ -19,7 +19,7 @@ import utils.Helper;
 @WebServlet(name = "ChangePasswordController", urlPatterns = { "/ChangePasswordController" })
 public class ChangePasswordController extends HttpServlet {
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		UserDAO userDAO = new UserDAO();
 
 		String newPassword = GetParam.getStringParam(request, "newPassword", "New Password", 5, 50, null);

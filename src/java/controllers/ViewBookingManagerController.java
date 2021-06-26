@@ -21,16 +21,15 @@ import javax.servlet.http.HttpServletResponse;
 import utils.GetParam;
 import utils.Validator;
 
-@WebServlet(name = "ViewBookingManagerController", urlPatterns = {"/ViewBookingManagerController"})
+@WebServlet(name = "ViewBookingManagerController", urlPatterns = { "/ViewBookingManagerController" })
 public class ViewBookingManagerController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Date startDate = GetParam.getDateParams(request, "startDate", "Start Date", "2019-01-01");
 		Date endDate = GetParam.getDateParams(request, "endDate", "End Date", "2025-01-01");
 		Integer roomId = GetParam.getIntParams(request, "roomId", "Room ID", 100, 999, -99);
 		Integer status = GetParam.getIntParams(request, "status", "Status", -1, 2, 2);
 
-		
 		if (status == null || startDate == null || endDate == null || roomId == null) {
 			return false;
 		}
@@ -44,7 +43,8 @@ public class ViewBookingManagerController extends HttpServlet {
 		String roomIdSearch = roomId == -99 ? "" : roomId.toString();
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
-		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingForManager(roomIdSearch, startDate, endDate, status);
+		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingForManager(roomIdSearch, startDate, endDate,
+				status);
 		ArrayList<BookingInfo> total = bookingInfoDAO.getBookingForManager(roomIdSearch, startDate, endDate, 2);
 		request.setAttribute("bookingInfos", bookingInfos);
 		request.setAttribute("total", total);
@@ -56,14 +56,14 @@ public class ViewBookingManagerController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
@@ -82,7 +82,7 @@ public class ViewBookingManagerController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {

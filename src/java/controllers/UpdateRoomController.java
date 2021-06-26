@@ -21,11 +21,11 @@ import daos.BookingInfoDAO;
 import utils.FileHelper;
 import utils.GetParam;
 
-@WebServlet(name = "UpdateRoomController", urlPatterns = {"/UpdateRoomController"})
+@WebServlet(name = "UpdateRoomController", urlPatterns = { "/UpdateRoomController" })
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, maxFileSize = 1024 * 1024 * 2, maxRequestSize = 1024 * 1024 * 5)
 public class UpdateRoomController extends HttpServlet {
 
-	protected boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 		Integer roomId = GetParam.getIntParams(request, "roomId", "RoomId", 1, Integer.MAX_VALUE, null);
@@ -54,14 +54,14 @@ public class UpdateRoomController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>GET</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
@@ -79,7 +79,7 @@ public class UpdateRoomController extends HttpServlet {
 
 	}
 
-	protected boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		RoomDAO roomDAO = new RoomDAO();
 		BookingInfoDAO bookingDao = new BookingInfoDAO();
@@ -132,14 +132,14 @@ public class UpdateRoomController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (this.postHandler(request, response)) {

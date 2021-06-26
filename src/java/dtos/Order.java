@@ -61,6 +61,5 @@ public class Order {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-    
-    
+
 }

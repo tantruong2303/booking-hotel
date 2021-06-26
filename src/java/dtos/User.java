@@ -5,8 +5,6 @@
  */
 package dtos;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Lenovo

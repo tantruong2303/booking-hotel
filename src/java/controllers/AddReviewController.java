@@ -19,10 +19,10 @@ import constant.Routers;
 
 import utils.GetParam;
 
-@WebServlet(name = "AddReviewController", urlPatterns = {"/AddReviewController"})
+@WebServlet(name = "AddReviewController", urlPatterns = { "/AddReviewController" })
 public class AddReviewController extends HttpServlet {
 
-	protected boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// initialized resource
 		ReviewDAO reviewDAO = new ReviewDAO();
@@ -34,7 +34,7 @@ public class AddReviewController extends HttpServlet {
 		Integer rate = GetParam.getIntParams(request, "rate", "rate", 1, 5, null);
 		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999, null);
 		if (message == null || rate == null || roomId == null) {
-			
+
 			return false;
 		}
 
@@ -67,14 +67,14 @@ public class AddReviewController extends HttpServlet {
 	/**
 	 * Handles the HTTP <code>POST</code> method.
 	 *
-	 * @param request servlet request
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
@@ -85,7 +85,8 @@ public class AddReviewController extends HttpServlet {
 				return;
 			}
 			// forward on 400
-			request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_CONTROLLER + "?roomId=" + roomId).forward(request, response);
+			request.getRequestDispatcher(Routers.VIEW_ROOM_INFO_CONTROLLER + "?roomId=" + roomId).forward(request,
+					response);
 
 		} catch (Exception e) {
 			// redirect on 500
