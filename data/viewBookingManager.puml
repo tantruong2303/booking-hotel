@@ -1,0 +1,61 @@
+@startuml viewBookingForManager
+
+hide footbox
+mainframe <b>sd</b> View Booking Information for Manager
+actor User
+participant "Browser" as Browser
+participant ":CommonRoleFilter" as CommonRoleFilter
+participant ":Helper" as Helper
+participant ":ViewBookingManagerController" as ViewBookingManagerController
+participant ":GetParam" as GetParam
+participant ":BookingInfoDAO" as BookingInfoDAO
+participant "Database" as DB
+
+User ->> Browser: Click on view booking Link
+activate Browser
+Browser ->> CommonRoleFilter: GET /ViewBookingManagerController
+activate CommonRoleFilter
+CommonRoleFilter ->> CommonRoleFilter: Context.lookup(String name): Object
+CommonRoleFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+alt return false 
+    Helper -->> CommonRoleFilter: forward login.jsp
+    CommonRoleFilter -->> Browser: forward login.jsp
+else return true
+    Helper -->> CommonRoleFilter: return true
+    deactivate Helper
+    CommonRoleFilter ->> ViewBookingManagerController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    deactivate CommonRoleFilter
+    activate ViewBookingManagerController
+    ViewBookingManagerController ->> GetParam: getDateParams(HttpServletRequest request, String field, String label, String defaultValue): Date
+    activate GetParam
+    GetParam -->> ViewBookingManagerController:return startDate, endDate 
+    ViewBookingManagerController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, Integer defaultValue): Integer
+    GetParam -->> ViewBookingManagerController:return roomId, status
+    deactivate GetParam
+    alt invalid data 
+        ViewBookingManagerController -->> Browser: forward viewBookingManager.jsp
+    else 
+        ViewBookingManagerController ->> ViewBookingManagerController: Validator.computeNumberOfDay(HttpServletRequest request, Date startDate, Date endDate): Integer
+        alt invalid date 
+            ViewBookingManagerController -->> Browser: forward viewBookingManager.jsp
+        else valid date
+            ViewBookingManagerController ->>  BookingInfoDAO: getBookingForManager(String roomId, Date startDate, Date endDate, Integer status): ArrayList<BookingInfo>
+            activate BookingInfoDAO
+            BookingInfoDAO ->> DB: executeQuery(): ResultSet
+            activate DB
+            DB -->> BookingInfoDAO: return ResultSet
+            deactivate DB
+            BookingInfoDAO -->> ViewBookingManagerController: return ArrayList<BookingInfo>
+            deactivate BookingInfoDAO
+            ViewBookingManagerController ->> ViewBookingManagerController: HttpServletRequest.setAttribute(String arg0, Object arg1): void
+            ViewBookingManagerController -->> Browser: forward viewBookingManager.jsp
+            deactivate ViewBookingManagerController
+            deactivate Browser
+        end
+    end
+end
+
+@enduml

@@ -4,7 +4,11 @@
 
 ## Case Study
 
-A large hotel chain in the US, the SanninSC Hotels Group. The group consists of ten hotels, organized in one place. Each hotel has between 40 and 100 bedrooms (can extend), which are categorized as double (D), twin(T), single(S), queen(Q), king(K),or luxury(L). Double and twin rooms may be let as singles. There are no online systems. A new group managing director has recently been appointed. One of the director's major objectives is to increase profit. The director has therefore appointed a firm of consultants to investigate and define the IT requirements of the company.
+A large hotel chain in the US, the SanninSC Hotels Group. The group consists of ten hotels, organized in one place. Each hotel has between 40 and 100 bedrooms (can extend), which are categorized as double (D), twin(T), single(S), queen(Q), King(K), or luxury(L). Double and twin rooms may be let as singles. There are no online systems. A new group managing director has recently been appointed. One of the director's primary objectives is to increase profit. Therefore, the director plans to develop a web application to manage online systems. This web application needs to include manage system for staff and booking system for customer.
+
+It needs to follow some business rule below:
+
+Only authenticated user has the ability to make a booking or review. Manager ability and customer ability must be separate. In detail, an authenticated user know as a customer can view detail of room information, make a booking (include one or many rooms on a different date). They can view their booking information and cancel it in special situations. Manager ability includes adding new room, update room information. View all bookings of customers and cancel or checkout booking.
 
 ## Feature by role
 
@@ -54,7 +58,7 @@ A large hotel chain in the US, the SanninSC Hotels Group. The group consists of 
 
 #### Relational Diagram
 
-![Database Page](data/relation-diagram.png)
+![Database Page](data/database.png)
 
 ### Home Page
 

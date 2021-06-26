@@ -24,6 +24,9 @@ public class ViewUserController extends HttpServlet {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		User existedUser = userDAO.getOneUserByUsername(username);
+		if (username == null) {
+			return false;
+		}
 
 		if (existedUser == null) {
 			request.setAttribute("errorMessage", "User with the given ID was not found");

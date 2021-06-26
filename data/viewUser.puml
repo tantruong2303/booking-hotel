@@ -1,0 +1,53 @@
+@startuml viewUser
+
+hide footbox
+mainframe <b>sd</b> View User Account
+actor User
+participant "Browser" as Browser
+participant ":CommonRoleFilter" as CommonRoleFilter
+participant ":Helper" as Helper
+participant ":ViewUserController" as ViewUserController
+participant ":UserDAO" as UserDao
+participant "Database" as DB
+
+User ->> Browser: Click on view user Link
+activate Browser
+Browser ->> CommonRoleFilter: GET /ViewUserController
+activate CommonRoleFilter
+CommonRoleFilter ->> CommonRoleFilter: Context.lookup(String name): Object
+CommonRoleFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+alt return false 
+    Helper -->> CommonRoleFilter: forward login.jsp
+    CommonRoleFilter -->> Browser: forward login.jsp
+else return true
+    Helper -->> CommonRoleFilter: return true
+    deactivate Helper
+    CommonRoleFilter ->> ViewUserController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    deactivate CommonRoleFilter
+    activate ViewUserController
+    ViewUserController ->> ViewUserController: HttpSession.getAttribute(String arg0, Object arg1): void
+    alt null username
+        ViewUserController -->> Browser: forward error.jsp
+    else get username
+        ViewUserController ->> UserDao: getOneUserByUsername(String username): User
+        activate UserDao
+        UserDao ->> DB: executeQuery(): ResultSet
+        activate DB
+        DB -->> UserDao: return ResultSet
+        deactivate DB
+        UserDao -->> ViewUserController: return User
+        deactivate UserDao
+        alt not exist username
+            ViewUserController -->> Browser: forward error.jsp
+        else exist username
+            ViewUserController ->> ViewUserController: HttpSession.setAttribute(String arg0, Object arg1): void
+            ViewUserController -->> Browser: forward viewUserInfo.jsp
+        deactivate ViewUserController
+    end
+    end
+end
+
+@enduml

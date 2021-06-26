@@ -3,11 +3,8 @@ package controllers;
 import constant.Routers;
 
 import daos.BookingInfoDAO;
-import daos.RoomDAO;
-import daos.UserDAO;
+
 import dtos.BookingInfo;
-import dtos.Room;
-import dtos.User;
 
 import java.io.IOException;
 import java.util.ArrayList;

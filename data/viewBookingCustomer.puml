@@ -1,0 +1,62 @@
+@startuml viewBookingForCustomer
+
+hide footbox
+mainframe <b>sd</b> View Booking Information for Customer
+actor User
+participant "Browser" as Browser
+participant ":CommonRoleFilter" as CommonRoleFilter
+participant ":Helper" as Helper
+participant ":ViewBookingController" as ViewBookingController
+participant ":GetParam" as GetParam
+participant ":BookingInfoDAO" as BookingInfoDAO
+participant "Database" as DB
+
+User ->> Browser: Click on view booking Link
+activate Browser
+Browser ->> CommonRoleFilter: GET /ViewBookingController
+activate CommonRoleFilter
+CommonRoleFilter ->> CommonRoleFilter: Context.lookup(String name): Object
+CommonRoleFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+alt return false 
+    Helper -->> CommonRoleFilter: forward login.jsp
+    CommonRoleFilter -->> Browser: forward login.jsp
+else return true
+    Helper -->> CommonRoleFilter: return true
+    deactivate Helper
+    CommonRoleFilter ->> ViewBookingController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    deactivate CommonRoleFilter
+    activate ViewBookingController
+    ViewBookingController ->> GetParam: getDateParams(HttpServletRequest request, String field, String label, String defaultValue): Date
+    activate GetParam
+    GetParam -->> ViewBookingController:return startDate, endDate 
+    ViewBookingController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, Integer defaultValue): Integer
+    GetParam -->> ViewBookingController:return roomId, status
+    deactivate GetParam
+    alt invalid data 
+        ViewBookingController -->> Browser: forward viewBooking.jsp
+    else 
+        ViewBookingController ->> ViewBookingController: Validator.computeNumberOfDay(HttpServletRequest request, Date startDate, Date endDate): Integer
+        alt invalid date 
+            ViewBookingController -->> Browser: forward viewBooking.jsp
+        else valid date
+            ViewBookingController ->> ViewBookingController:   HttpSession.getAttribute(String name): Object
+            ViewBookingController ->>  BookingInfoDAO: getBookingWithUserId(Integer userId, Date startDate, Date endDate, String roomId, Integer status): ArrayList<BookingInfo>
+            activate BookingInfoDAO
+            BookingInfoDAO ->> DB: executeQuery(): ResultSet
+            activate DB
+            DB -->> BookingInfoDAO: return ResultSet
+            deactivate DB
+            BookingInfoDAO -->> ViewBookingController: return ArrayList<BookingInfo>
+            deactivate BookingInfoDAO
+            ViewBookingController ->> ViewBookingController: HttpServletRequest.setAttribute(String arg0, Object arg1): void
+            ViewBookingController -->> Browser: forward viewBooking.jsp
+            deactivate ViewBookingController
+            deactivate Browser
+        end
+    end
+end
+
+@enduml
