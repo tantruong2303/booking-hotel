@@ -44,9 +44,7 @@ public class RoomDAO {
 			preStm.setString(5, room.getImageUrl());
 			preStm.setInt(6, room.getRoomType().getRoomTypeId());
 
-			preStm.executeUpdate();
-
-			isSuccess = true;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}
@@ -66,8 +64,7 @@ public class RoomDAO {
 			preStm.setString(4, room.getImageUrl());
 			preStm.setInt(5, room.getRoomType().getRoomTypeId());
 			preStm.setInt(6, room.getRoomId());
-			preStm.executeUpdate();
-			isSuccess = true;
+			isSuccess = preStm.executeUpdate() > 0;
 		} finally {
 			this.closeConnection();
 		}
