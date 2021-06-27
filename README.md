@@ -1,4 +1,4 @@
-[![SinninSC Logo](data/logo.png)](http://mychess.website/BookingHotel)
+[![SinninSC Logo](data/images/logo.png)](http://mychess.website/BookingHotel)
 
 # Booking Hotel - Servlet + JSP + Tailwind
 
@@ -54,27 +54,27 @@ Only authenticated user has the ability to make a booking or review. Manager abi
 
 #### Entity Diagram
 
-![Database Page](data/entity-diagram.png)
+![Database Page](data/database/entity-diagram.png)
 
 #### Relational Diagram
 
-![Database Page](data/database.png)
+![Database Page](data/database/database.png)
 
 ### Home Page
 
-![Home Page](data/home.png)
+![Home Page](data/images/home.png)
 
 ### Management Page
 
-![Management Page](data/manager.png)
+![Management Page](data/images/manager.png)
 
 ### Add New Room
 
-![Add New Room Page](data/newroom.png)
+![Add New Room Page](data/images/newroom.png)
 
 ### Login Page
 
-![Login Page](data/login.png)
+![Login Page](data/images/login.png)
 
 ## Bug Report
 
