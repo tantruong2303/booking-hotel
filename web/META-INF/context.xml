@@ -3,8 +3,8 @@
     <Resource auth="Container" 
               driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
               name="DBCon"
-              password="123"
+              password="1234567Aa"
               type="javax.sql.DataSource"
-              url="jdbc:sqlserver://localhost:1433;database=PRJ301_SE08D_BookingHotel;"
+              url="jdbc:sqlserver://159.89.194.139:1533;database=PRJ301_SE08D_BookingHotel;"
               username="sa"/>
 </Context>
