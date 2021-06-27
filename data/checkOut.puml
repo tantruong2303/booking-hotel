@@ -1,0 +1,100 @@
+@startuml checkOut
+
+hide footbox
+mainframe <b>sd</b> Check Out
+actor User
+participant "Browser" as Browser
+participant ":CheckOutController" as CheckOutController
+participant ":ManagerRoleFilter" as ManagerRoleFilter
+participant ":GetParam" as GetParam
+participant ":BookingInfoDAO" as BookingInfoDAO
+participant "Database" as DB
+participant "Helper" as Helper
+participant "Validator" as Validator
+
+
+
+User ->> Browser: Click on Cancel button
+activate Browser
+
+Browser ->> ManagerRoleFilter: GET /CheckOutController
+activate ManagerRoleFilter
+ManagerRoleFilter ->> ManagerRoleFilter: Context.lookup(String name): Object
+ManagerRoleFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+alt return false 
+    Helper -->> ManagerRoleFilter: forward login.jsp
+    ManagerRoleFilter -->> Browser: forward login.jsp
+else return true
+    Helper -->> ManagerRoleFilter: return true
+    deactivate Helper
+    ManagerRoleFilter -->> CheckOutController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    deactivate ManagerRoleFilter
+    activate CheckOutController
+    CheckOutController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, int defaultValue): Integer   
+    activate GetParam
+    GetParam -->> CheckOutController: return Integer bookingId, action
+    deactivate GetParam
+    alt invalid bookingId, action
+        CheckOutController -->> Browser: forward viewBookingManager.jsp
+    else valid bookingId, action
+        CheckOutController ->> BookingInfoDAO: getBookingInfoByBookingId(Integer bookingInfoId): BookingInfo
+        activate BookingInfoDAO
+        BookingInfoDAO ->> DB: executeQuery(): ResultSet
+        activate DB
+        DB -->> BookingInfoDAO: return ResultSet rs
+        deactivate DB
+        BookingInfoDAO -->> CheckOutController: return BookingInfo bookingInfo
+        deactivate BookingInfoDAO
+        alt invalid bookingInfo
+            CheckOutController -->> Browser: forward viewBookingManager.jsp
+        else valid bookingInfo
+            CheckOutController ->> Helper: Date getToDayTime(): Date
+            activate Helper
+            Helper -->> CheckOutController: return Date toDayTime
+            deactivate Helper
+            alt invalid toDayTime
+                CheckOutController -->> Browser: forward viewBookingManager.jsp
+            else valid toDayTime
+                alt action = 0
+                    CheckOutController ->> BookingInfoDAO: updateBookingInfopStatus(Integer bookingInfoId, Integer status, Float total, Integer numberOfDate): boolean
+                    activate BookingInfoDAO
+                    BookingInfoDAO ->> DB: executeUpdate(): PrepareStatement
+                    activate DB
+                    DB -->> BookingInfoDAO: return int preStm.executeUpdate()
+                    deactivate DB
+                    BookingInfoDAO -->> CheckOutController: return boolean isSuccess
+                    deactivate BookingInfoDAO
+                else action != 0
+                    CheckOutController ->> Helper: Date getToDayTime(): Date
+                    activate Helper
+                    Helper -->> CheckOutController: return Date currentDate
+                    CheckOutController ->> Validator: computeNumberOfDay(HttpServletRequest request, Date startDate, Date endDate): Integer
+                    activate Validator
+                    Validator -->> CheckOutController: return Integer numberOfDay
+                    deactivate Validator
+                    CheckOutController ->> BookingInfoDAO: updateBookingInfopStatus(Integer bookingInfoId, Integer status, Float total, Integer numberOfDate): boolean
+                    activate BookingInfoDAO
+                    BookingInfoDAO ->> DB: executeUpdate(): PrepareStatement
+                    activate DB
+                    DB -->> BookingInfoDAO: return int preStm.executeUpdate()
+                    deactivate DB
+                    BookingInfoDAO -->> CheckOutController: return boolean isSuccess
+                    deactivate BookingInfoDAO
+                end
+            alt isUpdate = false
+                CheckOutController -->> Browser: forward viewBookingManager.jsp
+            else isUpdate = true
+                CheckOutController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, int defaultValue): Integer   
+                activate GetParam
+                GetParam -->> CheckOutController: return Integer bookingId, action
+                deactivate GetParam
+                CheckOutController -->> Browser: Redirect /ViewBookingManagerController
+            end
+        end
+    end
+end
+@enduml
+

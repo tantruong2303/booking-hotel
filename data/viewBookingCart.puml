@@ -1,0 +1,34 @@
+@startuml viewBookingCart
+
+hide footbox
+mainframe <b>sd</b> View Booking Cart
+actor User
+participant "Browser" as Browser
+participant ":ViewBookingCartController" as ViewBookingCartController
+participant ":CustomerRoleFilter" as CustomerRoleFilter
+participant "Helper" as Helper
+
+User ->> Browser: Click on View Booking Cart link
+activate Browser
+
+Browser ->> CustomerRoleFilter: GET /ViewBookingCartController
+activate CustomerRoleFilter
+CustomerRoleFilter ->> CustomerRoleFilter: Context.lookup(String name): Object
+CustomerRoleFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+alt return false 
+    Helper -->> CustomerRoleFilter: forward login.jsp
+    CustomerRoleFilter -->> Browser: forward login.jsp
+else return true
+    Helper -->> CustomerRoleFilter: return true
+    deactivate Helper
+    CustomerRoleFilter -->> ViewBookingCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    deactivate CustomerRoleFilter
+    activate ViewBookingCartController
+    ViewBookingCartController -->> Browser: forward viewBookingCart.jsp
+    deactivate ViewBookingCartController
+    deactivate Browser
+end
+@enduml

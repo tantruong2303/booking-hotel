@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import constant.Routers;
+import daos.OrderDAO;
+import dtos.Order;
 
 import utils.GetParam;
 import utils.Helper;
@@ -27,6 +29,7 @@ public class CancelBookingController extends HttpServlet {
 
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 		UserDAO userDao = new UserDAO();
+                OrderDAO orderDAO = new OrderDAO();
 
 		Integer bookingId = GetParam.getIntParams(request, "bookingInfoId", "Booking Info ID", 0, Integer.MAX_VALUE,
 				null);
@@ -39,15 +42,14 @@ public class CancelBookingController extends HttpServlet {
 			request.setAttribute("bookingInfoIdError", "Room with the given Id was not found");
 			return false;
 		}
+                
+                Order order = orderDAO.getOrderById(bookingInfo.getOrder().getOrderId());
+                
 
 		HttpSession session = request.getSession(false);
 		User user = userDao.getOneUserByUsername((String) session.getAttribute("username"));
-		if (user == null) {
-			request.setAttribute("errorMessage", "User with the given Id was not found");
-			return false;
-		}
 
-		if (user.getRole() != 1 && user.getUserId() != (user.getUserId())) {
+		if (user.getRole() != 1 && (user.getUserId() != order.getUser().getUserId())) {
 			request.setAttribute("errorMessage", "Action is not allow");
 			return false;
 		}

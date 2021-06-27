@@ -1,0 +1,45 @@
+@startuml removeCart
+
+hide footbox
+mainframe <b>sd</b> Remove Cart
+actor User
+participant "Browser" as Browser
+participant ":RemoveCartController" as RemoveCartController
+participant ":CustomerRoleFilter" as CustomerRoleFilter
+participant "Helper" as Helper
+participant "GetParam" as GetParam
+
+User ->> Browser: Click on Remove Cart button
+activate Browser
+
+Browser ->> CustomerRoleFilter: GET /RemoveCartController
+activate CustomerRoleFilter
+CustomerRoleFilter ->> CustomerRoleFilter: Context.lookup(String name): Object
+CustomerRoleFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+alt return false 
+    Helper -->> CustomerRoleFilter: forward login.jsp
+    CustomerRoleFilter -->> Browser: forward login.jsp
+else return true
+    Helper -->> CustomerRoleFilter: return true
+    deactivate Helper
+    CustomerRoleFilter -->> RemoveCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    deactivate CustomerRoleFilter
+    activate RemoveCartController
+    RemoveCartController ->> GetParam: getIntegerArrayParams(HttpServletRequest request, String field, String label): Integer[]
+    activate GetParam
+    GetParam -->> RemoveCartController: return Integer[] bookingInfoIds
+    deactivate GetParam
+    alt invalid bookingInfoIds
+        RemoveCartController -->> Browser: forward viewBookingCart.jsp
+    else valid bookingInfoIds
+        RemoveCartController ->> RemoveCartController: HttpSession.getAttribute(String arg0): Object
+        RemoveCartController ->> RemoveCartController: HttpSession.setAttribute(String arg0, Object arg1): void
+        RemoveCartController -->> Browser: forward viewBookingCart.jsp
+        deactivate RemoveCartController
+        deactivate Browser
+    end
+end
+@enduml
