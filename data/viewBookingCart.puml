@@ -4,8 +4,8 @@ hide footbox
 mainframe <b>sd</b> View Booking Cart
 actor User
 participant "Browser" as Browser
-participant ":ViewBookingCartController" as ViewBookingCartController
 participant ":CustomerRoleFilter" as CustomerRoleFilter
+participant ":ViewBookingCartController" as ViewBookingCartController
 participant "Helper" as Helper
 
 User ->> Browser: Click on View Booking Cart link
@@ -24,11 +24,12 @@ alt return false
 else return true
     Helper -->> CustomerRoleFilter: return true
     deactivate Helper
-    CustomerRoleFilter -->> ViewBookingCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate CustomerRoleFilter
+    CustomerRoleFilter ->> ViewBookingCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
     activate ViewBookingCartController
-    ViewBookingCartController -->> Browser: forward viewBookingCart.jsp
+    ViewBookingCartController -->> CustomerRoleFilter: forward viewBookingCart.jsp
     deactivate ViewBookingCartController
+    CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
+    deactivate CustomerRoleFilter
     deactivate Browser
 end
 @enduml

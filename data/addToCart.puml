@@ -4,16 +4,16 @@ hide footbox
 mainframe <b>sd</b> Add To Cart
 actor User
 participant "Browser" as Browser
-participant ":AddToCartController" as AddToCartController
 participant ":CustomerRoleFilter" as CustomerRoleFilter
+participant ":AddToCartController" as AddToCartController
 participant ":GetParam" as GetParam
 participant ":Validator" as Validator
+participant "Helper" as Helper
+participant ":UserDAO" as UserDAO
 participant ":RoomDAO" as RoomDAO
 participant ":ReviewDAO" as ReviewDAO
-participant ":UserDAO" as UserDAO
 participant ":BookingInfoDAO" as BookingInfoDAO
 participant "Database" as DB
-participant "Helper" as Helper
 
 
 User ->> Browser: Click on Add To Cart button
@@ -32,15 +32,15 @@ alt return false
 else return true
     Helper -->> CustomerRoleFilter: return true
     deactivate Helper
-    CustomerRoleFilter -->> AddToCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate CustomerRoleFilter
+    CustomerRoleFilter ->> AddToCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
     activate AddToCartController
     AddToCartController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, int defaultValue): Integer   
     activate GetParam
     GetParam -->> AddToCartController: return Integer roomId
     deactivate GetParam
     alt invalid data
-        AddToCartController -->> Browser: forward index.jsp    
+        AddToCartController -->> CustomerRoleFilter: forward index.jsp    
+        CustomerRoleFilter -->> Browser: forward index.jsp
     else valid data
         AddToCartController ->> RoomDAO: getRoomById(int roomId): Room
         activate RoomDAO
@@ -51,7 +51,8 @@ else return true
         RoomDAO -->> AddToCartController: return Room room
         deactivate RoomDAO
         alt invalid room
-            AddToCartController -->> Browser: forward index.jsp
+            AddToCartController -->> CustomerRoleFilter: forward index.jsp    
+            CustomerRoleFilter -->> Browser: forward index.jsp
         else valid room
             AddToCartController ->> ReviewDAO: getReviewByRoomId(int roomId): ArrayList<Review>
             activate ReviewDAO
@@ -62,11 +63,14 @@ else return true
             ReviewDAO -->> AddToCartController: return ArrayList<Review> reviews
             deactivate ReviewDAO
             alt invalid reviews
-                AddToCartController -->> Browser: forward index.jsp
+                AddToCartController -->> CustomerRoleFilter: forward index.jsp    
+                CustomerRoleFilter -->> Browser: forward index.jsp
             else valid reviews
                 AddToCartController ->> AddToCartController: HttpServletRequest.setAttribute(String arg0, Object arg1): void
-                AddToCartController -->> Browser: forward addToCart.jsp
+                AddToCartController -->> CustomerRoleFilter: forward addToCart.jsp    
                 deactivate AddToCartController
+                CustomerRoleFilter -->> Browser: forward addToCart.jsp
+                deactivate CustomerRoleFilter
                 deactivate Browser
             end
         end
@@ -89,8 +93,7 @@ alt return false
 else return true
     Helper -->> CustomerRoleFilter: return true
     deactivate Helper
-    CustomerRoleFilter -->> AddToCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate CustomerRoleFilter
+    CustomerRoleFilter ->> AddToCartController: doFilter(ServletRequest arg0, ServletResponse arg1): void
     activate AddToCartController
         AddToCartController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, int defaultValue): Integer
         activate GetParam
@@ -99,14 +102,16 @@ else return true
         GetParam -->> AddToCartController: return Date startDate, endDate
         deactivate GetParam
     alt invalid data
-        AddToCartController -->> Browser: GET /AddToCartController    
+        AddToCartController -->> CustomerRoleFilter: Browser: GET /AddToCartController
+        CustomerRoleFilter -->> Browser: GET /AddToCartController    
     else valid data
         AddToCartController ->> Validator: computeNumberOfDay(HttpServletRequest request, Date startDate, Date endDate): Integer
         activate Validator
         Validator -->> AddToCartController: return Integer numberOfDay
         deactivate Validator
         alt invalid numberOfDay
-            AddToCartController -->> Browser: GET /AddToCartController    
+            AddToCartController -->> CustomerRoleFilter: Browser: GET /AddToCartController
+            CustomerRoleFilter -->> Browser: GET /AddToCartController 
         else valid numberOfDay
             AddToCartController ->> UserDAO: getOneUserByUsername(String username): User
             activate UserDAO
@@ -117,7 +122,8 @@ else return true
             UserDAO -->> AddToCartController: return User user
             deactivate UserDAO
             alt invalid user
-                AddToCartController -->> Browser: Browser: GET /AddToCartController
+                AddToCartController -->> CustomerRoleFilter: Browser: GET /AddToCartController
+                CustomerRoleFilter -->> Browser: GET /AddToCartController 
             else valid user
                 AddToCartController ->> RoomDAO: getRoomById(int roomId): Room
                 activate RoomDAO
@@ -128,7 +134,8 @@ else return true
                 RoomDAO -->> AddToCartController: return Room room
                 deactivate RoomDAO
                 alt invalid room
-                    AddToCartController -->> Browser: Browser: GET /AddToCartController
+                    AddToCartController -->> CustomerRoleFilter: Browser: GET /AddToCartController
+                    CustomerRoleFilter -->> Browser: GET /AddToCartController 
                 else valid room
                     AddToCartController ->> BookingInfoDAO: getActiveBookingWithRoomId(Integer roomId): ArrayList<BookingInfo>
                     activate BookingInfoDAO
@@ -139,7 +146,8 @@ else return true
                     BookingInfoDAO -->> AddToCartController: return ArrayList<BookingInfo> bookings
                     deactivate BookingInfoDAO
                     alt invalid bookings
-                        AddToCartController -->> Browser: Browser: GET /AddToCartController
+                        AddToCartController -->> CustomerRoleFilter: Browser: GET /AddToCartController
+                        CustomerRoleFilter -->> Browser: GET /AddToCartController 
                     else valid bookings
                         AddToCartController ->> RoomDAO: changeStatus(Integer roomId, Integer status): boolean
                         activate RoomDAO
@@ -150,12 +158,15 @@ else return true
                         RoomDAO -->> AddToCartController: return boolean isSuccess
                         deactivate RoomDAO
                         alt isSuccess = false
-                            AddToCartController -->> Browser: Browser: GET /AddToCartController
+                            AddToCartController -->> CustomerRoleFilter: Browser: GET /AddToCartController
+                            CustomerRoleFilter -->> Browser: GET /AddToCartController 
                         else isSuccess = true
                             AddToCartController ->> AddToCartController: HttpSession.getAttribute(String arg0): Object
                             AddToCartController ->> AddToCartController: HttpSession.setAttribute(String arg0, Object arg1): void
-                            AddToCartController -->> Browser: Redirect /IndexController
+                            AddToCartController -->> CustomerRoleFilter: Browser: Redirect /IndexController
                             deactivate AddToCartController
+                            CustomerRoleFilter -->> Browser: Redirect /IndexController
+                            deactivate CustomerRoleFilter
                             deactivate Browser
                         end
                     end

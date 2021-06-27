@@ -4,15 +4,15 @@ hide footbox
 mainframe <b>sd</b> Add Order
 actor User
 participant "Browser" as Browser
-participant ":AddOrderController" as AddOrderController
 participant ":CustomerRoleFilter" as CustomerRoleFilter
+participant ":AddOrderController" as AddOrderController
+participant "Helper" as Helper
 participant ":GetParam" as GetParam
-participant ":RoomDAO" as RoomDAO
 participant ":UserDAO" as UserDAO
+participant ":RoomDAO" as RoomDAO
 participant ":OrderDAO" as OrderDAO
 participant ":BookingInfoDAO" as BookingInfoDAO
 participant "Database" as DB
-participant "Helper" as Helper
 
 
 User ->> Browser: Click on Add Order button
@@ -31,12 +31,12 @@ alt return false
 else return true
     Helper -->> CustomerRoleFilter: return true
     deactivate Helper
-    CustomerRoleFilter -->> AddOrderController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate CustomerRoleFilter
+    CustomerRoleFilter ->> AddOrderController: doFilter(ServletRequest arg0, ServletResponse arg1): void
     activate AddOrderController
     AddOrderController ->> AddOrderController: HttpSession.getAttribute(String arg0): Object
     alt HttpSession return invalid bookingInfoList
-        AddOrderController -->> Browser: forward viewBookingCart.jsp
+        AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
+        CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
     else valid bookingInfoList
         AddOrderController ->> Helper: generateOrderId(): Integer
         activate Helper
@@ -62,7 +62,8 @@ else return true
         OrderDAO -->> AddOrderController: return boolean isSuccess
         deactivate OrderDAO
         alt isSuccess = false
-            AddOrderController -->> Browser: forward viewBookingCart.jsp
+            AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
+        CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
         else isSuccess = true
             AddOrderController ->> RoomDAO: getRoomById(int roomId): Room
             activate RoomDAO
@@ -73,7 +74,8 @@ else return true
             RoomDAO -->> AddOrderController: return Room room
             deactivate RoomDAO
             alt invalid room
-                AddOrderController -->> Browser: forward viewBookingCart.jsp
+                AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
+                CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
             else valid room
                 AddOrderController ->> BookingInfoDAO: getActiveBookingWithRoomId(Integer roomId): ArrayList<BookingInfo>
                 activate BookingInfoDAO
@@ -84,7 +86,8 @@ else return true
                 BookingInfoDAO -->> AddOrderController: return ArrayList<BookingInfo> bookings
                 deactivate BookingInfoDAO
                 alt invalid bookings
-                    AddOrderController -->> Browser: forward viewBookingCart.jsp
+                    AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
+                    CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
                 else valid bookings
                     AddOrderController ->> BookingInfoDAO: addBookingInfo(BookingInfo bookingInfo): boolean
                     activate BookingInfoDAO
@@ -95,7 +98,8 @@ else return true
                     BookingInfoDAO -->> AddOrderController: return boolean isSuccess
                     deactivate BookingInfoDAO
                     alt isSuccess = false
-                        AddOrderController -->> Browser: forward viewBookingCart.jsp
+                        AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
+                        CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
                     else isSuccess = true
                         AddOrderController ->> AddOrderController: HttpSession.setAttribute(String arg0, Object arg1): void
                         AddOrderController ->> OrderDAO: updateOrder(Order order): boolean
@@ -107,11 +111,14 @@ else return true
                         OrderDAO -->> AddOrderController: return boolean isSuccess
                         deactivate OrderDAO
                         alt isSuccess = false
-                            AddOrderController -->> Browser: forward viewBookingCart.jsp
+                            AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
+                            CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
                         else isSuccess = true
                             AddOrderController ->> AddOrderController: HttpSession.removeAttribute(String arg0): void
-                            AddOrderController -->> Browser: Redirect /ViewBookingController
+                            AddOrderController -->> CustomerRoleFilter: Redirect /ViewBookingController
                             deactivate AddOrderController
+                            CustomerRoleFilter -->> Browser: Redirect /ViewBookingController
+                            deactivate CustomerRoleFilter
                             deactivate Browser
                         end
                     end
