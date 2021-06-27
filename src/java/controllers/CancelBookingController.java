@@ -1,7 +1,6 @@
 package controllers;
 
 import daos.BookingInfoDAO;
-import daos.RoomDAO;
 import daos.UserDAO;
 import dtos.BookingInfo;
 import dtos.User;
