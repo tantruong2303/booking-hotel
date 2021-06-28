@@ -1,0 +1,96 @@
+@startuml
+mainframe **sd** Add Review Controller
+hide footbox
+actor User
+participant "Browser" as Browser
+participant "CustomerFilter" as CustomerFilter
+participant ":AddReviewController" as AddReviewController
+participant "Helper" as Helper
+participant "GetParam" as GetParam
+participant ":UserDAO" as UserDAO
+participant ":RoomDAO" as RoomDAO
+participant ":ReviewDAO" as ReviewDAO
+participant "Database" as Database
+
+User ->> Browser: Submit add reivew form
+activate Browser
+Browser ->> CustomerFilter: **POST** /AddReviewController
+activate CustomerFilter
+CustomerFilter ->> CustomerFilter: Context.lookup(String name): Object
+CustomerFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+Helper -->> CustomerFilter: Return result
+deactivate Helper
+
+alt action does not allow
+    CustomerFilter -->> Browser: forward login.jsp
+
+else action allows
+    CustomerFilter ->> AddReviewController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    activate AddReviewController
+    AddReviewController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, Integer defaultValue): Integer
+    activate GetParam
+    GetParam -->> AddReviewController: Return roomId, rate
+    AddReviewController ->> GetParam: getStringParam(HttpServletRequest request, String field, String label, int min, int max, String defaultValue): String
+    GetParam -->> AddReviewController: Return message
+    deactivate GetParam
+    alt invalid data
+        AddReviewController -->> CustomerFilter: forward ViewRoomController
+        CustomerFilter -->> Browser: forward ViewRoomController
+    else valid data
+        AddReviewController ->> AddReviewController: HttpSession.getAttribute(String arg0, Object arg1): void
+        AddReviewController ->> UserDAO: getOneUserByUsername(String username): User
+        activate UserDAO
+        UserDAO ->> Database: executeQuery(): ResultSet
+        activate Database
+        Database -->> UserDAO: Return ResultSet
+        deactivate Database
+        UserDAO -->> AddReviewController: Return User
+        deactivate UserDAO
+
+        alt user does not exist
+            AddReviewController -->> CustomerFilter: forward ViewRoomController
+            CustomerFilter -->> Browser: forward ViewRoomController
+        else user exists
+            AddReviewController ->> RoomDAO: getRoomById(int roomId): Room
+            activate RoomDAO
+            RoomDAO ->> Database: executeQuery(): ResultSet
+            activate Database
+            Database -->> RoomDAO: Return ResultSet
+            deactivate Database
+            RoomDAO -->> AddReviewController: Return Room
+            deactivate RoomDAO
+
+            alt room does not exist
+                AddReviewController -->> CustomerFilter: forward ViewRoomController
+                CustomerFilter -->> Browser: forward ViewRoomController
+            else room exists
+                AddReviewController ->> ReviewDAO: addReview(Review review): boolean
+                activate ReviewDAO
+                ReviewDAO ->> Database: executeUpdate(): int
+                activate Database
+                Database -->> ReviewDAO: Return result
+                deactivate Database
+                ReviewDAO -->> AddReviewController: Return result
+                deactivate ReviewDAO
+
+                alt false
+                    AddReviewController -->> CustomerFilter: forward ViewRoomController
+                    CustomerFilter -->> Browser: forward ViewRoomController
+        
+                else true
+                    AddReviewController -->> CustomerFilter: redirect /ViewRoomController
+                    deactivate AddReviewController
+                    CustomerFilter -->> Browser: redirect /ViewRoomController
+                    deactivate Browser
+                    deactivate CustomerFilter
+                end
+            end
+        end
+    end
+end
+
+
+@enduml

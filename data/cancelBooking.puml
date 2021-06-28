@@ -1,0 +1,141 @@
+@startuml cancelBooking
+
+hide footbox
+mainframe <b>sd</b> Cancel Booking
+actor User
+participant "Browser" as Browser
+participant ":CommonRoleFilter" as CommonRoleFilter
+participant ":CancelBookingController" as CancelBookingController
+participant ":GetParam" as GetParam
+participant "Helper" as Helper
+participant ":UserDAO" as UserDAO
+participant ":OrderDAO" as OrderDAO
+participant ":BookingInfoDAO" as BookingInfoDAO
+participant "Database" as DB
+
+
+User ->> Browser: Click on Cancel button
+activate Browser
+
+Browser ->> CommonRoleFilter: GET /CancelBookingController
+activate CommonRoleFilter
+CommonRoleFilter ->> CommonRoleFilter: Context.lookup(String name): Object
+CommonRoleFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+alt return false 
+    Helper -->> CommonRoleFilter: forward login.jsp
+    CommonRoleFilter -->> Browser: forward login.jsp
+else return true
+    Helper -->> CommonRoleFilter: return true
+    deactivate Helper
+    CommonRoleFilter ->> CancelBookingController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    activate CancelBookingController
+    CancelBookingController ->> UserDAO: getOneUserByUsername(String username): User
+    activate UserDAO
+    UserDAO ->> DB: executeQuery(): ResultSet
+    activate DB
+    DB -->> UserDAO: return ResultSet rs
+    deactivate DB
+    UserDAO -->> CancelBookingController: return User user
+    deactivate UserDAO
+    CancelBookingController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, int defaultValue): Integer   
+    activate GetParam
+    GetParam -->> CancelBookingController: return Integer bookingId
+    deactivate GetParam
+    alt invalid bookingId
+        alt user.role = 1
+            CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingManagerController
+            CommonRoleFilter -->> Browser: Redirect /ViewBookingManagerController
+        else user.role = 0
+            CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingController
+            CommonRoleFilter -->> Browser: Redirect /ViewBookingController
+        end
+    else valid bookingId
+        CancelBookingController ->> BookingInfoDAO: getBookingInfoByBookingId(Integer bookingInfoId): BookingInfo
+        activate BookingInfoDAO
+        BookingInfoDAO ->> DB: executeQuery(): ResultSet
+        activate DB
+        DB -->> BookingInfoDAO: return ResultSet rs
+        deactivate DB
+        BookingInfoDAO -->> CancelBookingController: return BookingInfo bookingInfo
+        deactivate BookingInfoDAO
+        alt invalid bookingInfo
+            alt user.role = 1
+                CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingManagerController
+                CommonRoleFilter -->> Browser: Redirect /ViewBookingManagerController
+            else user.role = 0
+                CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingController
+                CommonRoleFilter -->> Browser: Redirect /ViewBookingController
+            end
+        else valid bookingInfo
+            CancelBookingController ->> OrderDAO: getOneOrderById(Integer orderId): Order
+            activate OrderDAO
+            OrderDAO ->> DB: executeQuery(): ResultSet
+            activate DB
+            DB -->> OrderDAO: return ResultSet rs
+            deactivate DB
+            OrderDAO -->> CancelBookingController: return Order order
+            deactivate OrderDAO
+            alt user is not admin or order's user
+                alt user.role = 1
+                    CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingManagerController
+                    CommonRoleFilter -->> Browser: Redirect /ViewBookingManagerController
+                else user.role = 0
+                    CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingController
+                    CommonRoleFilter -->> Browser: Redirect /ViewBookingController
+                end
+            else
+                CancelBookingController ->> Helper: Date getToDayTime(): Date
+                activate Helper
+                Helper -->> CancelBookingController: return Date toDayTime
+                deactivate Helper
+                alt invalid toDayTime
+                    alt user.role = 1
+                        CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingManagerController
+                        CommonRoleFilter -->> Browser: Redirect /ViewBookingManagerController
+                    else user.role = 0
+                        CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingController
+                        CommonRoleFilter -->> Browser: Redirect /ViewBookingController
+                    end
+                else valid toDayTime
+                    CancelBookingController ->> BookingInfoDAO: updateBookingInfopStatus(Integer bookingInfoId, Integer status, Float total, Integer numberOfDate): boolean
+                    activate BookingInfoDAO
+                    BookingInfoDAO ->> DB: executeUpdate(): prepareStatement 
+                    activate DB
+                    DB -->> BookingInfoDAO: return int preStm.executeUpdate()
+                    deactivate DB
+                    BookingInfoDAO -->> CancelBookingController: return boolean isSuccess
+                    deactivate BookingInfoDAO
+                    alt isSuccess = false
+                        alt user.role = 1
+                            CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingManagerController
+                            CommonRoleFilter -->> Browser: Redirect /ViewBookingManagerController
+                        else user.role = 0
+                            CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingController
+                            CommonRoleFilter -->> Browser: Redirect /ViewBookingController
+                        end
+                    else isSuccess = true
+                        alt user.role = 1
+                            CancelBookingController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, int defaultValue): Integer   
+                            activate GetParam
+                            GetParam -->> CancelBookingController: return Integer roomId
+                            deactivate GetParam
+                            CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingManagerController
+                            CommonRoleFilter -->> Browser: Redirect /ViewBookingManagerController
+                        else user.role = 0
+                            CancelBookingController -->> CommonRoleFilter: Redirect /ViewBookingController
+                            deactivate CancelBookingController
+                            CommonRoleFilter -->> Browser: Redirect /ViewBookingController
+                            deactivate CommonRoleFilter
+                            deactivate Browser
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+@enduml
+                    

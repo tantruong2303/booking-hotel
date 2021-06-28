@@ -166,7 +166,7 @@ public class BookingInfoDAO {
 		return bookingInfos;
 	}
 
-	public ArrayList<BookingInfo> getActiveBookingWithRoomId(Integer bookingInfoId) throws Exception {
+	public ArrayList<BookingInfo> getActiveBookingWithRoomId(Integer roomId) throws Exception {
 		ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
 		try {
 			conn = Connector.getConnection();
@@ -176,7 +176,7 @@ public class BookingInfoDAO {
 
 			String sql = "SELECT * FROM tbl_BookingInfo WHERE roomId = ? and status = -1";
 			preStm = conn.prepareStatement(sql);
-			preStm.setInt(1, bookingInfoId);
+			preStm.setInt(1, roomId);
 			rs = preStm.executeQuery();
 
 			while (rs.next()) {

@@ -123,7 +123,7 @@ public class OrderDAO {
             preStm = conn.prepareStatement(query);
             preStm.setInt(4, order.getOrderId());
             preStm.setInt(1, order.getUser().getUserId());
-             preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(order.getCreateDate())));
+            preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(order.getCreateDate())));
             preStm.setFloat(3, order.getTotal());
 
             isSuccess = preStm.executeUpdate() > 0;
