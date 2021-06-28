@@ -5,12 +5,12 @@ actor User
 participant "Browser" as Browser
 participant "CommonFilter" as CommonFilter
 participant ":ViewRoomController" as ViewRoomController
+participant "Helper" as Helper
+participant "GetParam" as GetParam
 participant ":UserDAO" as UserDAO
 participant ":RoomDAO" as RoomDAO
 participant ":ReviewDAO" as ReviewDAO
 participant "Database" as Database
-participant "Helper" as Helper
-participant "GetParam" as GetParam
 
 User ->> Browser: Click on view room link
 activate Browser
