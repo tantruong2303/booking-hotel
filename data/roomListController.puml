@@ -1,0 +1,71 @@
+@startuml
+mainframe **sd** Room List Controller
+hide footbox
+actor User
+participant "Browser" as Browser
+participant "ManagerrFilter" as ManagerFilter
+participant ":RoomListController" as RoomListController
+participant ":RoomDAO" as RoomDAO
+participant ":BookingInfoDAO" as BookingInfoDAO
+participant "Database" as Database
+participant "Helper" as Helper
+participant "GetParam" as GetParam
+
+
+User ->> Browser: Clink on room list link
+activate Browser
+Browser ->> ManagerFilter: **GET** /RoomListController
+activate ManagerFilter
+ManagerFilter ->> ManagerFilter: Context.lookup(String name): Object
+ManagerFilter ->> Helper: protectedRouter(HttpServletRequest request, HttpServletResponse response, int minRole, int maxRole, String page): boolean
+activate Helper
+Helper ->> Helper: isLogin(HttpServletRequest request): boolean
+Helper ->> Helper: correctRole(HttpServletRequest request, int minRole, int maxRole): boolean
+Helper -->> ManagerFilter: Return result
+deactivate Helper
+
+alt action does not allow
+    ManagerFilter -->> Browser: forward login.jsp
+
+else action allows
+    ManagerFilter ->> RoomListController: doFilter(ServletRequest arg0, ServletResponse arg1): void
+    activate RoomListController
+    RoomListController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, Integer defaultValue): Integer
+    activate GetParam
+    GetParam -->> RoomListController: Return numberOfPeople, status
+    RoomListController ->> GetParam: getFloatParams(HttpServletRequest request, String field, String label, float min, float max, Float defaultValue): Float
+    GetParam -->> RoomListController: Return min, max
+    RoomListController ->> GetParam: getStringParam(HttpServletRequest request, String field, String label, int min, int max, String defaultValue): String
+    GetParam -->> RoomListController: Return priceOrder
+    deactivate GetParam
+
+    alt invalid data
+        RoomListController -->> ManagerFilter: forward listRoom.jsp
+        ManagerFilter -->> Browser: forward listRoom.jsp
+    else valid data
+        RoomListController ->> RoomDAO: getRooms(int numOfPeople, float min, float max, String priceOrder): ArrayList<Room>
+        activate RoomDAO
+        RoomDAO ->> Database: executeQuery(): ResultSet
+        activate Database
+        Database -->> RoomDAO: Return ResultSet 
+        deactivate Database
+        RoomDAO -->> RoomListController: Return ArrayList<Room>
+        deactivate RoomDAO
+
+        RoomListController ->> BookingInfoDAO: getActiveBookingWithRoomId(Integer bookingInfoId): ArrayList<BookingInfo> 
+        activate BookingInfoDAO
+        BookingInfoDAO ->> Database: executeQuery(): ResultSet
+        activate Database
+        Database -->> BookingInfoDAO: Return ResultSet 
+        deactivate Database
+        BookingInfoDAO -->> RoomListController: Return ArrayList<BookingInfo> 
+        deactivate BookingInfoDAO
+        RoomListController ->> RoomListController: HttpServletRequest.setAttribute(String arg0, Object arg1): void
+        RoomListController -->> ManagerFilter: forward listRoom.jsp
+        deactivate RoomListController
+        ManagerFilter -->> Browser: forward listRoom.jsp
+        deactivate ManagerFilter
+        deactivate Browser
+    end
+end
+@enduml
