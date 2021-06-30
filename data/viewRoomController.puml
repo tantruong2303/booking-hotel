@@ -1,4 +1,4 @@
-@startuml viewRoomControoler
+@startuml viewRoomController
 
 mainframe **sd** View Room Controller
 hide footbox
