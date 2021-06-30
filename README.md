@@ -1,4 +1,4 @@
-[![SinninSC Logo](data/images/logo.png)](http://mychess.website/BookingHotel)
+[![SinninSC Logo](data/images/logo.png)](http://mychess.website/PRJ301_SE08D_BookingHotel)
 
 # Booking Hotel - Servlet + JSP + Tailwind
 
