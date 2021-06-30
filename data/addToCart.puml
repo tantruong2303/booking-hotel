@@ -71,15 +71,12 @@ else return true
                 deactivate AddToCartController
                 CustomerRoleFilter -->> Browser: forward addToCart.jsp
                 deactivate CustomerRoleFilter
-                deactivate Browser
             end
         end
     end
 end
 
 User ->> Browser: Submit addToCart form
-activate Browser
-
 Browser ->> CustomerRoleFilter: POST /AddToCartController
 activate CustomerRoleFilter
 CustomerRoleFilter ->> CustomerRoleFilter: Context.lookup(String name): Object
@@ -132,7 +129,6 @@ else return true
                 DB -->> RoomDAO: return ResultSet rs
                 deactivate DB
                 RoomDAO -->> AddToCartController: return Room room
-                deactivate RoomDAO
                 alt invalid room
                     AddToCartController -->> CustomerRoleFilter: Browser: GET /AddToCartController
                     CustomerRoleFilter -->> Browser: GET /AddToCartController 
@@ -150,7 +146,6 @@ else return true
                         CustomerRoleFilter -->> Browser: GET /AddToCartController 
                     else valid bookings
                         AddToCartController ->> RoomDAO: changeStatus(Integer roomId, Integer status): boolean
-                        activate RoomDAO
                         RoomDAO ->> DB: executeUpdate(): prepareStatement 
                         activate DB
                         DB -->> RoomDAO: return int preStm.executeUpdate()

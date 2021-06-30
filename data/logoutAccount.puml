@@ -17,6 +17,7 @@ LogoutController ->> LogoutController:  HttpSession.getSession(): HttpSession
 LogoutController ->> LogoutController:  HttpSession.invalidate(): void
 LogoutController -->> Browser: forward login.jsp
 deactivate LogoutController
+deactivate Browser
 
 
 @enduml

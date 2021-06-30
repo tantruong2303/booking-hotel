@@ -47,9 +47,10 @@ else return true
         else exist username
             ViewUserController ->> ViewUserController: HttpSession.setAttribute(String arg0, Object arg1): void
             ViewUserController -->> CommonRoleFilter: forward viewUserInfo.jsp
+        deactivate ViewUserController
             CommonRoleFilter -->> Browser: forward viewUserInfo.jsp
         deactivate CommonRoleFilter
-        deactivate ViewUserController
+        deactivate Browser
     end
     end
 end

@@ -14,13 +14,15 @@ activate Browser
 Browser ->> RegisterController: **GET** /RegisterController
 activate RegisterController
 RegisterController -->> Browser: forward register.jsp
+deactivate RegisterController
 
 
 
 User ->> Browser: Submit register form
 Browser ->> RegisterController: **POST** /RegisterController
-activate GetParam
+activate RegisterController
 RegisterController ->> GetParam: getStringParam(HttpServletRequest request, String field, String label, int min, int max, String defaultValue): String
+activate GetParam
 GetParam -->> RegisterController: Return username, password, comfirmPassword, fullName
 RegisterController ->> GetParam: getEmailParams(HttpServletRequest request, String field, String label): String
 GetParam -->> RegisterController: Return email
@@ -38,7 +40,6 @@ else valid data
     Database -->> UserDAO: Return result set
     deactivate Database
     UserDAO -->> RegisterController: Return User
-    deactivate UserDAO
 
     alt user does not exist
         RegisterController -->> Browser: forward register.jsp
@@ -55,7 +56,6 @@ else valid data
             Helper -->> RegisterController: Return hashingPassword
             deactivate Helper
             RegisterController ->> UserDAO: addUser(User user): boolean
-            activate UserDAO
             UserDAO ->> Database: executeUpdate(): int
             activate Database
             Database -->> UserDAO: Return result

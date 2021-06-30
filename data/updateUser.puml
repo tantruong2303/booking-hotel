@@ -1,4 +1,4 @@
-@startuml updateAccount
+@startuml updateUser
 
 hide footbox
 mainframe <b>sd</b> Update User Account
@@ -47,8 +47,8 @@ else return true
         else exist username
             UpdateUserController ->> UpdateUserController: HttpSession.setAttribute(String arg0, Object arg1): void
             UpdateUserController -->> CommonRoleFilter: forward updateUserInfo.jsp
-            CommonRoleFilter -->> Browser: forward updateUserInfo.jsp
         deactivate UpdateUserController
+            CommonRoleFilter -->> Browser: forward updateUserInfo.jsp
         deactivate CommonRoleFilter
     end
     end
@@ -106,9 +106,9 @@ else return true
                 CommonRoleFilter -->> Browser: forward updateUserInfo.jsp
             else  update=true
                 UpdateUserController -->> CommonRoleFilter: Redirect /ViewUserController 
+                deactivate UpdateUserController
                 CommonRoleFilter -->> Browser: Redirect /ViewUserController 
                 deactivate CommonRoleFilter
-                deactivate UpdateUserController
                 deactivate Browser
             end
         end

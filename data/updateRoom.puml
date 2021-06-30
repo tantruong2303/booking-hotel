@@ -63,9 +63,9 @@ else return true
             else Room not null
                 UpdateRoomController ->> UpdateRoomController: HttpSession.setAttribute(String arg0, Object arg1): void
                 UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+                deactivate UpdateRoomController
                 ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
                 deactivate ManagerRoleFilter
-                deactivate UpdateRoomController
             end 
         end
     end
@@ -142,8 +142,8 @@ else return true
                     ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
                 else
                     UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
-                    ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
                     deactivate UpdateRoomController
+                    ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
                     deactivate Browser
                     deactivate ManagerRoleFilter
                 end

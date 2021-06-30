@@ -30,7 +30,6 @@ alt return false
     CustomerRoleFilter -->> Browser: forward login.jsp
 else return true
     Helper -->> CustomerRoleFilter: return true
-    deactivate Helper
     CustomerRoleFilter ->> AddOrderController: doFilter(ServletRequest arg0, ServletResponse arg1): void
     activate AddOrderController
     AddOrderController ->> AddOrderController: HttpSession.getAttribute(String arg0): Object
@@ -39,7 +38,6 @@ else return true
         CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
     else valid bookingInfoList
         AddOrderController ->> Helper: generateOrderId(): Integer
-        activate Helper
         Helper -->> AddOrderController: return Integer orderId
         AddOrderController ->> Helper: getCurrentDate(): Date
         Helper -->> AddOrderController: return Date createDate
@@ -60,7 +58,6 @@ else return true
         DB -->> OrderDAO: return int preStm.executeUpdate()
         deactivate DB
         OrderDAO -->> AddOrderController: return boolean isSuccess
-        deactivate OrderDAO
         alt isSuccess = false
             AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
         CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
@@ -84,13 +81,11 @@ else return true
                 DB -->> BookingInfoDAO: return ResultSet rs
                 deactivate DB
                 BookingInfoDAO -->> AddOrderController: return ArrayList<BookingInfo> bookings
-                deactivate BookingInfoDAO
                 alt invalid bookings
                     AddOrderController -->> CustomerRoleFilter: forward viewBookingCart.jsp
                     CustomerRoleFilter -->> Browser: forward viewBookingCart.jsp
                 else valid bookings
                     AddOrderController ->> BookingInfoDAO: addBookingInfo(BookingInfo bookingInfo): boolean
-                    activate BookingInfoDAO
                     BookingInfoDAO ->> DB: executeUpdate(): PrepareStatement
                     activate DB
                     DB -->> BookingInfoDAO: return int preStm.executeUpdate()
@@ -103,7 +98,6 @@ else return true
                     else isSuccess = true
                         AddOrderController ->> AddOrderController: HttpSession.setAttribute(String arg0, Object arg1): void
                         AddOrderController ->> OrderDAO: updateOrder(Order order): boolean
-                        activate OrderDAO
                         OrderDAO ->> DB: executeUpdate(): PrepareStatement 
                         activate DB
                         DB -->> OrderDAO: return int preStm.executeUpdate()

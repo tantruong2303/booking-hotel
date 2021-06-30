@@ -42,8 +42,8 @@ else action allows
         ManagerFilter -->> Browser: redirect /RoomListController
     else not null
         AddRoomController -->> ManagerFilter: forward addRoom.jsp
-        ManagerFilter -->> Browser: forward addRoom.jsp
         deactivate AddRoomController
+        ManagerFilter -->> Browser: forward addRoom.jsp
         deactivate ManagerFilter
     end
 end
@@ -84,7 +84,7 @@ else action allows
         Database -->> RoomDAO: Return ResultSet
         deactivate Database
         RoomDAO -->> AddRoomController: Return ArrayList<RoomTypes>
-        deactivate RoomDAO
+
 
         alt null
             AddRoomController -->> ManagerFilter: redirect /RoomListController
@@ -95,22 +95,18 @@ else action allows
         end
     else valid data
         AddRoomController ->> RoomDAO: getRoomTypeById(Integer roomTypeId): RoomType
-        activate RoomDAO
         RoomDAO ->> Database: executeQuery(): ResultSet
         activate Database
         Database -->> RoomDAO: Return Result
         deactivate Database
         RoomDAO -->> AddRoomController: Return RoomType
-        deactivate RoomDAO
         alt null
             AddRoomController ->> RoomDAO: getRoomTypes(): ArrayList<RoomType>
-            activate RoomDAO
             RoomDAO ->> Database: executeQuery(): ResultSet
             activate Database
             Database -->> RoomDAO: Return ResultSet
             deactivate Database
             RoomDAO -->> AddRoomController: Return ArrayList<RoomTypes>
-            deactivate RoomDAO
 
             alt null
                 AddRoomController -->> ManagerFilter: redirect /RoomListController
@@ -120,23 +116,19 @@ else action allows
                 ManagerFilter -->> Browser: forward addRoom.jsp
         else not null
             AddRoomController ->> RoomDAO: getRoomById(int roomId): Room
-            activate RoomDAO
             RoomDAO ->> Database: executeQuery(): ResultSet
             activate Database
             Database -->> RoomDAO: Return ResultSet
             deactivate Database
             RoomDAO -->> AddRoomController: Return Room
-            deactivate RoomDAO 
 
             alt null 
                 AddRoomController ->> RoomDAO: getRoomTypes(): ArrayList<RoomType>
-                activate RoomDAO
                 RoomDAO ->> Database: executeQuery(): ResultSet
                 activate Database
                 Database -->> RoomDAO: Return ResultSet
                 deactivate Database
                 RoomDAO -->> AddRoomController: Return ArrayList<RoomTypes>
-                deactivate RoomDAO
 
                 alt null
                     AddRoomController -->> ManagerFilter: redirect /RoomListController
@@ -147,17 +139,14 @@ else action allows
                 end
             else not null
                 AddRoomController ->> RoomDAO: addRoom(Room room): boolean
-                activate RoomDAO
                 RoomDAO ->> Database: executeUpdate(): int
                 activate Database
                 Database -->> RoomDAO: Return result
                 deactivate Database
                 RoomDAO -->> AddRoomController: Return result
-                deactivate RoomDAO
 
                 alt false
                     AddRoomController ->> RoomDAO: getRoomTypes(): ArrayList<RoomType>
-                    activate RoomDAO
                     RoomDAO ->> Database: executeQuery(): ResultSet
                     activate Database
                     Database -->> RoomDAO: Return ResultSet

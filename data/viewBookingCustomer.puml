@@ -54,9 +54,9 @@ else return true
             deactivate BookingInfoDAO
             ViewBookingController ->> ViewBookingController: HttpServletRequest.setAttribute(String arg0, Object arg1): void
             ViewBookingController -->> CustomerRoleFilter: forward viewBooking.jsp
+            deactivate ViewBookingController
             CustomerRoleFilter -->> Browser: forward viewBooking.jsp
             deactivate CustomerRoleFilter
-            deactivate ViewBookingController
             deactivate Browser
         end
     end
