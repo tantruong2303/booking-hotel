@@ -1,4 +1,5 @@
-@startuml
+@startuml viewRoomControoler
+
 mainframe **sd** View Room Controller
 hide footbox
 actor User

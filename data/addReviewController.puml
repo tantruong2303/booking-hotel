@@ -1,4 +1,4 @@
-@startuml
+@startuml addReviewController
 mainframe **sd** Add Review Controller
 hide footbox
 actor User

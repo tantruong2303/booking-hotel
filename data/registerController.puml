@@ -1,4 +1,4 @@
-@startuml
+@startuml registerController
 mainframe **sd** Register Controller
 hide footbox
 actor User

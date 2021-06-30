@@ -26,11 +26,12 @@ else return true
     Helper -->> CommonRoleFilter: return true
     deactivate Helper
     CommonRoleFilter ->> ViewUserController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate CommonRoleFilter
+ 
     activate ViewUserController
     ViewUserController ->> ViewUserController: HttpSession.getAttribute(String arg0, Object arg1): void
     alt null username
-        ViewUserController -->> Browser: forward error.jsp
+        ViewUserController -->> CommonRoleFilter: forward error.jsp
+        CommonRoleFilter -->> Browser: forward error.jsp
     else get username
         ViewUserController ->> UserDao: getOneUserByUsername(String username): User
         activate UserDao
@@ -41,10 +42,13 @@ else return true
         UserDao -->> ViewUserController: return User
         deactivate UserDao
         alt not exist username
-            ViewUserController -->> Browser: forward error.jsp
+            ViewUserController -->> CommonRoleFilter: forward error.jsp
+            CommonRoleFilter -->> Browser: forward error.jsp
         else exist username
             ViewUserController ->> ViewUserController: HttpSession.setAttribute(String arg0, Object arg1): void
-            ViewUserController -->> Browser: forward viewUserInfo.jsp
+            ViewUserController -->> CommonRoleFilter: forward viewUserInfo.jsp
+            CommonRoleFilter -->> Browser: forward viewUserInfo.jsp
+        deactivate CommonRoleFilter
         deactivate ViewUserController
     end
     end

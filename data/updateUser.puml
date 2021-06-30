@@ -27,11 +27,11 @@ else return true
     Helper -->> CommonRoleFilter: return true
     deactivate Helper
     CommonRoleFilter ->> UpdateUserController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate CommonRoleFilter
     activate UpdateUserController
     UpdateUserController ->> UpdateUserController: HttpSession.getAttribute(String name): Object
     alt null username
-        UpdateUserController -->> Browser: forward error.jsp
+        UpdateUserController -->> CommonRoleFilter: forward error.jsp
+        CommonRoleFilter -->> Browser: forward error.jsp
     else get username
         UpdateUserController ->> UserDao: getOneUserByUsername(String username): User
         activate UserDao
@@ -42,11 +42,14 @@ else return true
         UserDao -->> UpdateUserController: return User
         deactivate UserDao
         alt not exist username
-            UpdateUserController -->> Browser: forward error.jsp
+            UpdateUserController -->> CommonRoleFilter: forward error.jsp
+            CommonRoleFilter -->> Browser: forward error.jsp
         else exist username
             UpdateUserController ->> UpdateUserController: HttpSession.setAttribute(String arg0, Object arg1): void
-            UpdateUserController -->> Browser: forward updateUserInfo.jsp
+            UpdateUserController -->> CommonRoleFilter: forward updateUserInfo.jsp
+            CommonRoleFilter -->> Browser: forward updateUserInfo.jsp
         deactivate UpdateUserController
+        deactivate CommonRoleFilter
     end
     end
 end
@@ -67,7 +70,6 @@ else return true
     Helper -->> CommonRoleFilter: return true
     deactivate Helper
     CommonRoleFilter ->> UpdateUserController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate CommonRoleFilter
     activate UpdateUserController
     UpdateUserController ->> GetParam: getStringParam(HttpServletRequest request, String field, String label, int min, int max,String defaultValue):String
     activate GetParam
@@ -78,7 +80,8 @@ else return true
     GetParam --->> UpdateUserController: return phone
     deactivate GetParam
     alt invalid data
-        UpdateUserController -->> Browser: forward updateUserInfo.jsp
+        UpdateUserController -->> CommonRoleFilter: forward updateUserInfo.jsp
+        CommonRoleFilter -->> Browser: forward updateUserInfo.jsp
     else valid data
         UpdateUserController ->> UserDao: getOneUserByUsername(String username): User
         activate UserDao
@@ -88,7 +91,8 @@ else return true
         deactivate DB
         UserDao -->> UpdateUserController: User
         alt Not found user
-            UpdateUserController -->> Browser: forward updateUserInfo.jsp
+            UpdateUserController -->> CommonRoleFilter: forward updateUserInfo.jsp
+            CommonRoleFilter -->> Browser: forward updateUserInfo.jsp
         else
             UpdateUserController ->> UserDao: updateUserInfoByUsername(String username, String fullName, String email, String phone): boolean
             UserDao ->> DB: executeUpdate()
@@ -98,9 +102,12 @@ else return true
             UserDao -->> UpdateUserController: return boolean
             deactivate UserDao
             alt update=false
-                UpdateUserController -->> Browser: forward updateUserInfo.jsp
+                UpdateUserController -->> CommonRoleFilter: forward updateUserInfo.jsp
+                CommonRoleFilter -->> Browser: forward updateUserInfo.jsp
             else  update=true
-                UpdateUserController -->> Browser: Redirect /ViewUserController 
+                UpdateUserController -->> CommonRoleFilter: Redirect /ViewUserController 
+                CommonRoleFilter -->> Browser: Redirect /ViewUserController 
+                deactivate CommonRoleFilter
                 deactivate UpdateUserController
                 deactivate Browser
             end

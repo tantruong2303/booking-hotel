@@ -1,4 +1,4 @@
-@startuml
+@startuml addRoomController
 mainframe **sd** Add Room Controller
 hide footbox
 actor User

@@ -30,14 +30,14 @@ else return true
     Helper -->> ManagerRoleFilter: return true
     deactivate Helper
     ManagerRoleFilter ->> UpdateRoomController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate ManagerRoleFilter
     activate UpdateRoomController
     UpdateRoomController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, Integer defaultValue): Integer
     activate GetParam
     GetParam -->> UpdateRoomController: return roomId
     deactivate GetParam
     alt invalid data
-        UpdateRoomController -->> Browser: forward updateRoom.jsp 
+        UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+        ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
     else valid data
         UpdateRoomController ->> RoomDAO: getRoomTypes(): ArrayList<RoomType>
         activate RoomDAO
@@ -47,7 +47,8 @@ else return true
         deactivate DB
         RoomDAO -->> UpdateRoomController: return ArrayList<RoomType>
         alt RoomType Null 
-            UpdateRoomController -->> Browser: forward updateRoom.jsp 
+            UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+            ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
         else RoomType not null
             UpdateRoomController ->> RoomDAO: getRoomById(int roomId): Room
             RoomDAO ->> DB: executeQuery(): ResultSet
@@ -57,10 +58,13 @@ else return true
             RoomDAO -->> UpdateRoomController:  return Room
             deactivate RoomDAO
             alt Room null
-                UpdateRoomController -->> Browser: forward updateRoom.jsp 
+                UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+                ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
             else Room not null
                 UpdateRoomController ->> UpdateRoomController: HttpSession.setAttribute(String arg0, Object arg1): void
-                UpdateRoomController -->> Browser: forward updateRoom.jsp 
+                UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+                ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
+                deactivate ManagerRoleFilter
                 deactivate UpdateRoomController
             end 
         end
@@ -82,7 +86,6 @@ else return true
     Helper -->> ManagerRoleFilter: return true
     deactivate Helper
     ManagerRoleFilter ->> UpdateRoomController: doFilter(ServletRequest arg0, ServletResponse arg1): void
-    deactivate ManagerRoleFilter
     activate UpdateRoomController
     UpdateRoomController ->> GetParam: getIntParams(HttpServletRequest request, String field, String label, int min, int max, Integer defaultValue): Integer
     activate GetParam
@@ -95,7 +98,8 @@ else return true
     GetParam -->> UpdateRoomController: imageUrl
     deactivate GetParam
     alt invalid data
-        UpdateRoomController -->> Browser: forward updateRoom.jsp
+        UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+                ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
     else valid data
         UpdateRoomController ->> RoomDAO: getRoomTypes(): ArrayList<RoomType>
         activate RoomDAO
@@ -105,7 +109,8 @@ else return true
         deactivate DB
         RoomDAO -->> UpdateRoomController:  return Room
         alt room null
-            UpdateRoomController -->> Browser: forward updateRoom.jsp
+            UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+            ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
         else room not null
             UpdateRoomController ->> RoomDAO: getRoomTypeById(Integer roomTypeId): RoomType
             RoomDAO ->> DB: executeQuery(): ResultSet
@@ -122,7 +127,8 @@ else return true
             BookingInfoDAO -->> UpdateRoomController:  return ArrayList<BookingInfo>
             deactivate BookingInfoDAO
             alt RoomType null or BookingInfoDAO null
-                UpdateRoomController -->> Browser: forward updateRoom.jsp
+                UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+                ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
             else RoomType not null or BookingInfoDAO not null
                 UpdateRoomController ->> RoomDAO: updateRoom(Room room): boolean
                 RoomDAO ->> DB: executeUpdate(): ResultSet
@@ -132,11 +138,14 @@ else return true
                 RoomDAO -->> UpdateRoomController:  return boolean
                 deactivate RoomDAO
                 alt result = false
-                    UpdateRoomController -->> Browser: forward updateRoom.jsp
+                    UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+                    ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
                 else
-                    UpdateRoomController -->> Browser: forward updateRoom.jsp
+                    UpdateRoomController -->> ManagerRoleFilter: forward updateRoom.jsp
+                    ManagerRoleFilter -->> Browser: forward updateRoom.jsp 
                     deactivate UpdateRoomController
                     deactivate Browser
+                    deactivate ManagerRoleFilter
                 end
             end
         end
