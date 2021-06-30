@@ -1,7 +1,7 @@
 @startuml addOrder
 
 hide footbox
-mainframe <b>sd</b> Add Order
+mainframe <b>sd</b> Add Order For Customer
 actor User
 participant "Browser" as Browser
 participant ":CustomerRoleFilter" as CustomerRoleFilter

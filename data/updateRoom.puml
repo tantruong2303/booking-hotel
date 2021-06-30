@@ -1,7 +1,7 @@
 @startuml updateRoom
 
 hide footbox
-mainframe <b>sd</b> Update Room
+mainframe <b>sd</b> Update Room For Manager Account
 
 actor User
 participant "Browser" as Browser

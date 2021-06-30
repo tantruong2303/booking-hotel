@@ -1,7 +1,7 @@
 @startuml viewBookingCart
 
 hide footbox
-mainframe <b>sd</b> View Booking Cart
+mainframe <b>sd</b> View Booking Cart For Customer
 actor User
 participant "Browser" as Browser
 participant ":CustomerRoleFilter" as CustomerRoleFilter

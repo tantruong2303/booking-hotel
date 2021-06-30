@@ -1,5 +1,5 @@
 @startuml addRoomController
-mainframe **sd** Add Room Controller
+mainframe **sd** Add Room Controller For Manager
 hide footbox
 actor User
 participant "Browser" as Browser

@@ -1,5 +1,5 @@
 @startuml addReviewController
-mainframe **sd** Add Review Controller
+mainframe **sd** Add Review Controller For Customer
 hide footbox
 actor User
 participant "Browser" as Browser
