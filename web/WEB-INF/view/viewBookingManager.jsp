@@ -17,15 +17,16 @@
 	float totalProcess = 0;
 	float totalBooking = 0;
 	for (BookingInfo bookingInfo : total) {
-		if(bookingInfo.getStatus() == -1){
-			totalProcess += bookingInfo.getTotal();
+                Integer numberOfDay = Validator.computeNumberOfDay(request, bookingInfo.getStartDate(), bookingInfo.getEndDate());
+		if(bookingInfo.getStatus() == -1){ 
+			totalProcess += bookingInfo.getRoomPrice() * numberOfDay;
 			process +=1;
 		} else if (bookingInfo.getStatus() == 1){
 			paid +=1;
 		} else {
 			cancel +=1;
 		}
-		totalBooking += bookingInfo.getTotal();
+		totalBooking += bookingInfo.getRoomPrice() * numberOfDay;
 	}
 	
 
@@ -91,7 +92,9 @@
 						<h1 class="text-red-500">Total Cancel: <%= cancel%>($0)</h1>
 					</div>
 				<div class="w-full space-y-2">
-					<% for (int i = 0; i < list.size(); i++) { %>
+					<% for (int i = 0; i < list.size(); i++) { 
+                                            Integer numberOfDay = Validator.computeNumberOfDay(request, list.get(i).getStartDate(), list.get(i).getEndDate());
+                                        %>
 					<div
 					    class="block w-full p-2 duration-300 transform bg-white border rounded-md shadow-lg  border-cerise-red-100 hover:bg-cerise-red-50 <%=list.get(i).getStatus() == -1 ? "bg-yellow-200": list.get(i).getStatus() == 1 ? "bg-green-200": "bg-red-200"  %>"
 					    >
@@ -100,8 +103,7 @@
 								Booking ID: <%= list.get(i).getBookingInfoId()%>
 							</h1>
 							<p>Room no: <%= list.get(i).getRoom().getRoomId()%></p>
-							<p>Total: $<%= list.get(i).getTotal()%></p>
-							<p>Duration Time: <%= list.get(i).getNumberOfDay()%></p>
+							<p>Duration Time: <%= numberOfDay %></p>
 							<p>Start Date: <%= Helper.convertDateToString(list.get(i).getStartDate()) %></p>
 							<p>End Date: <%= Helper.convertDateToString(list.get(i).getEndDate())%></p>
 							<p>

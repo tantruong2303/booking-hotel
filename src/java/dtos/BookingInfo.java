@@ -14,48 +14,38 @@ public class BookingInfo {
     private Room room;
     private Date startDate;
     private Date endDate;
-    private int numberOfDay;
     // -1 PROCESS 0 FAILED 1 CONFIRM
     private int status;
     private float roomPrice;
-    private float total;
 
-    public BookingInfo(int bookingInfoId, Order order, Room room, Date startDate, Date endDate, int numberOfDay,
-            int status, float roomPrice, float total) {
+    public BookingInfo(int bookingInfoId, Order order, Room room, Date startDate, Date endDate, int status, float roomPrice) {
         this.bookingInfoId = bookingInfoId;
         this.order = order;
         this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.numberOfDay = numberOfDay;
         this.status = status;
         this.roomPrice = roomPrice;
-        this.total = total;
     }
 
-    public BookingInfo(Order order, Room room, Date startDate, Date endDate, int numberOfDay, int status,
-            float roomPrice, float total) {
+    public BookingInfo(Order order, Room room, Date startDate, Date endDate, int status, float roomPrice) {
         this.order = order;
         this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.numberOfDay = numberOfDay;
         this.status = status;
         this.roomPrice = roomPrice;
-        this.total = total;
         this.bookingInfoId = 0;
     }
 
-    public BookingInfo(int bookingInfoId, Room room, Date startDate, Date endDate, int numberOfDay, int status,
-            float roomPrice, float total) {
+    public BookingInfo(int bookingInfoId, Room room, Date startDate, Date endDate, int status, float roomPrice) {
         this.bookingInfoId = bookingInfoId;
         this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.numberOfDay = numberOfDay;
         this.status = status;
         this.roomPrice = roomPrice;
-        this.total = total;
+        this.order = null;
     }
 
     public int getBookingInfoId() {
@@ -98,14 +88,6 @@ public class BookingInfo {
         this.endDate = endDate;
     }
 
-    public int getNumberOfDay() {
-        return numberOfDay;
-    }
-
-    public void setNumberOfDay(int numberOfDay) {
-        this.numberOfDay = numberOfDay;
-    }
-
     public int getStatus() {
         return status;
     }
@@ -120,21 +102,6 @@ public class BookingInfo {
 
     public void setRoomPrice(float roomPrice) {
         this.roomPrice = roomPrice;
-    }
-
-    public float getTotal() {
-        return total;
-    }
-
-    public void setTotal(float total) {
-        this.total = total;
-    }
-
-    @Override
-    public String toString() {
-        return "BookingInfo{" + "bookingInfoId=" + bookingInfoId + ", order=" + order + ", room=" + room
-                + ", startDate=" + startDate + ", endDate=" + endDate + ", numberOfDay=" + numberOfDay + ", status="
-                + status + ", roomPrice=" + roomPrice + ", total=" + total + '}';
     }
 
 }
