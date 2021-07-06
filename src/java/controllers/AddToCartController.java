@@ -29,7 +29,6 @@ import utils.Helper;
 import utils.Validator;
 
 /**
- *
  * @author Lenovo
  */
 @WebServlet(name = "AddToCartController", urlPatterns = {"/AddToCartController"})
@@ -84,7 +83,7 @@ public class AddToCartController extends HttpServlet {
 
             if (this.getHandler(request, response)) {
                 // forward on 200
-                url = (Routers.ADD_TO_CART_PAGE);
+                url = (Routers.VIEW_ROOM_INFO_PAGE);
 
             } else {
                 // forward on 400g
@@ -92,6 +91,7 @@ public class AddToCartController extends HttpServlet {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect(Routers.ERROR);
         }
         request.getRequestDispatcher(url).forward(request, response);
@@ -115,8 +115,8 @@ public class AddToCartController extends HttpServlet {
 
         // get and validate params
         Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999, null);
-        Date startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
-        Date endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
+        Date startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date", null);
+        Date endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date", null);
         if (startDate == null || endDate == null || roomId == null) {
             return false;
         }
@@ -159,6 +159,8 @@ public class AddToCartController extends HttpServlet {
                 return false;
             }
         }
+
+        Float total = numberOfDay * room.getPrice();
 
         // checking update status room
         boolean isChangeStatus = roomDAO.changeStatus(room.getRoomId(), 1);
@@ -212,5 +214,4 @@ public class AddToCartController extends HttpServlet {
             request.getRequestDispatcher(Routers.ERROR).forward(request, response);
         }
     }
-
 }
