@@ -71,7 +71,7 @@ public class IndexController extends HttpServlet {
 			}
 			else
 				for (BookingInfo item : bookings) {
-					if (!Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), startDate, endDate)) {
+					if (Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), startDate, endDate)) {
 						filterRoom.add(room);
 					}
 				}

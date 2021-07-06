@@ -68,11 +68,10 @@ public class AddToCartController extends HttpServlet {
 	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
-	 * 
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -85,12 +84,14 @@ public class AddToCartController extends HttpServlet {
 				// forward on 200
 				url = (Routers.VIEW_ROOM_INFO_PAGE);
 
-			} else {
+			}
+			else {
 				// forward on 400g
 				url = (Routers.INDEX_PAGE);
 			}
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect(Routers.ERROR);
 		}
@@ -100,11 +101,10 @@ public class AddToCartController extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP <code>POST</code> methods.
-	 * 
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	private boolean postHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -174,15 +174,15 @@ public class AddToCartController extends HttpServlet {
 		if (bookingInfoList == null) {
 			updateBookingInfoList = new HashMap<>();
 
-			BookingInfo bookingInfo = new BookingInfo(1, room, startDate, endDate, numberOfDay, -1, room.getPrice(),
-					total);
+			BookingInfo bookingInfo = new BookingInfo(1, room, startDate, endDate, -1, room.getPrice());
 
 			updateBookingInfoList.put(bookingInfo.getBookingInfoId(), bookingInfo);
 
-		} else {
+		}
+		else {
 			updateBookingInfoList = bookingInfoList;
-			BookingInfo bookingInfo = new BookingInfo(updateBookingInfoList.size() + 1, room, startDate, endDate,
-					numberOfDay, -1, room.getPrice(), total);
+			BookingInfo bookingInfo = new BookingInfo(updateBookingInfoList.size() + 1, room, startDate, endDate, -1,
+					room.getPrice());
 			updateBookingInfoList.put(bookingInfo.getBookingInfoId(), bookingInfo);
 		}
 
@@ -192,11 +192,10 @@ public class AddToCartController extends HttpServlet {
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
-	 * 
-	 * @param request  servlet request
+	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * @throws IOException if an I/O error occurs
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -214,7 +213,8 @@ public class AddToCartController extends HttpServlet {
 			}
 			// forward on 400
 			this.doGet(request, response);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
