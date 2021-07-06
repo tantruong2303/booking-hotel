@@ -2,7 +2,6 @@ package utils;
 
 import java.io.IOException;
 import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -10,9 +9,8 @@ import javax.servlet.http.Part;
 public class GetParam {
 
 	/**
-	 * Get string from request parameter and validate it, if it invalid,
-	 * return default value
-	 *
+	 * Get string from request parameter and validate it, if it invalid, return default
+	 * value
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param label Label
@@ -21,7 +19,7 @@ public class GetParam {
 	 * @return Valid string
 	 */
 	public static String getStringParam(HttpServletRequest request, String field, String label, int min, int max,
-		String defaultValue) {
+			String defaultValue) {
 		String value = (String) request.getParameter(field);
 
 		if (value == null || value.trim().isEmpty()) {
@@ -44,9 +42,8 @@ public class GetParam {
 	}
 
 	/**
-	 * Get integer from request parameter and validate it, if it invalid,
-	 * return default value
-	 *
+	 * Get integer from request parameter and validate it, if it invalid, return default
+	 * value
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param label Label
@@ -55,7 +52,7 @@ public class GetParam {
 	 * @return Valid integer
 	 */
 	public static Integer getIntParams(HttpServletRequest request, String field, String label, int min, int max,
-		Integer defaultValue) {
+			Integer defaultValue) {
 
 		String value = (String) request.getParameter(field);
 		Integer realValue;
@@ -69,8 +66,10 @@ public class GetParam {
 		}
 		try {
 			realValue = Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			request.setAttribute(field + "Error", label + " must be a number and less than or equal " + Integer.MAX_VALUE);
+		}
+		catch (NumberFormatException e) {
+			request.setAttribute(field + "Error",
+					label + " must be a number and less than or equal " + Integer.MAX_VALUE);
 			return null;
 		}
 		if (realValue > max) {
@@ -86,9 +85,8 @@ public class GetParam {
 	}
 
 	/**
-	 * Get float from request parameter and validate it, if it invalid,
-	 * return default value
-	 *
+	 * Get float from request parameter and validate it, if it invalid, return default
+	 * value
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param label Label
@@ -97,7 +95,7 @@ public class GetParam {
 	 * @return Valid float
 	 */
 	public static Float getFloatParams(HttpServletRequest request, String field, String label, float min, float max,
-		Float defaultValue) {
+			Float defaultValue) {
 
 		String value = (String) request.getParameter(field);
 		Float realValue;
@@ -111,9 +109,11 @@ public class GetParam {
 
 		try {
 			realValue = Float.parseFloat(value);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 
-			request.setAttribute(field + "Error", label + " must be a number and less than or equal " + Float.MAX_VALUE);
+			request.setAttribute(field + "Error",
+					label + " must be a number and less than or equal " + Float.MAX_VALUE);
 			return null;
 		}
 		if (realValue > max) {
@@ -130,7 +130,6 @@ public class GetParam {
 
 	/**
 	 * Get phone number from request parameter and validate it
-	 *
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param label Label
@@ -152,7 +151,6 @@ public class GetParam {
 
 	/**
 	 * Get email from request parameter and validate it
-	 *
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param label Label
@@ -189,16 +187,19 @@ public class GetParam {
 
 	/**
 	 * Get date from request parameter and make sure it in the future
-	 *
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param label Label
 	 * @return Future date
 	 */
-	public static Date getDateFromNowToFuture(HttpServletRequest request, String field, String label) {
+	public static Date getDateFromNowToFuture(HttpServletRequest request, String field, String label, Date df) {
 		String value = getStringParam(request, field, label, 10, 10, null);
 		if (value == null) {
-			return null;
+			if (df == null) {
+				return null;
+			}
+			request.removeAttribute(field + "Error");
+			return df;
 		}
 
 		Date date = Helper.convertStringToDate(value);
@@ -214,7 +215,6 @@ public class GetParam {
 
 	/**
 	 * Get attribute, if it null, return default value
-	 *
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param defaultValue default value
@@ -240,7 +240,6 @@ public class GetParam {
 
 	/**
 	 * Get file from request
-	 *
 	 * @param request servlet request
 	 * @param field request parameter name
 	 * @param label Label
@@ -249,7 +248,7 @@ public class GetParam {
 	 * @return
 	 */
 	public static String getFileParam(HttpServletRequest request, String field, String label, long maxSize,
-		String[] extension) {
+			String[] extension) {
 		try {
 			Part filePart = request.getPart(field);
 			if (filePart == null) {
@@ -267,7 +266,8 @@ public class GetParam {
 			int indexOfExtension = fileName.lastIndexOf(".");
 			if (indexOfExtension > 0) {
 				fileExtension = fileName.substring(indexOfExtension + 1).toLowerCase();
-			} else {
+			}
+			else {
 				request.setAttribute(field + "Error", label + " is wrong extension ." + String.join(" .", extension));
 				return null;
 			}
@@ -286,25 +286,26 @@ public class GetParam {
 			}
 
 			return FileHelper.uploadFile(request, filePart);
-		} catch (IOException | ServletException e) {
+		}
+		catch (IOException | ServletException e) {
 			e.printStackTrace();
 			return null;
 		}
 
 	}
-        
-        public static Integer[] getIntegerArrayParams(HttpServletRequest request, String field, String label) {
-        String[] inputs = request.getParameterValues(field);
-        if (inputs == null) {
-            request.setAttribute(field + "Error", label + " is required");
-            return null;
-        }
-        
-        Integer[] values = new Integer[inputs.length];
-        for (int i = 0; i < inputs.length; i++) {
-            values[i] = Integer.parseInt(inputs[i]);
-        }
-        return values;
-    }
+
+	public static Integer[] getIntegerArrayParams(HttpServletRequest request, String field, String label) {
+		String[] inputs = request.getParameterValues(field);
+		if (inputs == null) {
+			request.setAttribute(field + "Error", label + " is required");
+			return null;
+		}
+
+		Integer[] values = new Integer[inputs.length];
+		for (int i = 0; i < inputs.length; i++) {
+			values[i] = Integer.parseInt(inputs[i]);
+		}
+		return values;
+	}
 
 }

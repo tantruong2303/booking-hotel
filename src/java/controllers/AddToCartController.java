@@ -115,8 +115,8 @@ public class AddToCartController extends HttpServlet {
 
 		// get and validate params
 		Integer roomId = GetParam.getIntParams(request, "roomId", "roomId", 100, 999, null);
-		Date startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date");
-		Date endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date");
+		Date startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date", null);
+		Date endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date", null);
 		if (startDate == null || endDate == null || roomId == null) {
 			return false;
 		}
