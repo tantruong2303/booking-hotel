@@ -98,8 +98,6 @@ public class IndexController extends HttpServlet {
 
 		try {
 			processHandler(request, response);
-			Date startDate = GetParam.getDateFromNowToFuture(request, "startDate", "Start Date", new Date());
-			Date endDate = GetParam.getDateFromNowToFuture(request, "endDate", "End Date", new Date());
 			request.getRequestDispatcher(Routers.INDEX_PAGE).forward(request, response);
 		}
 		catch (Exception e) {
