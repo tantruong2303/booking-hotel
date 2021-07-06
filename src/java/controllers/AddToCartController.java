@@ -206,7 +206,10 @@ public class AddToCartController extends HttpServlet {
 
 			if (postHandler(request, response)) {
 				// forward on 200
-				response.sendRedirect(Routers.INDEX_CONTROLLER + "?message=A room has been added to your cart");
+				String startDate = GetParam.getStringParam(request, "startDate", "Start Date", 0, 1000, "");
+				String endDate = GetParam.getStringParam(request, "endDate", "End Date", 0, 1000, "");
+				response.sendRedirect(Routers.INDEX_CONTROLLER
+						+ "?message=A room has been added to your cart&startDate=" + startDate + "&endDate=" + endDate);
 				return;
 			}
 			// forward on 400
