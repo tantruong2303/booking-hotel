@@ -87,10 +87,8 @@ CREATE TABLE tbl_BookingInfo
 	roomId int FOREIGN KEY REFERENCES tbl_Room(roomId) ON DELETE CASCADE,
 	startDate Date,
 	endDate Date,
-	numberOfDay int,
 	status int,
 	roomPrice float,
-	total float
 );
 GO
 

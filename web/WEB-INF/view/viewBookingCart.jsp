@@ -1,3 +1,4 @@
+<%@page import="utils.Validator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="dtos.BookingInfo"%>
 <%@page import="java.util.HashMap"%>
@@ -35,16 +36,16 @@
 						<td>Room Name</td>
 						<td>Start Date</td>
 						<td>End Date</td>
-						<td>Number Of Day</td>
+                                                <td>Number of day</td>
 						<td>Price</td>
-						<td>Sub total</td>
 						<td>Remove</td>
 					</tr>
 					<%
 					    Float total = 0F;
 					    for (Integer bookingInfoId : bookingInfoList.keySet()) {
 						BookingInfo bookingInfo = bookingInfoList.get(bookingInfoId);
-						total += bookingInfo.getTotal();
+                                                Integer numberOfDay = Validator.computeNumberOfDay(request, bookingInfo.getStartDate(), bookingInfo.getEndDate());
+						total += (bookingInfo.getRoomPrice() * numberOfDay);
 					%>
 
 
@@ -54,15 +55,13 @@
 						<td class="capitalize border-black border"><%= bookingInfo.getRoom().getRoomType().getName()%></td>
 						<td class="border-black border"><%= Helper.convertDateToString(bookingInfo.getStartDate())%></td>
 						<td class="border-black border"><%=Helper.convertDateToString( bookingInfo.getEndDate())%></td>
-						<td class="border-black border"><%= bookingInfo.getNumberOfDay()%></td>
-						<td class="border-black border">$<%= bookingInfo.getRoomPrice()%></td>
-						<td class="border-black border">$<%= bookingInfo.getTotal()%></td>
+						<td class="border-black border"><%= numberOfDay %></td>
+                                                <td class="border-black border">$<%= bookingInfo.getRoomPrice() %></td>
 						<td class="border-black border"><input type="checkbox" name="bookingInfoId" value="<%= bookingInfo.getBookingInfoId()%>"></td>
 					</tr>
 					<% }%>
 
 					<tr>
-						<td class="border-black border"></td>
 						<td class="border-black border"></td>
 						<td class="border-black border"></td>
 						<td class="border-black border"></td>
