@@ -1,19 +1,20 @@
 package daos;
 
 import dtos.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import utils.Connector;
 
 public class UserDAO {
 
 	private Connection conn;
+
 	private PreparedStatement preStm;
+
 	private ResultSet rs;
 
+	// This function handle to close connection of database
 	private void closeConnection() throws Exception {
 		if (rs != null) {
 			rs.close();
@@ -29,6 +30,7 @@ public class UserDAO {
 		}
 	}
 
+	// this function will add new user to datbase
 	public boolean addUser(User user) throws Exception {
 		boolean isSuccess = false;
 		conn = Connector.getConnection();
@@ -42,12 +44,14 @@ public class UserDAO {
 			preStm.setString(5, user.getPhone());
 			preStm.setInt(6, user.getRole());
 			isSuccess = preStm.executeUpdate() > 0;
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return isSuccess;
 	}
 
+	// this function will get a user by username
 	public User getOneUserByUsername(String username) throws Exception {
 		User user = null;
 
@@ -68,13 +72,15 @@ public class UserDAO {
 				int roleSql = rs.getInt("role");
 				user = new User(userIdSql, usernameSql, passwordSql, fullNameSql, emailSql, phoneSql, roleSql);
 			}
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return user;
 	}
-        
-        public User getOneUserByUserId(Integer userId) throws Exception {
+
+	// this function will get a user by user id
+	public User getOneUserByUserId(Integer userId) throws Exception {
 		User user = null;
 
 		try {
@@ -93,12 +99,14 @@ public class UserDAO {
 				int roleSql = rs.getInt("role");
 				user = new User(userId, usernameSql, passwordSql, fullNameSql, emailSql, phoneSql, roleSql);
 			}
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return user;
 	}
 
+	// this function will update password of user
 	public boolean updateUserPasswordByUsername(String username, String password) throws Exception {
 		boolean isSuccess = false;
 		try {
@@ -108,12 +116,14 @@ public class UserDAO {
 			preStm.setString(1, password);
 			preStm.setString(2, username);
 			isSuccess = preStm.executeUpdate() > 0;
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return isSuccess;
 	}
 
+	// this function will update some basic information of user
 	public boolean updateUserInfoByUsername(String username, String fullName, String email, String phone)
 			throws Exception {
 		boolean isSuccess = false;
@@ -127,9 +137,11 @@ public class UserDAO {
 			preStm.setString(3, phone);
 			preStm.setString(4, username);
 			isSuccess = preStm.executeUpdate() > 0;
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return isSuccess;
 	}
+
 }

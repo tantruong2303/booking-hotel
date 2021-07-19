@@ -1,32 +1,29 @@
 package controllers;
 
+import constant.Routers;
+import daos.BookingInfoDAO;
 import daos.RoomDAO;
+import dtos.BookingInfo;
 import dtos.Room;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Hashtable;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import constant.Routers;
-import daos.BookingInfoDAO;
-import dtos.BookingInfo;
-import java.util.Hashtable;
-
 import utils.GetParam;
 
 @WebServlet(name = "RoomListController", urlPatterns = { "/RoomListController" })
 public class RoomListController extends HttpServlet {
 
 	private boolean processHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		// initialize resource
 		RoomDAO roomDAO = new RoomDAO();
 		BookingInfoDAO bookingDAO = new BookingInfoDAO();
 
+		// validate params
 		Integer numOfPeople = GetParam.getIntParams(request, "numOfPeople", "numOfPeople", 1, 10, 1);
 		Float min = GetParam.getFloatParams(request, "minPrice", "min price", 0f, Float.MAX_VALUE, 0f);
 		Float max = GetParam.getFloatParams(request, "maxPrice", "Max price", 0, Float.MAX_VALUE, Float.MAX_VALUE);
@@ -36,12 +33,13 @@ public class RoomListController extends HttpServlet {
 		if (min == null || max == null || status == null || numOfPeople == null || priceOrder == null) {
 			return false;
 		}
-
+		// checking is valid min max
 		if (min >= max) {
 			request.setAttribute("errorMessage", "Min Price must be greater than max price");
 			return false;
 		}
 
+		// select only active room for customer and all for manager
 		ArrayList<Room> list = new ArrayList<>();
 
 		if (status == 2) {
@@ -64,7 +62,7 @@ public class RoomListController extends HttpServlet {
 	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -73,8 +71,8 @@ public class RoomListController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
 		try {
+			// handle request
 			this.processHandler(request, response);
 			request.getRequestDispatcher(Routers.LIST_ROOM_PAGE).forward(request, response);
 		} catch (Exception e) {

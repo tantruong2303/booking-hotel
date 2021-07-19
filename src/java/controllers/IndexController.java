@@ -28,16 +28,19 @@ import utils.Validator;
 public class IndexController extends HttpServlet {
 
 	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-	 * @param request servlet request
+	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+	 * methods.
+	 * 
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	private boolean processHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		// initialize resource
 		RoomDAO roomDAO = new RoomDAO();
 		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
+		// validate params
 		Integer numOfPeople = GetParam.getIntParams(request, "numOfPeople", "Number of people", 1, 10, 1);
 		Float min = GetParam.getFloatParams(request, "minPrice", "Min price", 0f, Float.MAX_VALUE, 0f);
 		Float max = GetParam.getFloatParams(request, "maxPrice", "Max price", 0, Float.MAX_VALUE, Float.MAX_VALUE);
@@ -50,6 +53,7 @@ public class IndexController extends HttpServlet {
 			return false;
 		}
 
+		// checking is valid date
 		Integer numberOfDay = Validator.computeNumberOfDay(request, startDate, endDate);
 
 		if (numberOfDay == null || numberOfDay <= 0) {
@@ -57,19 +61,20 @@ public class IndexController extends HttpServlet {
 			return false;
 		}
 
+		// checking min max price
 		if (min >= max) {
 			request.setAttribute("errorMessage", "Min Price must be greater than max price");
 			return false;
 		}
 
+		// get all room
 		ArrayList<Room> list = roomDAO.getRooms(numOfPeople, min, max, priceOrder, 0, false);
 		ArrayList<Room> filterRoom = new ArrayList<Room>();
 		for (Room room : list) {
 			ArrayList<BookingInfo> bookings = bookingInfoDAO.getActiveBookingWithRoomId(room.getRoomId());
 			if (bookings.isEmpty()) {
 				filterRoom.add(room);
-			}
-			else
+			} else
 				for (BookingInfo item : bookings) {
 					if (Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), startDate, endDate)) {
 						filterRoom.add(room);
@@ -86,10 +91,11 @@ public class IndexController extends HttpServlet {
 	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
-	 * @param request servlet request
+	 * 
+	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -97,10 +103,25 @@ public class IndexController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
+			// handle request
 			processHandler(request, response);
 			request.getRequestDispatcher(Routers.INDEX_PAGE).forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}
-		catch (Exception e) {
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+
+		try {
+			// handle request
+			processHandler(request, response);
+			request.getRequestDispatcher(Routers.INDEX_PAGE).forward(request, response);
+		} catch (Exception e) {
 			e.printStackTrace();
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);
 		}

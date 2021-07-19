@@ -28,27 +28,28 @@ import utils.Helper;
 import utils.Validator;
 
 /**
- *
  * @author Lenovo
  */
-@WebServlet(name = "AddOrderController", urlPatterns = {"/AddOrderController"})
+@WebServlet(name = "AddOrderController", urlPatterns = { "/AddOrderController" })
 public class AddOrderController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     private boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // initialize resource
         OrderDAO orderDAO = new OrderDAO();
         UserDAO userDAO = new UserDAO();
         RoomDAO roomDAO = new RoomDAO();
         BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
 
+        // Get session and check lis is empty or not
         HttpSession session = request.getSession(false);
         HashMap<Integer, BookingInfo> bookingInfoList = (HashMap<Integer, BookingInfo>) session
                 .getAttribute("bookingInfoList");
@@ -57,6 +58,7 @@ public class AddOrderController extends HttpServlet {
             return false;
         }
 
+        // create order
         Integer orderId = Helper.generateOrderId();
         String username = (String) session.getAttribute("username");
         User user = userDAO.getOneUserByUsername(username);
@@ -70,6 +72,7 @@ public class AddOrderController extends HttpServlet {
         }
         HashMap<Integer, BookingInfo> bookingListClone = (HashMap<Integer, BookingInfo>) bookingInfoList.clone();
 
+        // check bookingInfo in session is valid
         for (Integer bookingInfoIdCart : bookingInfoList.keySet()) {
             BookingInfo bookingInfoCart = bookingInfoList.get(bookingInfoIdCart);
 
@@ -87,7 +90,7 @@ public class AddOrderController extends HttpServlet {
             if (room.getPrice() != bookingInfoCart.getRoomPrice()) {
                 request.setAttribute("errorMessage",
                         "Booking price is not correct! Please remove Booking infor with ID: "
-                        + bookingInfoCart.getBookingInfoId());
+                                + bookingInfoCart.getBookingInfoId());
                 return false;
             }
 
@@ -96,14 +99,19 @@ public class AddOrderController extends HttpServlet {
             for (BookingInfo item : bookings) {
                 if (!Validator.checkDateInRange(item.getStartDate(), item.getEndDate(), bookingInfoCart.getStartDate(),
                         bookingInfoCart.getEndDate())) {
-                    request.setAttribute("errorMessage",
-                            "The room with ID " + item.getRoom().getRoomId() + " have a booking from "
-                            + Helper.convertDateToString(item.getStartDate()) + " to "
-                            + Helper.convertDateToString(item.getEndDate()) + ", please select other day.");
+                    request.setAttribute("errorMessage", "The room with ID " + item.getRoom().getRoomId()
+                            + " have a booking from " + Helper.convertDateToString(item.getStartDate()) + " to "
+                            + Helper.convertDateToString(item.getEndDate()) + ", please remove from your cart.");
                     return false;
                 }
             }
 
+        }
+
+        // save bookingInfo to database
+        for (Integer bookingInfoIdCart : bookingInfoList.keySet()) {
+            BookingInfo bookingInfoCart = bookingInfoList.get(bookingInfoIdCart);
+            Room room = roomDAO.getRoomById(bookingInfoCart.getRoom().getRoomId());
             BookingInfo bookingInfo = new BookingInfo(order, room, bookingInfoCart.getStartDate(),
                     bookingInfoCart.getEndDate(), -1, bookingInfoCart.getRoomPrice());
             if (!bookingInfoDAO.addBookingInfo(bookingInfo)) {
@@ -111,13 +119,13 @@ public class AddOrderController extends HttpServlet {
                 return false;
             }
 
-            Integer numberOfDay = Validator.computeNumberOfDay(request, bookingInfo.getStartDate(), bookingInfo.getEndDate());
+            Integer numberOfDay = Validator.computeNumberOfDay(request, bookingInfo.getStartDate(),
+                    bookingInfo.getEndDate());
             total += (bookingInfo.getRoomPrice() * numberOfDay);
-
-            bookingListClone.remove(bookingInfoIdCart);
-            session.setAttribute("bookingInfoList", bookingListClone);
         }
 
+        // remove shopping cart list
+        session.removeAttribute("bookingInfoList");
         order.setTotal(total);
         if (!orderDAO.updateOrder(order)) {
             request.setAttribute("errorMessage", "Something went wrong!");
@@ -133,22 +141,23 @@ public class AddOrderController extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            // handle request
             if (processRequest(request, response)) {
+                // forward on success
                 response.sendRedirect(Routers.VIEW_BOOKING_CONTROLLER
                         + "?message=Thank you for your booking, we hope would meet you soon.");
                 return;
             }
-            ;
-
+            // forward on failed
             request.getRequestDispatcher(Routers.VIEW_BOOKING_CART_CONTROLLER).forward(request, response);
 
         } catch (Exception e) {

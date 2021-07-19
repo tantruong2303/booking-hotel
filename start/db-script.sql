@@ -106,4 +106,3 @@ go
 INSERT INTO tbl_Review(userId, roomId, createDate, rate, message)
 VALUES (1, 100, N'2021-04-28', 5, N'Good service'),
        (2, 102, N'2021-04-22', 4, N'ok');
-    

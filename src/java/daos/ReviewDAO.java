@@ -3,21 +3,22 @@ package daos;
 import dtos.Review;
 import dtos.Room;
 import dtos.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import utils.Connector;
 import utils.Helper;
 
 public class ReviewDAO {
 
 	private Connection conn;
+
 	private PreparedStatement preStm;
+
 	private ResultSet rs;
 
+	// This function handle to close connection of database
 	private void closeConnection() throws Exception {
 		if (rs != null) {
 			rs.close();
@@ -33,6 +34,7 @@ public class ReviewDAO {
 		}
 	}
 
+	// this function will add new review to database
 	public boolean addReview(Review review) throws Exception {
 		boolean isSuccess = false;
 		try {
@@ -41,17 +43,19 @@ public class ReviewDAO {
 			preStm = conn.prepareStatement(sql);
 			preStm.setString(1, review.getMessage());
 			preStm.setInt(2, review.getRate());
-			preStm.setDate(3,  java.sql.Date.valueOf(Helper.convertDateToString(review.getCreateDate())));
+			preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(review.getCreateDate())));
 			preStm.setInt(4, review.getUser().getUserId());
 			preStm.setInt(5, review.getRoom().getRoomId());
 
 			isSuccess = preStm.executeUpdate() > 0;
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return isSuccess;
 	}
 
+	// this function will display all review about a room
 	public ArrayList<Review> getReviewByRoomId(int roomId) throws Exception {
 		ArrayList<Review> reviews = new ArrayList<>();
 		try {
@@ -74,9 +78,11 @@ public class ReviewDAO {
 				Review review = new Review(message, rate, user, room);
 				reviews.add(review);
 			}
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return reviews;
 	}
+
 }

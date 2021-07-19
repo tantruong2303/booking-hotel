@@ -18,7 +18,6 @@ import utils.GetParam;
 import utils.Helper;
 
 /**
- *
  * @author heaty566
  */
 @WebServlet(name = "RegisterController", urlPatterns = { "/RegisterController" })
@@ -27,7 +26,7 @@ public class RegisterController extends HttpServlet {
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
 	 * methods.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -77,7 +76,7 @@ public class RegisterController extends HttpServlet {
 	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -92,7 +91,7 @@ public class RegisterController extends HttpServlet {
 
 	/**
 	 * Handles the HTTP <code>POST</code> method.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -104,11 +103,12 @@ public class RegisterController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		try {
 			if (processRequest(request, response)) {
-				// forward on 200
-				response.sendRedirect(Routers.LOGIN_CONTROLLER);
+				// forward on success
+				response.sendRedirect(Routers.LOGIN_CONTROLLER + "?message=Register user successfully");
 				return;
 			}
 
+			// forward on failed
 			request.getRequestDispatcher(Routers.REGISTER_PAGE).forward(request, response);
 		} catch (Exception e) {
 			request.getRequestDispatcher(Routers.ERROR).forward(request, response);

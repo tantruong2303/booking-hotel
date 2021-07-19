@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import utils.GetParam;
 
 /**
- *
  * @author Lenovo
  */
 @WebServlet(name = "RemoveCartController", urlPatterns = { "/RemoveCartController" })
@@ -27,7 +26,7 @@ public class RemoveCartController extends HttpServlet {
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
 	 * methods.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @return
@@ -35,7 +34,7 @@ public class RemoveCartController extends HttpServlet {
 	 * @throws IOException      if an I/O error occurs
 	 */
 	private boolean processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		// validate params
 		Integer[] bookingInfoIds = GetParam.getIntegerArrayParams(request, "bookingInfoId", "Booking Info ID");
 		if (bookingInfoIds == null) {
 			return false;
@@ -46,19 +45,23 @@ public class RemoveCartController extends HttpServlet {
 			return false;
 		}
 
+		// get cart from session
 		HttpSession session = request.getSession(false);
 		HashMap<String, BookingInfo> bookingInfoList = (HashMap<String, BookingInfo>) session
 				.getAttribute("bookingInfoList");
+
+		// checking valid cart
 		if (bookingInfoList == null) {
 			request.setAttribute("errorMessage", "Booking cart is empty!");
 			return false;
 		}
 
+		// checking is empty cart
 		if (bookingInfoList.isEmpty()) {
 			request.setAttribute("errorMessage", "Booking cart is empty!");
 			return false;
 		}
-
+		// handle remove item
 		for (Integer bookingInfoId : bookingInfoIds) {
 
 			if (!bookingInfoList.containsKey(bookingInfoId)) {
@@ -78,7 +81,7 @@ public class RemoveCartController extends HttpServlet {
 
 	/**
 	 * Handles the HTTP <code>GET</code> method.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -88,8 +91,8 @@ public class RemoveCartController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			// handle request
 			processRequest(request, response);
-
 			request.getRequestDispatcher(Routers.VIEW_BOOKING_CART_PAGE + "?message=Delete room successfully")
 					.forward(request, response);
 

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author heaty566
  */
 @WebServlet(name = "LogoutController", urlPatterns = { "/LogoutController" })
@@ -25,7 +24,7 @@ public class LogoutController extends HttpServlet {
 	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -35,10 +34,12 @@ public class LogoutController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			// remove session
 			HttpSession session = request.getSession();
 			session.invalidate();
 		} finally {
-			response.sendRedirect(Routers.LOGIN_CONTROLLER);
+			// foward on success
+			response.sendRedirect(Routers.LOGIN_CONTROLLER + "?message=Logout user successfully");
 		}
 	}
 

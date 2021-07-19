@@ -6,15 +6,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import utils.Connector;
 
 public class RoomDAO {
 
 	private Connection conn;
+
 	private PreparedStatement preStm;
+
 	private ResultSet rs;
 
+	// This function handle to close connection of database
 	private void closeConnection() throws Exception {
 		if (rs != null) {
 			rs.close();
@@ -30,6 +32,7 @@ public class RoomDAO {
 		}
 	}
 
+	// this function will add new room to database
 	public boolean addRoom(Room room) throws Exception {
 		boolean isSuccess = false;
 		try {
@@ -45,12 +48,14 @@ public class RoomDAO {
 			preStm.setInt(6, room.getRoomType().getRoomTypeId());
 
 			isSuccess = preStm.executeUpdate() > 0;
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return isSuccess;
 	}
 
+	// this function will update a room in database
 	public boolean updateRoom(Room room) throws Exception {
 
 		String sql = "UPDATE tbl_Room SET price = ?, description = ?, status = ?, imageUrl = ?, roomTypeId = ? WHERE roomId = ?";
@@ -65,12 +70,14 @@ public class RoomDAO {
 			preStm.setInt(5, room.getRoomType().getRoomTypeId());
 			preStm.setInt(6, room.getRoomId());
 			isSuccess = preStm.executeUpdate() > 0;
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return isSuccess;
 	}
 
+	// this function will change status of room in database
 	public boolean changeStatus(Integer roomId, Integer status) throws Exception {
 		conn = Connector.getConnection();
 		String sql = "UPDATE tbl_Room SET status = ? WHERE roomId = ?";
@@ -81,12 +88,14 @@ public class RoomDAO {
 			preStm.setInt(2, roomId);
 
 			isSuccess = preStm.executeUpdate() > 0;
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return isSuccess;
 	}
 
+	// this function will find a room by room id
 	public Room getRoomById(int roomId) throws Exception {
 		Room room = null;
 		try {
@@ -112,19 +121,21 @@ public class RoomDAO {
 
 			}
 
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return room;
 	}
 
+	// this function will get all rooms for manager
 	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder) throws Exception {
 		ArrayList<Room> list = new ArrayList<>();
 		try {
 			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
 			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  ORDER BY price "
-				+ order;
+					+ order;
 
 			preStm = conn.prepareStatement(sql);
 			preStm.setFloat(1, numOfPeople);
@@ -147,22 +158,24 @@ public class RoomDAO {
 				Room room = new Room(roomIdSql, priceSql, status, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return list;
 	}
 
-	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer status, boolean isSame)
-		throws Exception {
+	// this function will get all room for customer
+	public ArrayList<Room> getRooms(int numOfPeople, float min, float max, String priceOrder, Integer status,
+			boolean isSame) throws Exception {
 		ArrayList<Room> list = new ArrayList<>();
 		String isSameQuery = isSame ? " = " : " <> ";
 		try {
 			conn = Connector.getConnection();
 			String order = priceOrder.equals("ASC") ? "ASC" : "DESC";
-			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND status " + isSameQuery + " ? ORDER BY price "
-				+ order;
-			
+			String sql = "SELECT roomId, price, description, status, imageUrl, name, numOfPeople, tbl_Room.roomTypeId as roomTypeId FROM tbl_Room LEFT JOIN tbl_RoomType ON tbl_Room.roomTypeId = tbl_RoomType.roomTypeId WHERE numOfPeople >= ? AND price >= ? AND price <= ?  AND status "
+					+ isSameQuery + " ? ORDER BY price " + order;
+
 			preStm = conn.prepareStatement(sql);
 			preStm.setFloat(1, numOfPeople);
 			preStm.setFloat(2, min);
@@ -184,12 +197,14 @@ public class RoomDAO {
 				Room room = new Room(roomIdSql, priceSql, statusSQL, imageUrl, descriptionSql, roomType);
 				list.add(room);
 			}
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return list;
 	}
 
+	// this function will get room type from database
 	public RoomType getRoomTypeById(Integer roomTypeId) throws Exception {
 		RoomType roomType = null;
 		conn = Connector.getConnection();
@@ -206,13 +221,15 @@ public class RoomDAO {
 				int numOfPeopleSql = rs.getInt("numOfPeople");
 				roomType = new RoomType(roomTypeIdSql, nameSql, numOfPeopleSql);
 			}
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 
 		return roomType;
 	}
 
+	// this function will get all room type from database
 	public ArrayList<RoomType> getRoomTypes() throws Exception {
 		conn = Connector.getConnection();
 		String sql = "SELECT roomTypeId, name, numOfPeople FROM tbl_RoomType ";
@@ -228,9 +245,11 @@ public class RoomDAO {
 				roomTypes.add(roomType);
 			}
 
-		} finally {
+		}
+		finally {
 			this.closeConnection();
 		}
 		return roomTypes;
 	}
+
 }

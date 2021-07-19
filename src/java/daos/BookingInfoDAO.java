@@ -13,227 +13,247 @@ import utils.Helper;
 
 public class BookingInfoDAO {
 
-    private Connection conn;
-    private PreparedStatement preStm;
-    private ResultSet rs;
+	private Connection conn;
 
-    private void closeConnection() throws Exception {
-        if (rs != null) {
-            rs.close();
-        }
+	private PreparedStatement preStm;
 
-        if (preStm != null) {
-            preStm.close();
-        }
+	private ResultSet rs;
 
-        if (conn != null) {
+	// This function handle to close connection of database
+	private void closeConnection() throws Exception {
+		if (rs != null) {
+			rs.close();
+		}
 
-            conn.close();
-        }
-    }
+		if (preStm != null) {
+			preStm.close();
+		}
 
-    public boolean addBookingInfo(BookingInfo bookingInfo) throws Exception {
-        boolean isSuccess = false;
+		if (conn != null) {
 
-        try {
+			conn.close();
+		}
+	}
 
-            conn = Connector.getConnection();
-            String sql = "INSERT INTO tbl_BookingInfo (orderId, roomId, startDate, endDate, status, roomPrice) VALUES (?,?,?,?,?,?)";
-            preStm = conn.prepareStatement(sql);
-            preStm.setInt(1, bookingInfo.getOrder().getOrderId());
-            preStm.setInt(2, bookingInfo.getRoom().getRoomId());
-            preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(bookingInfo.getStartDate())));
-            preStm.setDate(4, java.sql.Date.valueOf(Helper.convertDateToString(bookingInfo.getEndDate())));
-            preStm.setInt(5, bookingInfo.getStatus());
-            preStm.setFloat(6, bookingInfo.getRoomPrice());
-            isSuccess = preStm.executeUpdate() > 0;
-        } finally {
-            this.closeConnection();
-        }
-        return isSuccess;
-    }
+	// This function insert new booking infomation to database
+	public boolean addBookingInfo(BookingInfo bookingInfo) throws Exception {
+		boolean isSuccess = false;
 
-    public boolean updateBookingInfopStatus(Integer bookingInfoId, Integer status) throws Exception {
-        boolean isSuccess = false;
-        try {
-            conn = Connector.getConnection();
-            String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE bookingInfoId = ? and status = -1";
-            preStm = conn.prepareStatement(sql);
-            preStm.setInt(1, status);
-            preStm.setInt(2, bookingInfoId);
-            isSuccess = preStm.executeUpdate() > 0;
-        } finally {
-            this.closeConnection();
-        }
-        return isSuccess;
-    }
+		try {
 
-    public ArrayList<BookingInfo> getBookingForManager(String roomId, Date startDate, Date endDate, Integer status) throws Exception {
-        ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
+			conn = Connector.getConnection();
+			String sql = "INSERT INTO tbl_BookingInfo (orderId, roomId, startDate, endDate, status, roomPrice) VALUES (?,?,?,?,?,?)";
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, bookingInfo.getOrder().getOrderId());
+			preStm.setInt(2, bookingInfo.getRoom().getRoomId());
+			preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(bookingInfo.getStartDate())));
+			preStm.setDate(4, java.sql.Date.valueOf(Helper.convertDateToString(bookingInfo.getEndDate())));
+			preStm.setInt(5, bookingInfo.getStatus());
+			preStm.setFloat(6, bookingInfo.getRoomPrice());
+			isSuccess = preStm.executeUpdate() > 0;
+		}
+		finally {
+			this.closeConnection();
+		}
+		return isSuccess;
+	}
 
-        try {
-            String statusQuery = status == 2 ? "" : "and status = " + status;
-            conn = Connector.getConnection();
+	// this function allow manager to update booking status
+	public boolean updateBookingInfopStatus(Integer bookingInfoId, Integer status) throws Exception {
+		boolean isSuccess = false;
+		try {
+			conn = Connector.getConnection();
+			String sql = "UPDATE tbl_BookingInfo SET status = ? WHERE bookingInfoId = ? and status = -1";
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, status);
+			preStm.setInt(2, bookingInfoId);
+			isSuccess = preStm.executeUpdate() > 0;
+		}
+		finally {
+			this.closeConnection();
+		}
+		return isSuccess;
+	}
 
-            OrderDAO orderDAO = new OrderDAO();
-            RoomDAO roomDAO = new RoomDAO();
+	// this function will fetch all booking for manager
+	public ArrayList<BookingInfo> getBookingForManager(String roomId, Date startDate, Date endDate, Integer status)
+			throws Exception {
+		ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
 
-            String sql = "SELECT * FROM tbl_BookingInfo WHERE CAST( roomId as varchar ) like ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY status ASC";
-            preStm = conn.prepareStatement(sql);
-            preStm.setString(1, "%" + roomId + "%");
-            preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
-            preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(endDate)));
-            rs = preStm.executeQuery();
+		try {
+			String statusQuery = status == 2 ? "" : "and status = " + status;
+			conn = Connector.getConnection();
 
-            while (rs.next()) {
-                Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
-                Integer orderIdsql = rs.getInt("orderId");
-                Integer roomIdSql = rs.getInt("roomId");
-                Date startDateSql = rs.getDate("startDate");
-                Date endDateSql = rs.getDate("endDate");
-                Integer statusSql = rs.getInt("status");
-                Float roomPriceSql = rs.getFloat("roomPrice");
-                Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
-                Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
+			OrderDAO orderDAO = new OrderDAO();
+			RoomDAO roomDAO = new RoomDAO();
 
-                Order order = orderDAO.getOrderById(orderIdsql);
-                Room room = roomDAO.getRoomById(roomIdSql);
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE CAST( roomId as varchar ) like ? and startDate >= ? and endDate <= ? "
+					+ statusQuery + " ORDER BY status ASC";
+			preStm = conn.prepareStatement(sql);
+			preStm.setString(1, "%" + roomId + "%");
+			preStm.setDate(2, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
+			preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(endDate)));
+			rs = preStm.executeQuery();
 
-                if (order != null && room != null) {
-                    BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate,
-                            formatEndDate, statusSql, roomPriceSql);
-                    bookingInfos.add(bookingInfo);
-                }
-            }
+			while (rs.next()) {
+				Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
+				Integer orderIdsql = rs.getInt("orderId");
+				Integer roomIdSql = rs.getInt("roomId");
+				Date startDateSql = rs.getDate("startDate");
+				Date endDateSql = rs.getDate("endDate");
+				Integer statusSql = rs.getInt("status");
+				Float roomPriceSql = rs.getFloat("roomPrice");
+				Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
+				Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
 
-        } finally {
-            this.closeConnection();
-        }
-        return bookingInfos;
-    }
+				Order order = orderDAO.getOrderById(orderIdsql);
+				Room room = roomDAO.getRoomById(roomIdSql);
 
-    public ArrayList<BookingInfo> getBookingWithUserId(Integer userId, Date startDate, Date endDate, String roomId, Integer status) throws Exception {
-        ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
-        try {
-            String statusQuery = status == 2 ? "" : "and status = " + status;
-            conn = Connector.getConnection();
+				if (order != null && room != null) {
+					BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate,
+							formatEndDate, statusSql, roomPriceSql);
+					bookingInfos.add(bookingInfo);
+				}
+			}
 
-            OrderDAO orderDAO = new OrderDAO();
-            RoomDAO roomDAO = new RoomDAO();
+		}
+		finally {
+			this.closeConnection();
+		}
+		return bookingInfos;
+	}
 
-            String sql = "SELECT bookingInfoId, tbl_BookingInfo.orderId, roomId, startDate, endDate, status, roomPrice FROM tbl_Order JOIN tbl_BookingInfo ON tbl_Order.orderId = tbl_BookingInfo.orderId WHERE CAST( roomId as varchar ) like ? and userId = ? and startDate >= ? and endDate <= ? " + statusQuery + " ORDER BY status ASC";
-            preStm = conn.prepareStatement(sql);
-            preStm.setString(1, "%" + roomId + "%");
-            preStm.setInt(2, userId);
-            preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
-            preStm.setDate(4, java.sql.Date.valueOf(Helper.convertDateToString(endDate)));
-            rs = preStm.executeQuery();
+	// this function will fetch all the booking information base on user id
+	public ArrayList<BookingInfo> getBookingWithUserId(Integer userId, Date startDate, Date endDate, String roomId,
+			Integer status) throws Exception {
+		ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
+		try {
+			String statusQuery = status == 2 ? "" : "and status = " + status;
+			conn = Connector.getConnection();
 
-            while (rs.next()) {
-                Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
-                Integer orderIdsql = rs.getInt("orderId");
-                Integer roomIdSql = rs.getInt("roomId");
-                Date startDateSql = rs.getDate("startDate");
-                Date endDateSql = rs.getDate("endDate");
-                Integer statusSql = rs.getInt("status");
-                Float roomPriceSql = rs.getFloat("roomPrice");
-                Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
-                Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
+			OrderDAO orderDAO = new OrderDAO();
+			RoomDAO roomDAO = new RoomDAO();
 
-                Order order = orderDAO.getOrderById(orderIdsql);
-                Room room = roomDAO.getRoomById(roomIdSql);
+			String sql = "SELECT bookingInfoId, tbl_BookingInfo.orderId, roomId, startDate, endDate, status, roomPrice FROM tbl_Order JOIN tbl_BookingInfo ON tbl_Order.orderId = tbl_BookingInfo.orderId WHERE CAST( roomId as varchar ) like ? and userId = ? and startDate >= ? and endDate <= ? "
+					+ statusQuery + " ORDER BY status ASC";
+			preStm = conn.prepareStatement(sql);
+			preStm.setString(1, "%" + roomId + "%");
+			preStm.setInt(2, userId);
+			preStm.setDate(3, java.sql.Date.valueOf(Helper.convertDateToString(startDate)));
+			preStm.setDate(4, java.sql.Date.valueOf(Helper.convertDateToString(endDate)));
+			rs = preStm.executeQuery();
 
-                if (order != null && room != null) {
-                    BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate,
-                            formatEndDate, statusSql, roomPriceSql);
-                    bookingInfos.add(bookingInfo);
-                }
-            }
+			while (rs.next()) {
+				Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
+				Integer orderIdsql = rs.getInt("orderId");
+				Integer roomIdSql = rs.getInt("roomId");
+				Date startDateSql = rs.getDate("startDate");
+				Date endDateSql = rs.getDate("endDate");
+				Integer statusSql = rs.getInt("status");
+				Float roomPriceSql = rs.getFloat("roomPrice");
+				Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
+				Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
 
-        } finally {
-            this.closeConnection();
-        }
-        return bookingInfos;
-    }
+				Order order = orderDAO.getOrderById(orderIdsql);
+				Room room = roomDAO.getRoomById(roomIdSql);
 
-    public ArrayList<BookingInfo> getActiveBookingWithRoomId(Integer roomId) throws Exception {
-        ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
-        try {
-            conn = Connector.getConnection();
+				if (order != null && room != null) {
+					BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate,
+							formatEndDate, statusSql, roomPriceSql);
+					bookingInfos.add(bookingInfo);
+				}
+			}
 
-            OrderDAO orderDAO = new OrderDAO();
-            RoomDAO roomDAO = new RoomDAO();
+		}
+		finally {
+			this.closeConnection();
+		}
+		return bookingInfos;
+	}
 
-            String sql = "SELECT * FROM tbl_BookingInfo WHERE roomId = ? and status = -1";
-            preStm = conn.prepareStatement(sql);
-            preStm.setInt(1, roomId);
-            rs = preStm.executeQuery();
+	// this function will fetch all booking which are process status
+	public ArrayList<BookingInfo> getActiveBookingWithRoomId(Integer roomId) throws Exception {
+		ArrayList<BookingInfo> bookingInfos = new ArrayList<>();
+		try {
+			conn = Connector.getConnection();
 
-            while (rs.next()) {
-                Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
-                Integer orderIdsql = rs.getInt("orderId");
-                Integer roomIdSql = rs.getInt("roomId");
-                Date startDateSql = rs.getDate("startDate");
-                Date endDateSql = rs.getDate("endDate");
-                Integer statusSql = rs.getInt("status");
-                Float roomPriceSql = rs.getFloat("roomPrice");
-                Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
-                Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
+			OrderDAO orderDAO = new OrderDAO();
+			RoomDAO roomDAO = new RoomDAO();
 
-                Order order = orderDAO.getOrderById(orderIdsql);
-                Room room = roomDAO.getRoomById(roomIdSql);
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE roomId = ? and status = -1";
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, roomId);
+			rs = preStm.executeQuery();
 
-                if (order != null && room != null) {
-                    BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate,
-                            formatEndDate, statusSql, roomPriceSql);
-                    bookingInfos.add(bookingInfo);
-                }
-            }
+			while (rs.next()) {
+				Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
+				Integer orderIdsql = rs.getInt("orderId");
+				Integer roomIdSql = rs.getInt("roomId");
+				Date startDateSql = rs.getDate("startDate");
+				Date endDateSql = rs.getDate("endDate");
+				Integer statusSql = rs.getInt("status");
+				Float roomPriceSql = rs.getFloat("roomPrice");
+				Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
+				Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
 
-        } finally {
-            this.closeConnection();
-        }
+				Order order = orderDAO.getOrderById(orderIdsql);
+				Room room = roomDAO.getRoomById(roomIdSql);
 
-        return bookingInfos;
-    }
+				if (order != null && room != null) {
+					BookingInfo bookingInfo = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate,
+							formatEndDate, statusSql, roomPriceSql);
+					bookingInfos.add(bookingInfo);
+				}
+			}
 
-    public BookingInfo getBookingInfoByBookingId(Integer bookingInfoId) throws Exception {
-        BookingInfo value = null;
-        try {
-            conn = Connector.getConnection();
+		}
+		finally {
+			this.closeConnection();
+		}
 
-            OrderDAO orderDAO = new OrderDAO();
-            RoomDAO roomDAO = new RoomDAO();
+		return bookingInfos;
+	}
 
-            String sql = "SELECT * FROM tbl_BookingInfo WHERE bookingInfoId = ?";
-            preStm = conn.prepareStatement(sql);
-            preStm.setInt(1, bookingInfoId);
+	// this function will a booking information base on booking id
+	public BookingInfo getBookingInfoByBookingId(Integer bookingInfoId) throws Exception {
+		BookingInfo value = null;
+		try {
+			conn = Connector.getConnection();
 
-            rs = preStm.executeQuery();
+			OrderDAO orderDAO = new OrderDAO();
+			RoomDAO roomDAO = new RoomDAO();
 
-            if (rs.next()) {
-                Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
-                Integer orderIdsql = rs.getInt("orderId");
-                Integer roomIdSql = rs.getInt("roomId");
-                Date startDateSql = rs.getDate("startDate");
-                Date endDateSql = rs.getDate("endDate");
-                Integer statusSql = rs.getInt("status");
-                Float roomPriceSql = rs.getFloat("roomPrice");
-                Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
-                Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
+			String sql = "SELECT * FROM tbl_BookingInfo WHERE bookingInfoId = ?";
+			preStm = conn.prepareStatement(sql);
+			preStm.setInt(1, bookingInfoId);
 
-                Order order = orderDAO.getOrderById(orderIdsql);
-                Room room = roomDAO.getRoomById(roomIdSql);
+			rs = preStm.executeQuery();
 
-                if (order != null && room != null) {
-                    value = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate,
-                            formatEndDate, statusSql, roomPriceSql);
-                }
-            }
+			if (rs.next()) {
+				Integer bookingInfoIdSql = rs.getInt("bookingInfoId");
+				Integer orderIdsql = rs.getInt("orderId");
+				Integer roomIdSql = rs.getInt("roomId");
+				Date startDateSql = rs.getDate("startDate");
+				Date endDateSql = rs.getDate("endDate");
+				Integer statusSql = rs.getInt("status");
+				Float roomPriceSql = rs.getFloat("roomPrice");
+				Date formatStartDate = Helper.convertStringToDate(startDateSql.toString());
+				Date formatEndDate = Helper.convertStringToDate(endDateSql.toString());
 
-        } finally {
-            this.closeConnection();
-        }
-        return value;
-    }
+				Order order = orderDAO.getOrderById(orderIdsql);
+				Room room = roomDAO.getRoomById(roomIdSql);
+
+				if (order != null && room != null) {
+					value = new BookingInfo(bookingInfoIdSql, order, room, formatStartDate, formatEndDate, statusSql,
+							roomPriceSql);
+				}
+			}
+
+		}
+		finally {
+			this.closeConnection();
+		}
+		return value;
+	}
+
 }

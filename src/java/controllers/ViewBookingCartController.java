@@ -35,6 +35,7 @@ public class ViewBookingCartController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        // forward
         request.getRequestDispatcher(Routers.VIEW_BOOKING_CART_PAGE).forward(request, response);
     }
 }

@@ -1,16 +1,13 @@
 package controllers;
 
 import constant.Routers;
-
 import daos.BookingInfoDAO;
 import daos.UserDAO;
 import dtos.BookingInfo;
 import dtos.User;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +21,12 @@ import utils.Validator;
 public class ViewBookingController extends HttpServlet {
 
 	private boolean getHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// initialize resource
+		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
+		UserDAO userDAO = new UserDAO();
+		HttpSession session = request.getSession(false);
+
+		// validate params
 		Date startDate = GetParam.getDateParams(request, "startDate", "Start Date", "2019-01-01");
 		Date endDate = GetParam.getDateParams(request, "endDate", "End Date", "2025-01-01");
 		Integer status = GetParam.getIntParams(request, "status", "Status", -1, 2, 2);
@@ -38,18 +41,17 @@ public class ViewBookingController extends HttpServlet {
 			return false;
 		}
 
+		// if user do not enter roomId, take ""
 		String roomIdSearch = roomId == -99 ? "" : roomId.toString();
 
-		BookingInfoDAO bookingInfoDAO = new BookingInfoDAO();
-		UserDAO userDAO = new UserDAO();
-
-		HttpSession session = request.getSession(false);
+		// get logged in user
 		User user = userDAO.getOneUserByUsername((String) session.getAttribute("username"));
 		if (user == null) {
 			request.setAttribute("errorMessage", "User with the given ID was not found");
 			return false;
 		}
 
+		// get all bookinginfos for startdate to endate with the entered status
 		ArrayList<BookingInfo> bookingInfos = bookingInfoDAO.getBookingWithUserId(user.getUserId(), startDate, endDate,
 				roomIdSearch, status);
 
@@ -57,7 +59,7 @@ public class ViewBookingController extends HttpServlet {
 			request.setAttribute("errorMessage", "Booking Info with the given id was not found");
 			return false;
 		}
-
+		// set data into request attribute
 		request.setAttribute("bookingInfos", bookingInfos);
 		return true;
 	}
@@ -66,7 +68,7 @@ public class ViewBookingController extends HttpServlet {
 	// + sign on the left to edit the code.">
 	/**
 	 * Handles the HTTP <code>GET</code> method.
-	 *
+	 * 
 	 * @param request  servlet request
 	 * @param response servlet response
 	 * @throws ServletException if a servlet-specific error occurs
@@ -78,11 +80,12 @@ public class ViewBookingController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		try {
-
+			// handle request
 			if (this.getHandler(request, response)) {
 				request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE).forward(request, response);
 				return;
 			}
+			// forward on fail
 			request.getRequestDispatcher(Routers.VIEW_BOOKING_PAGE).forward(request, response);
 
 		} catch (Exception e) {
