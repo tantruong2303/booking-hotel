@@ -1,5 +1,7 @@
 [![SinninSC Logo](data/images/logo.png)](http://mychess.website/PRJ301_SE08D_BookingHotel)
 
+## [Live Demo](https://mychess.website) - [Live Api Document](https://heaty566.github.io/cv/PRJ301_SE08D_BookingHotel_REPORT.pdf)
+
 # Booking Hotel - Servlet + JSP + Tailwind
 
 ## Case Study
