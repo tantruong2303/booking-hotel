@@ -14,7 +14,7 @@
 
 
         <%@include file="./includes/navbar.jspf" %>
-        <div class="pt-4 px-2 space-y-4">
+        <div class="pt-4 px-2 space-y-4 ">
 
 
             <h1 class="pl-2 text-2xl font-semibold">Shopping Cart</h1>
@@ -31,14 +31,14 @@
                     %>
 
                     <tr class="bg-blue-600 text-white font-semibold">
-                        <td>NO</td>
-                        <td>Room ID</td>
-                        <td>Room Name</td>
-                        <td>Start Date</td>
-                        <td>End Date</td>
-                        <td>Number of day</td>
-                        <td>Price</td>
-                        <td>Remove</td>
+                        <td class="px-2">NO</td>
+                        <td class="px-2">Room ID</td>
+                        <td class="px-2">Room Name</td>
+                        <td class="px-2">Start Date</td>
+                        <td class="px-2">End Date</td>
+                        <td class="px-2">Number of day</td>
+                        <td class="px-2">Price</td>
+                        <td class="px-2">Remove</td>
                     </tr>
                     <%
                         Float total = 0F;

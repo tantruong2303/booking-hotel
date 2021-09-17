@@ -4,53 +4,79 @@
 <%@page import="constant.Routers"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@page import="utils.Helper"%>
-<% 
-	HashMap<Integer, BookingInfo> cartCounter = (HashMap<Integer, BookingInfo>) session.getAttribute("bookingInfoList");
-	if (cartCounter == null) {
-		cartCounter = new HashMap<>();
-	}
-					
+<%
+    HashMap<Integer, BookingInfo> cartCounter = (HashMap<Integer, BookingInfo>) session.getAttribute("bookingInfoList");
+    if (cartCounter == null) {
+        cartCounter = new HashMap<>();
+    }
+
 %>
-<div class="z-50 flex items-stretch justify-between h-16 px-16 bg-white shadow-md">
-        <a class="p-2" href="IndexController">
-                <img src="./asset/image/logo.svg" alt="GonninSC" class="h-full" />
-        </a>
-        <ul class="flex items-center space-x-4 text-lg font-semibold">
-                <% if (Helper.isLogin(request)) {%>
 
-                <li>
-                        <a href="ViewUserController" class="duration-200 hover:text-cerise-red">My Profile</a>
-                </li>
 
-                <% if (Helper.correctRole(request, 1,1)){ %>
+<div class="z-50 flex items-stretch justify-between h-16 px-4 md:px-16 bg-white shadow-md w-full relative ">
+    <a class="p-2  inline-block" href="IndexController">
+        <img src="./asset/image/logo.svg" alt="GonninSC" class="h-full object-cover w-full hidden md:block" />
+        <img src="./asset/image/logo-sm.svg" alt="GonninSC" class="h-full object-cover w-full md:hidden" />
+    </a>
 
-                <li>
-                        <a href="RoomListController" class="duration-200 hover:text-cerise-red">Manage Room</a>
-                </li>
+    <button class="menu focus:outline-none md:hidden" id="nav-btn"
+            onclick="this.classList.toggle('opened');this.setAttribute('aria-expanded', this.classList.contains('opened'))"
+            aria-label="Main Menu">
+        <svg width="64" height="64" viewBox="0 0 100 100">
+        <path class="line line1"
+              d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+        <path class="line line2" d="M 20,50 H 80" />
+        <path class="line line3"
+              d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+        </svg>
+    </button>
 
-                <%} %> <% if (Helper.correctRole(request, 0,0)){ %>
-                <li>
-                        <a href="ViewBookingController" class="duration-200 hover:text-cerise-red">View Booking</a>
-                </li>
+    <ul id="nav-menu" class="py-4 flex items-center md:w-auto md:space-x-4 text-lg font-semibold absolute top-full left-0 flex-col bg-white w-full md:scale-100 md:static md:shadow-none md:border-none md:flex-row  md:opacity-100 transform scale-y-0 origin-top  shadow-lg border-t-2 border-b-2 border-cerise-red-500 text-center opacity-0 duration-300">
+        <% if (Helper.isLogin(request)) {%>
 
-                <li class="relative">
-			<a href="ViewBookingCartController" class="duration-200 hover:text-cerise-red">View Booking Cart</a>
-			<span class="bg-cerise-red-500 p-1 rounded-full text-white text-sm w-6 h-6 block flex justify-center items-center absolute -top-3 -right-4  bg-opacity-80"> <%=cartCounter.size() %> </span>
-                </li>
+        <li>
+            <a href="ViewUserController" class="duration-200 hover:text-cerise-red py-2 md:py-0 block ">My Profile</a>
+        </li>
 
-                <%} %>
+        <% if (Helper.correctRole(request, 1, 1)) { %>
 
-                <li>
-                        <a href="LogoutController" class="duration-200 hover:text-cerise-red">Logout</a>
-                </li>
+        <li>
+            <a href="RoomListController" class="duration-200 hover:text-cerise-red py-2 block md:py-0 block ">Manage Room</a>
+        </li>
 
-                <%} else {%>
-                <li>
-                        <a href="LoginController" class="duration-200 hover:text-cerise-red">Login</a>
-                </li>
-                <li>
-                        <a href="RegisterController" class="duration-200 hover:text-cerise-red">Register</a>
-                </li>
-                <%} %>
-        </ul>
+        <%} %> <% if (Helper.correctRole(request, 0, 0)) {%>
+        <li>
+            <a href="ViewBookingController" class="duration-200 hover:text-cerise-red py-2 block md:py-0 block ">View Booking</a>
+        </li>
+
+        <li class="relative">
+            <a href="ViewBookingCartController" class="duration-200 hover:text-cerise-red py-2 block md:py-0 block ">View Booking Cart</a>
+            <span class="bg-cerise-red-500 p-1 rounded-full text-white text-sm w-6 h-6 block flex justify-center items-center absolute -top-3 -right-4  bg-opacity-80"> <%=cartCounter.size()%> </span>
+        </li>
+
+        <%} %>
+
+        <li>
+            <a href="LogoutController" class="duration-200 hover:text-cerise-red py-2 block md:py-0 block ">Logout</a>
+        </li>
+
+        <%} else {%>
+        <li>
+            <a href="LoginController" class="duration-200 hover:text-cerise-red py-2 block md:py-0 block ">Login</a>
+        </li>
+        <li>
+            <a href="RegisterController" class="duration-200 hover:text-cerise-red py-2 block md:py-0 block ">Register</a>
+        </li>
+        <%}%>
+    </ul>
 </div>
+<script>
+    const navBtn = document.getElementById("nav-btn");
+    navBtn.addEventListener("click", function () {
+
+        const navMenu = document.getElementById("nav-menu");
+        navMenu.classList.toggle("scale-y-100");
+        navMenu.classList.toggle("opacity-100");
+    });
+
+</script>
