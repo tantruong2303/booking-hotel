@@ -9,7 +9,7 @@
     <body  class="flex flex-col min-h-screen" >
         <%@include file="./includes/navbar.jspf" %>
         <main  class="flex flex-1 h-full bg-cerise-red-500">
-            <div  class="flex flex-col items-center justify-between md:w-4/5  p-4 mx-auto space-y-10 bg-white">
+            <div  class="flex flex-col items-center justify-between md:w-4/5 w-full p-4 mx-auto space-y-10 bg-white">
                 <form action="ChangePasswordController" method="POST"   class="mt-8 space-y-2 fade-in w-72 ">
                     <h1 class="col-start-2 text-4xl font-semibold">Change Password</h1>
                     <jsp:include page="./components/message.jsp"/>

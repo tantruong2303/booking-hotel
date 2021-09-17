@@ -19,7 +19,7 @@
     <body class="flex flex-col min-h-screen">
         <%@include file="./includes/navbar.jspf" %>
         <main class="flex flex-1 h-full bg-cerise-red-500">
-            <div class="flex flex-col items-center justify-start md:w-4/5 p-4 mx-auto space-y-4 w-full bg-white">
+            <div class="flex flex-col items-center justify-start md:w-4/5 w-full p-4 mx-auto space-y-4 w-full bg-white">
                 <form class="w-full">
                     <h1 class="text-4xl font-semibold">Booking List</h1>
                     <jsp:include page="./components/message.jsp"/>

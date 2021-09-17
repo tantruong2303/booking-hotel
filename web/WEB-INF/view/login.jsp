@@ -10,7 +10,7 @@
     <body class="flex flex-col min-h-screen">
         <%@include file="./includes/navbar.jspf" %>
         <main class="flex flex-1  bg-cerise-red-500">
-            <div   class="flex flex-col items-center justify-between md:w-4/5 p-4 mx-auto pt-8  bg-white">
+            <div   class="flex flex-col items-center justify-between w-full md:w-4/5 p-4 mx-auto pt-8  bg-white">
                 <form action="LoginController" method="POST"  class=" space-y-2 fade-in flex flex-col items-center w-72">
                     <h1 class=" text-4xl font-semibold">Login</h1>
                     <jsp:include page="./components/message.jsp"/>

@@ -41,7 +41,7 @@
     <body class="flex flex-col min-h-screen">
         <%@include file="./includes/navbar.jspf" %>
         <main class="flex flex-1 h-full bg-cerise-red-500">
-            <div class="flex flex-col items-center justify-start md:w-4/5 p-4 mx-auto space-y-4 bg-white">
+            <div class="flex flex-col items-center justify-start w-full md:w-4/5 p-4 mx-auto space-y-4 bg-white">
                 <form action="ViewBookingManagerController" method="POST" class="w-full">
                     <h1 class="text-4xl font-semibold">Booking List</h1>
 
