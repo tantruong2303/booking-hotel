@@ -16,16 +16,16 @@
 <link rel="icon" type="image/png" sizes="16x16" href="./asset/header/favicon-16x16.png">
 <link rel="manifest" href="./asset/header/manifest.json">
 <meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="./asset/header/ms-icon-144x144.png">
+<meta name="msapplication-TileImage" content="/PRJ301_SE08D_BookingHotel/asset/header/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
 <meta name="description" content="Booking Hotel project is developed by Mono Infinity team" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="${param.title}" />
 <meta property="og:description" content="Booking Hotel project is developed by Mono Infinity team" />
-<meta property="og:image" content="./asset/header/banner.jpg" />
+<meta property="og:image" content="/PRJ301_SE08D_BookingHotel/asset/header/banner.jpg" />
 <meta name="twitter:title" content="${param.title}" />
 <meta name="twitter:description" content="Booking Hotel project is developed by Mono Infinity team" />
-<meta name="twitter:image" content="./asset/header/banner.jpg" />
+<meta name="twitter:image" content="/PRJ301_SE08D_BookingHotel/asset/header/banner.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <title>${param.title}</title>
