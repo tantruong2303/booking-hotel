@@ -1,4 +1,5 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cc8e1c9bdb44471b874236600396f853)](https://www.codacy.com/gh/tantruong2303/booking-hotel/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tantruong2303/booking-hotel&amp;utm_campaign=Badge_Grade)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tantruong2303/booking-hotel/auto-build-deploy)
 [![GitHub license](https://img.shields.io/github/license/Heaty566/mychess)](https://github.com/Heaty566/mychess/blob/main/LICENSE)
 
 [![SinninSC Logo](data/images/logo.png)](http://mychess.website/PRJ301_SE08D_BookingHotel)
