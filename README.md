@@ -1,3 +1,5 @@
+[![GitHub license](https://img.shields.io/github/license/Heaty566/mychess)](https://github.com/Heaty566/mychess/blob/main/LICENSE)
+
 [![SinninSC Logo](data/images/logo.png)](http://mychess.website/PRJ301_SE08D_BookingHotel)
 
 ## [Live Demo](https://booking.vinhnhan.com/PRJ301_SE08D_BookingHotel) - [Live Document](https://heaty566.github.io/cv/PRJ301_SE08D_BookingHotel_REPORT.pdf)
@@ -46,9 +48,18 @@ Only authenticated user has the ability to make a booking or review. Manager abi
 
 ## Team Member
 
-- Cao Chí Hải
-- Trương Bỉnh Tân
-- Phạm Vĩnh Nhân
+- Phạm Vĩnh Nhân | Full-Stack - Leader
+     - Gmail: heaty566@gmail.com
+     - Linkedin: https://www.linkedin.com/in/heaty566
+     - Github: https://github.com/Heaty566
+- Cao Chí Hải | Backend
+     - Gmail: haicao2805@gmail.com
+     - Linkedin: https://www.linkedin.com/in/cao-chi-hai
+     - Github: https://github.com/haicao2805
+- Trương Bỉnh Tân | Backend
+     - Gmail: tantruong2303@gmail.com
+     - Linkedin: https://linkedin.com/in/truongbinhtan
+     - Github: https://github.com/tantruong2303
 
 ## Project Picture
 
@@ -81,3 +92,5 @@ Only authenticated user has the ability to make a booking or review. Manager abi
 ## Bug Report
 
 Feel free to create an issue request anytime we will check it out and fix it as soon as possible. Thank You So Much.
+
+### Mono Infinity © 2021
